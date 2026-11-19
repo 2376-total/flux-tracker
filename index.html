@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
   <meta name="theme-color" content="#090c12" />
   <meta name="color-scheme" content="dark" />
   <title>Flux — Weight &amp; Calorie Tracker</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23161e30'/%3E%3Cstop offset='100%25' stop-color='%23090c12'/%3E%3C/linearGradient%3E%3ClinearGradient id='area' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23818cf8' stop-opacity='0.42'/%3E%3Cstop offset='100%25' stop-color='%23818cf8' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23bg)'/%3E%3Crect x='1.5' y='1.5' width='61' height='61' rx='14.5' fill='none' stroke='%23ffffff' stroke-opacity='0.14' stroke-width='2'/%3E%3Cpath d='M11 20h42M11 32h42M11 44h42' stroke='%23ffffff' stroke-opacity='0.08' stroke-width='1.5'/%3E%3Cline x1='11' y1='16' x2='53' y2='48' stroke='%2334d399' stroke-width='3.2' stroke-linecap='round' stroke-dasharray='5 5'/%3E%3Cpath d='M11 18 C19 19, 24 30, 31 28 C38 26, 43 40, 53 43 L53 53 L11 53 Z' fill='url(%23area)'/%3E%3Cpath d='M11 18 C19 19, 24 30, 31 28 C38 26, 43 40, 53 43' fill='none' stroke='%23818cf8' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='31' cy='28' r='4' fill='%23090c12' stroke='%23a5b4fc' stroke-width='2.5'/%3E%3Ccircle cx='53' cy='43' r='4.4' fill='%2334d399' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E" />
   <style>
     :root {
       --bg: #090c12;
@@ -27,8 +28,9 @@
       --rose-soft: rgba(251, 113, 133, 0.15);
       --amber: #f59e0b;
       --radius: 20px;
-      --radius-sm: 12px;
       --nav-height: 68px;
+      --vvh: 100dvh;
+      --vvt: 0px;
     }
 
     * {
@@ -71,9 +73,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 14px;
-      background: rgba(9, 12, 18, 0.82);
+      gap: 8px;
+      padding: calc(12px + env(safe-area-inset-top, 0px)) 14px 12px;
+      background: rgba(9, 12, 18, 0.85);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
@@ -83,24 +85,40 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 1.12rem;
+      font-size: 1.06rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       white-space: nowrap;
+      min-width: 0;
+      flex-shrink: 1;
     }
 
-    .brand-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--emerald-bright), var(--indigo-bright));
-      box-shadow: 0 0 12px rgba(52, 211, 153, 0.65);
+    .brand-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .title-full {
+      display: none;
+    }
+
+    .title-short {
+      display: inline;
+    }
+
+    @media (min-width: 440px) {
+      .title-full { display: inline; }
+      .title-short { display: none; }
     }
 
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
     .btn {
@@ -109,21 +127,42 @@
       background: var(--surface-2);
       color: var(--text);
       font-family: inherit;
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      padding: 9px 13px;
+      padding: 8px 11px;
       border-radius: 999px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
       transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
       line-height: 1;
     }
 
     .btn:active {
       transform: scale(0.96);
+    }
+
+    .btn-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .btn-badge.empty {
+      display: none;
     }
 
     .btn-primary {
@@ -148,8 +187,8 @@
     }
 
     .btn-icon {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       padding: 0;
       border-radius: 50%;
     }
@@ -158,12 +197,12 @@
       width: 100%;
       padding: 13px 16px;
       border-radius: 14px;
-      font-size: 0.96rem;
+      font-size: 0.95rem;
     }
 
     .icon {
-      width: 18px;
-      height: 18px;
+      width: 17px;
+      height: 17px;
       stroke: currentColor;
       fill: none;
       stroke-width: 2;
@@ -175,7 +214,7 @@
     /* Main Layout */
     .tab-view {
       display: none;
-      padding: 16px;
+      padding: 14px;
       flex-direction: column;
       gap: 14px;
       animation: fadeIn 0.2s ease;
@@ -207,7 +246,7 @@
     }
 
     .card-title {
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -460,6 +499,7 @@
       padding: 5px 10px;
       border-radius: 7px;
       cursor: pointer;
+      white-space: nowrap;
       transition: background 0.15s, color 0.15s;
     }
 
@@ -489,16 +529,16 @@
       top: 10px;
       left: 10px;
       pointer-events: none;
-      background: rgba(15, 20, 31, 0.95);
+      background: rgba(13, 18, 29, 0.94);
       border: 1px solid var(--border-strong);
       border-radius: 12px;
-      padding: 9px 12px;
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
-      min-width: 146px;
-      max-width: 220px;
+      padding: 9px 11px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.48);
+      min-width: 158px;
+      max-width: 210px;
       opacity: 0;
-      transform: translateY(4px) scale(0.97);
-      transition: opacity 0.12s ease, transform 0.12s ease;
+      transform: translateY(3px) scale(0.98);
+      transition: opacity 0.1s ease, transform 0.1s ease;
       z-index: 5;
       backdrop-filter: blur(8px);
     }
@@ -508,40 +548,65 @@
       transform: translateY(0) scale(1);
     }
 
-    .tt-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.68rem;
+    .tt-date-top {
+      font-size: 0.72rem;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 3px;
+      color: var(--text-muted);
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .tt-badge.actual { color: var(--indigo-bright); }
-    .tt-badge.projected { color: var(--emerald-bright); }
+    .tt-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
 
-    .tt-weight {
-      font-size: 1.08rem;
+    .tt-row-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.76rem;
+    }
+
+    .tt-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .tt-dot.actual { background: var(--indigo-bright); }
+    .tt-dot.projected { background: var(--emerald-bright); }
+
+    .tt-val {
       font-weight: 800;
       font-variant-numeric: tabular-nums;
       color: var(--text);
-      line-height: 1.2;
+      white-space: nowrap;
     }
 
-    .tt-date {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      margin-top: 2px;
+    .tt-val.muted {
+      color: var(--text-dim);
+      font-weight: 600;
     }
 
     .tt-delta {
-      font-size: 0.73rem;
-      font-weight: 600;
-      margin-top: 4px;
-      padding-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-top: 6px;
+      padding-top: 5px;
       border-top: 1px solid var(--border);
+      font-variant-numeric: tabular-nums;
     }
 
     .chart-hint {
@@ -551,7 +616,7 @@
       margin-top: 8px;
     }
 
-    /* Recent Weights Preview */
+    /* Logs */
     .log-list {
       display: flex;
       flex-direction: column;
@@ -844,7 +909,7 @@
       left: 0;
       right: 0;
       z-index: 40;
-      background: rgba(13, 17, 26, 0.9);
+      background: rgba(13, 17, 26, 0.92);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
@@ -891,23 +956,30 @@
       color: var(--indigo-bright);
     }
 
-    /* Modals / Bottom Sheets */
+    /* Centered Keyboard-Safe Modals */
     .modal-backdrop {
       position: fixed;
-      inset: 0;
+      top: var(--vvt, 0px);
+      left: 0;
+      right: 0;
+      height: var(--vvh, 100dvh);
       z-index: 60;
-      background: rgba(3, 5, 10, 0.72);
+      background: rgba(3, 5, 10, 0.74);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       display: none;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
-      padding: 0;
+      padding: 16px;
+    }
+
+    .modal-backdrop.modal-top {
+      z-index: 80;
     }
 
     .modal-backdrop.open {
       display: flex;
-      animation: fadeOverlay 0.18s ease;
+      animation: fadeOverlay 0.16s ease;
     }
 
     @keyframes fadeOverlay {
@@ -917,40 +989,20 @@
 
     .modal-sheet {
       width: 100%;
-      max-width: 540px;
-      max-height: 90dvh;
+      max-width: 460px;
+      max-height: calc(var(--vvh, 100dvh) - 32px);
       overflow-y: auto;
       background: var(--surface);
-      border-top: 1px solid var(--border-strong);
-      border-radius: 24px 24px 0 0;
-      padding: 18px 18px calc(22px + env(safe-area-inset-bottom, 0px));
-      box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.55);
-      animation: slideUp 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+      border: 1px solid var(--border-strong);
+      border-radius: 22px;
+      padding: 18px 18px 20px;
+      box-shadow: 0 20px 54px rgba(0, 0, 0, 0.6);
+      animation: popIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    @media (min-width: 600px) {
-      .modal-backdrop {
-        align-items: center;
-        padding: 18px;
-      }
-      .modal-sheet {
-        border: 1px solid var(--border-strong);
-        border-radius: 24px;
-        padding-bottom: 22px;
-      }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(28px); opacity: 0.7; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .sheet-handle {
-      width: 38px;
-      height: 4px;
-      border-radius: 999px;
-      background: var(--surface-3);
-      margin: 0 auto 14px;
+    @keyframes popIn {
+      from { transform: scale(0.95) translateY(8px); opacity: 0.6; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
     }
 
     .sheet-header {
@@ -958,18 +1010,18 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .sheet-title {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       font-weight: 800;
       letter-spacing: -0.02em;
     }
 
-    /* Form Styling (16px font prevents mobile auto-zoom) */
+    /* Form Styling (16px prevents mobile auto-zoom) */
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 13px;
     }
 
     .form-row {
@@ -1054,7 +1106,7 @@
     .onboarding-wrap {
       position: fixed;
       inset: 0;
-      z-index: 80;
+      z-index: 95;
       background: var(--bg);
       background-image:
         radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.16), transparent 50%),
@@ -1098,7 +1150,7 @@
       top: calc(14px + env(safe-area-inset-top, 0px));
       left: 50%;
       transform: translate(-50%, -20px);
-      z-index: 100;
+      z-index: 120;
       background: var(--surface-3);
       border: 1px solid var(--border-strong);
       color: var(--text);
@@ -1119,7 +1171,7 @@
     }
 
     .history-scroll {
-      max-height: 62dvh;
+      max-height: calc(var(--vvh, 100dvh) - 150px);
       overflow-y: auto;
       padding-right: 2px;
     }
@@ -1138,8 +1190,13 @@
   <!-- First-Time Setup / Onboarding -->
   <div id="onboardingView" class="onboarding-wrap" aria-modal="true" role="dialog">
     <div class="onboarding-card">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <span class="brand-dot" style="width:11px;height:11px;"></span>
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
+        <svg class="brand-icon" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" rx="16" fill="#161e30"/>
+          <line x1="11" y1="16" x2="53" y2="48" stroke="#34d399" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="5 5"/>
+          <path d="M11 18 C19 19, 24 30, 31 28 C38 26, 43 40, 53 43" fill="none" stroke="#818cf8" stroke-width="4.5" stroke-linecap="round"/>
+          <circle cx="53" cy="43" r="4.5" fill="#34d399"/>
+        </svg>
         <span style="font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--emerald-bright);">Flux Setup</span>
       </div>
       <h1 class="onboarding-title">Set up your goal</h1>
@@ -1186,13 +1243,23 @@
   <div class="app-shell">
     <header class="top-bar">
       <div class="top-bar-title">
-        <span class="brand-dot"></span>
-        <span id="headerTitle">Weight Tracker</span>
+        <svg class="brand-icon" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" rx="16" fill="#161e30"/>
+          <rect x="1.5" y="1.5" width="61" height="61" rx="14.5" fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="2"/>
+          <line x1="11" y1="16" x2="53" y2="48" stroke="#34d399" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="5 5"/>
+          <path d="M11 18 C19 19, 24 30, 31 28 C38 26, 43 40, 53 43" fill="none" stroke="#818cf8" stroke-width="4.5" stroke-linecap="round"/>
+          <circle cx="53" cy="43" r="4.5" fill="#34d399"/>
+        </svg>
+        <span id="headerTitle">
+          <span class="title-short">Weight</span>
+          <span class="title-full">Weight Tracker</span>
+        </span>
       </div>
       <div class="top-actions">
         <button id="openHistoryBtn" class="btn" title="All logged weights" aria-label="Weight history">
           <svg class="icon" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-          <span id="historyBtnCount">Logs</span>
+          <span>Logs</span>
+          <span id="historyBadge" class="btn-badge empty">0</span>
         </button>
         <button id="openLogWeightBtn" class="btn btn-primary" aria-label="Log weight">
           <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
@@ -1274,7 +1341,7 @@
           <canvas id="weightChart"></canvas>
           <div id="chartTooltip" class="chart-tooltip"></div>
         </div>
-        <div class="chart-hint">Tap or drag across graph to view weight &amp; date</div>
+        <div class="chart-hint">Drag across graph to compare actual &amp; projected weights</div>
       </section>
 
       <!-- Recent Logs Quick Preview -->
@@ -1367,10 +1434,28 @@
     </div>
   </nav>
 
-  <!-- MODAL: Log / Edit Weight -->
-  <div id="weightModal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <!-- MODAL: All Weight Logs Menu (z-index: 60) -->
+  <div id="historyModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-sheet">
-      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div>
+          <div class="sheet-title">Weight History</div>
+          <div id="historyModalSub" style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">0 entries logged</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button type="button" id="historyAddWeightBtn" class="btn btn-primary" style="padding:8px 12px;font-size:0.82rem;">+ Add</button>
+          <button type="button" class="btn btn-icon" data-close="historyModal" aria-label="Close">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="fullHistoryList" class="log-list history-scroll"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: Log / Edit Weight (z-index: 80 — always cleanly above Weight History) -->
+  <div id="weightModal" class="modal-backdrop modal-top" role="dialog" aria-modal="true">
+    <div class="modal-sheet">
       <div class="sheet-header">
         <div id="weightModalTitle" class="sheet-title">Log Weight</div>
         <button type="button" class="btn btn-icon" data-close="weightModal" aria-label="Close">
@@ -1398,30 +1483,9 @@
     </div>
   </div>
 
-  <!-- MODAL: All Weight Logs Menu -->
-  <div id="historyModal" class="modal-backdrop" role="dialog" aria-modal="true">
-    <div class="modal-sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <div>
-          <div class="sheet-title">Weight History</div>
-          <div id="historyModalSub" style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">0 entries logged</div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <button type="button" id="historyAddWeightBtn" class="btn btn-primary" style="padding:8px 12px;font-size:0.82rem;">+ Add</button>
-          <button type="button" class="btn btn-icon" data-close="historyModal" aria-label="Close">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-          </button>
-        </div>
-      </div>
-      <div id="fullHistoryList" class="log-list history-scroll"></div>
-    </div>
-  </div>
-
   <!-- MODAL: Add Calorie Entry -->
-  <div id="calorieModal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <div id="calorieModal" class="modal-backdrop modal-top" role="dialog" aria-modal="true">
     <div class="modal-sheet">
-      <div class="sheet-handle"></div>
       <div class="sheet-header">
         <div>
           <div class="sheet-title">Add Calories</div>
@@ -1452,9 +1516,8 @@
   </div>
 
   <!-- MODAL: Settings -->
-  <div id="settingsModal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <div id="settingsModal" class="modal-backdrop modal-top" role="dialog" aria-modal="true">
     <div class="modal-sheet">
-      <div class="sheet-handle"></div>
       <div class="sheet-header">
         <div class="sheet-title">Settings</div>
         <button type="button" class="btn btn-icon" data-close="settingsModal" aria-label="Close">
@@ -1532,9 +1595,23 @@
       let activeTab = 'weight';
       let chartRange = 'goal'; // 'goal' | 'todate'
       let selectedCalorieDate = getLocalDateKey(new Date());
-      let inspectedPoint = null;
+      let inspectedState = null; // { x, timestamp, projected: { y, weight } | null, actual: { y, weight, exactLog, timestamp } | null }
       let chartLayout = null;
       let rafId = null;
+
+      // Keep modals centered in visible viewport above mobile keyboards
+      function syncVisualViewport() {
+        const vv = window.visualViewport;
+        if (vv) {
+          document.documentElement.style.setProperty('--vvh', `${vv.height}px`);
+          document.documentElement.style.setProperty('--vvt', `${vv.offsetTop}px`);
+        }
+      }
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', syncVisualViewport);
+        window.visualViewport.addEventListener('scroll', syncVisualViewport);
+        syncVisualViewport();
+      }
 
       // DOM References
       const el = (id) => document.getElementById(id);
@@ -1543,7 +1620,7 @@
       const headerTitle = el('headerTitle');
       const openHistoryBtn = el('openHistoryBtn');
       const openLogWeightBtn = el('openLogWeightBtn');
-      const historyBtnCount = el('historyBtnCount');
+      const historyBadge = el('historyBadge');
       const addCalorieFab = el('addCalorieFab');
 
       // Weight Tab DOM
@@ -1758,6 +1835,7 @@
 
       // Modals
       function openModal(id) {
+        syncVisualViewport();
         const modal = el(id);
         if (modal) modal.classList.add('open');
       }
@@ -1787,14 +1865,14 @@
         el('caloriesTab').classList.toggle('active', tab === 'calories');
 
         if (tab === 'weight') {
-          headerTitle.textContent = 'Weight Tracker';
+          headerTitle.innerHTML = `<span class="title-short">Weight</span><span class="title-full">Weight Tracker</span>`;
           openHistoryBtn.style.display = 'inline-flex';
           openLogWeightBtn.style.display = 'inline-flex';
           addCalorieFab.classList.remove('visible');
           renderWeightTab();
           requestAnimationFrame(() => drawChart());
         } else {
-          headerTitle.textContent = 'Calorie Tracker';
+          headerTitle.innerHTML = `<span class="title-short">Calories</span><span class="title-full">Calorie Tracker</span>`;
           openHistoryBtn.style.display = 'none';
           openLogWeightBtn.style.display = 'none';
           addCalorieFab.classList.add('visible');
@@ -1812,7 +1890,8 @@
         deficitWarn.classList.toggle('show', state.settings.configured && !m.valid);
 
         const count = state.weights.length;
-        historyBtnCount.textContent = count > 0 ? `Logs (${count})` : 'Logs';
+        historyBadge.textContent = count;
+        historyBadge.classList.toggle('empty', count === 0);
 
         if (m.valid) {
           dayCounterText.innerHTML = `Day ${m.currentDay} <span class="muted">of ${m.totalDaysDisplay}</span>`;
@@ -1854,8 +1933,8 @@
         }
         const fixed8 = m.fatBurned.toFixed(8);
         const dotIdx = fixed8.indexOf('.');
-        burnMain.textContent = fixed8.slice(0, dotIdx + 5); // X.XXXX
-        burnMicro.textContent = fixed8.slice(dotIdx + 5);    // XXXX (updates every frame)
+        burnMain.textContent = fixed8.slice(0, dotIdx + 5);
+        burnMicro.textContent = fixed8.slice(dotIdx + 5);
         burnSubText.textContent = `${m.deficitKcalBurned.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kcal cumulative deficit • -${m.dailyDeficit} kcal/day`;
         statProjected.textContent = m.projectedNow.toFixed(2);
       }
@@ -1944,7 +2023,7 @@
             if (!confirm(`Delete ${entry.weight.toFixed(1)} lbs logged on ${formatDateTime(entry.timestamp)}?`)) return;
             state.weights = state.weights.filter((w) => w.id !== id);
             saveState();
-            inspectedPoint = null;
+            inspectedState = null;
             hideTooltip();
             renderWeightTab();
             if (el('historyModal').classList.contains('open')) {
@@ -1978,10 +2057,7 @@
       }
 
       openLogWeightBtn.addEventListener('click', openNewWeightModal);
-      el('historyAddWeightBtn').addEventListener('click', () => {
-        closeModal('historyModal');
-        openNewWeightModal();
-      });
+      el('historyAddWeightBtn').addEventListener('click', openNewWeightModal);
 
       el('setNowBtn').addEventListener('click', () => {
         el('weightDateTimeInput').value = toDateTimeLocalString(new Date());
@@ -2014,7 +2090,7 @@
         }
         saveState();
         closeModal('weightModal');
-        inspectedPoint = null;
+        inspectedState = null;
         hideTooltip();
         renderWeightTab();
         if (el('historyModal').classList.contains('open')) {
@@ -2037,20 +2113,24 @@
         btn.addEventListener('click', () => {
           chartRange = btn.dataset.range;
           document.querySelectorAll('.segmented button').forEach((b) => b.classList.toggle('active', b === btn));
-          inspectedPoint = null;
+          inspectedState = null;
           hideTooltip();
           drawChart();
         });
       });
 
-      function drawMonotoneCurve(ctx, pts) {
-        if (pts.length === 0) return;
-        ctx.beginPath();
-        ctx.moveTo(pts[0].x, pts[0].y);
-        if (pts.length === 1) return;
+      function computeMonotoneSegments(pts) {
+        const segments = [];
+        if (pts.length < 2) return segments;
         if (pts.length === 2) {
-          ctx.lineTo(pts[1].x, pts[1].y);
-          return;
+          const dy = pts[1].y - pts[0].y;
+          segments.push({
+            x0: pts[0].x, y0: pts[0].y,
+            cp1y: pts[0].y + dy / 3,
+            cp2y: pts[1].y - dy / 3,
+            x1: pts[1].x, y1: pts[1].y
+          });
+          return segments;
         }
 
         const n = pts.length;
@@ -2094,14 +2174,32 @@
 
         for (let i = 0; i < n - 1; i++) {
           const segDx = dx[i];
+          segments.push({
+            x0: pts[i].x,
+            y0: pts[i].y,
+            cp1y: pts[i].y + tangents[i] * segDx / 3,
+            cp2y: pts[i + 1].y - tangents[i + 1] * segDx / 3,
+            x1: pts[i + 1].x,
+            y1: pts[i + 1].y
+          });
+        }
+        return segments;
+      }
+
+      function traceMonotonePath(ctx, pts, segments) {
+        if (pts.length === 0) return;
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (const seg of segments) {
+          const segDx = seg.x1 - seg.x0;
           if (Math.abs(segDx) <= 0.001) {
-            ctx.lineTo(pts[i + 1].x, pts[i + 1].y);
+            ctx.lineTo(seg.x1, seg.y1);
           } else {
-            const cp1x = pts[i].x + segDx / 3;
-            const cp1y = pts[i].y + tangents[i] * segDx / 3;
-            const cp2x = pts[i + 1].x - segDx / 3;
-            const cp2y = pts[i + 1].y - tangents[i + 1] * segDx / 3;
-            ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pts[i + 1].x, pts[i + 1].y);
+            ctx.bezierCurveTo(
+              seg.x0 + segDx / 3, seg.cp1y,
+              seg.x1 - segDx / 3, seg.cp2y,
+              seg.x1, seg.y1
+            );
           }
         }
       }
@@ -2182,6 +2280,7 @@
         const xToPx = (ts) => pad.left + ((ts - xMin) / (xMax - xMin)) * plotW;
         const yToPx = (wt) => pad.top + ((yMax - wt) / (yMax - yMin)) * plotH;
         const pxToTs = (px) => xMin + ((px - pad.left) / plotW) * (xMax - xMin);
+        const pxToWt = (py) => yMax - ((py - pad.top) / plotH) * (yMax - yMin);
 
         // Horizontal Gridlines + Y Labels
         const ySteps = 4;
@@ -2206,7 +2305,6 @@
         // X Axis Labels
         const spanDays = (xMax - xMin) / MS_PER_DAY;
         const xTicks = 4;
-        ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
         ctx.fillStyle = '#6f809c';
 
@@ -2219,7 +2317,7 @@
           ctx.fillText(formatAxisDate(ts, spanDays), x, h - pad.bottom + 10);
         }
 
-        // Subtle Goal Weight Horizontal Reference (if inside view)
+        // Subtle Goal Weight Horizontal Reference
         if (state.settings.goalWeight >= yMin && state.settings.goalWeight <= yMax) {
           const gy = yToPx(state.settings.goalWeight);
           ctx.save();
@@ -2240,7 +2338,6 @@
           const px2 = xToPx(projEndTs);
           const py2 = yToPx(projectedWeightAt(projEndTs));
 
-          // Soft emerald area under projected diagonal
           const projGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + plotH);
           projGrad.addColorStop(0, 'rgba(16, 185, 129, 0.14)');
           projGrad.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
@@ -2253,7 +2350,6 @@
           ctx.closePath();
           ctx.fill();
 
-          // Dashed diagonal projected line
           ctx.save();
           ctx.strokeStyle = '#34d399';
           ctx.lineWidth = 2.2;
@@ -2285,20 +2381,20 @@
           y: yToPx(p.weight)
         }));
 
+        const actualSegments = computeMonotoneSegments(screenActualPts);
+
         if (screenActualPts.length >= 2) {
-          // Subtle indigo glow fill under actual curve
           const actGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + plotH);
           actGrad.addColorStop(0, 'rgba(129, 140, 248, 0.24)');
           actGrad.addColorStop(1, 'rgba(129, 140, 248, 0.0)');
-          drawMonotoneCurve(ctx, screenActualPts);
+          traceMonotonePath(ctx, screenActualPts, actualSegments);
           ctx.lineTo(screenActualPts[screenActualPts.length - 1].x, pad.top + plotH);
           ctx.lineTo(screenActualPts[0].x, pad.top + plotH);
           ctx.closePath();
           ctx.fillStyle = actGrad;
           ctx.fill();
 
-          // Solid actual weight stroke
-          drawMonotoneCurve(ctx, screenActualPts);
+          traceMonotonePath(ctx, screenActualPts, actualSegments);
           ctx.strokeStyle = '#818cf8';
           ctx.lineWidth = 2.6;
           ctx.lineJoin = 'round';
@@ -2306,7 +2402,6 @@
           ctx.stroke();
         }
 
-        // Actual Weight Dots
         const dotRadius = screenActualPts.length > 35 ? 3 : 4.2;
         screenActualPts.forEach((pt) => {
           ctx.beginPath();
@@ -2318,24 +2413,21 @@
           ctx.stroke();
         });
 
-        // Save layout for pointer interactions
         chartLayout = {
           w, h, pad, plotW, plotH,
-          xMin, xMax, yMin, yMax,
+          xMin, xMax, yMin, yMax, spanDays,
           projStartTs, projEndTs,
           validProjection: m.valid,
-          xToPx, yToPx, pxToTs,
-          screenActualPts
+          xToPx, yToPx, pxToTs, pxToWt,
+          screenActualPts, actualSegments
         };
 
-        // Highlight currently inspected point
-        if (inspectedPoint) {
-          const ix = inspectedPoint.x;
-          const iy = inspectedPoint.y;
+        // Highlight BOTH Projected & Actual markers along the smooth crosshair
+        if (inspectedState) {
+          const ix = inspectedState.x;
 
-          // Vertical crosshair
           ctx.save();
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
           ctx.lineWidth = 1;
           ctx.setLineDash([3, 3]);
           ctx.beginPath();
@@ -2344,23 +2436,35 @@
           ctx.stroke();
           ctx.restore();
 
-          // Outer glow ring
-          const accent = inspectedPoint.type === 'actual' ? '#818cf8' : '#34d399';
-          ctx.beginPath();
-          ctx.arc(ix, iy, 9, 0, Math.PI * 2);
-          ctx.fillStyle = inspectedPoint.type === 'actual'
-            ? 'rgba(129, 140, 248, 0.28)'
-            : 'rgba(52, 211, 153, 0.28)';
-          ctx.fill();
+          if (inspectedState.projected) {
+            const py = inspectedState.projected.y;
+            ctx.beginPath();
+            ctx.arc(ix, py, 8.5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(52, 211, 153, 0.25)';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(ix, py, 4.4, 0, Math.PI * 2);
+            ctx.fillStyle = '#34d399';
+            ctx.fill();
+            ctx.lineWidth = 1.8;
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+          }
 
-          // Core highlighted dot
-          ctx.beginPath();
-          ctx.arc(ix, iy, 4.8, 0, Math.PI * 2);
-          ctx.fillStyle = accent;
-          ctx.fill();
-          ctx.lineWidth = 2;
-          ctx.strokeStyle = '#ffffff';
-          ctx.stroke();
+          if (inspectedState.actual) {
+            const ay = inspectedState.actual.y;
+            ctx.beginPath();
+            ctx.arc(ix, ay, 8.5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(129, 140, 248, 0.28)';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(ix, ay, 4.6, 0, Math.PI * 2);
+            ctx.fillStyle = '#818cf8';
+            ctx.fill();
+            ctx.lineWidth = 1.8;
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+          }
         }
       }
 
@@ -2368,96 +2472,151 @@
         chartTooltip.classList.remove('visible');
       }
 
-      function inspectChartAt(clientX, clientY) {
+      // Smooth scrub without aggressive snapping — shows BOTH Actual & Projected
+      function inspectChartAt(clientX) {
         if (!chartLayout) return;
         const rect = weightChart.getBoundingClientRect();
-        const px = clientX - rect.left;
-        const py = clientY - rect.top;
+        const rawX = clientX - rect.left;
         const L = chartLayout;
 
-        if (px < L.pad.left - 14 || px > L.w - L.pad.right + 14) return;
-        const clampedX = Math.max(L.pad.left, Math.min(L.w - L.pad.right, px));
+        if (rawX < L.pad.left - 16 || rawX > L.w - L.pad.right + 16) return;
+        let x = Math.max(L.pad.left, Math.min(L.w - L.pad.right, rawX));
+        let ts = L.pxToTs(x);
 
-        // 1. Prioritize nearest Actual Weight data point within comfortable touch radius
-        let bestActual = null;
-        let bestScore = Infinity;
-
+        // Very gentle micro-snap (<= 5px) only when directly on top of a logged dot
+        let exactPt = null;
+        let minDx = Infinity;
         for (const pt of L.screenActualPts) {
-          const dx = Math.abs(pt.x - clampedX);
-          const dy = Math.abs(pt.y - py);
-          const dist = Math.hypot(dx, dy);
-          if (dx <= 26 || dist <= 34) {
-            const score = dx + dy * 0.25;
-            if (score < bestScore) {
-              bestScore = score;
-              bestActual = pt;
+          const dx = Math.abs(pt.x - x);
+          if (dx <= 5 && dx < minDx) {
+            minDx = dx;
+            exactPt = pt;
+          }
+        }
+
+        if (exactPt) {
+          x = exactPt.x;
+          ts = exactPt.timestamp;
+        }
+
+        // Compute Projected at this exact x / timestamp
+        let projected = null;
+        if (L.validProjection && ts >= L.projStartTs - 1000 && ts <= L.projEndTs + 1000) {
+          const clampedTs = Math.max(L.projStartTs, Math.min(L.projEndTs, ts));
+          const wt = projectedWeightAt(clampedTs);
+          projected = { y: L.yToPx(wt), weight: wt };
+        }
+
+        // Compute Actual at this exact x (exact logged dot OR smooth interpolated curve)
+        let actual = null;
+        if (exactPt) {
+          actual = {
+            y: exactPt.y,
+            weight: exactPt.weight,
+            exactLog: true,
+            timestamp: exactPt.timestamp
+          };
+        } else if (L.screenActualPts.length === 1) {
+          const onlyPt = L.screenActualPts[0];
+          if (Math.abs(onlyPt.x - x) <= 8) {
+            actual = {
+              y: onlyPt.y,
+              weight: onlyPt.weight,
+              exactLog: true,
+              timestamp: onlyPt.timestamp
+            };
+          }
+        } else if (L.actualSegments.length > 0) {
+          const firstX = L.screenActualPts[0].x;
+          const lastX = L.screenActualPts[L.screenActualPts.length - 1].x;
+          if (x >= firstX && x <= lastX) {
+            for (const seg of L.actualSegments) {
+              if (x >= seg.x0 && x <= seg.x1) {
+                const segDx = seg.x1 - seg.x0;
+                const t = segDx > 0.001 ? (x - seg.x0) / segDx : 0;
+                const mt = 1 - t;
+                const y = (mt * mt * mt * seg.y0)
+                  + (3 * mt * mt * t * seg.cp1y)
+                  + (3 * mt * t * t * seg.cp2y)
+                  + (t * t * t * seg.y1);
+                actual = {
+                  y,
+                  weight: L.pxToWt(y),
+                  exactLog: false,
+                  timestamp: ts
+                };
+                break;
+              }
             }
           }
         }
 
-        if (bestActual) {
-          inspectedPoint = {
-            type: 'actual',
-            x: bestActual.x,
-            y: bestActual.y,
-            weight: bestActual.weight,
-            timestamp: bestActual.timestamp
-          };
-        } else if (L.validProjection) {
-          // 2. Otherwise inspect the Projected diagonal curve at this date
-          let ts = L.pxToTs(clampedX);
-          ts = Math.max(L.projStartTs, Math.min(L.projEndTs, ts));
-          const wt = projectedWeightAt(ts);
-          inspectedPoint = {
-            type: 'projected',
-            x: L.xToPx(ts),
-            y: L.yToPx(wt),
-            weight: wt,
-            timestamp: ts
-          };
-        } else {
-          return;
-        }
+        if (!projected && !actual) return;
 
+        inspectedState = { x, timestamp: ts, projected, actual };
         drawChart();
-        showTooltipFor(inspectedPoint);
+        showTooltipFor(inspectedState);
       }
 
-      function showTooltipFor(pt) {
-        const isActual = pt.type === 'actual';
-        let deltaLine = '';
+      function showTooltipFor(st) {
+        const L = chartLayout;
+        const dateHeader = (st.actual && st.actual.exactLog) || (L && L.spanDays <= 3)
+          ? formatDateTime(st.timestamp)
+          : formatShortDate(st.timestamp);
 
-        if (isActual && chartLayout && chartLayout.validProjection && pt.timestamp >= state.settings.startTimestamp) {
-          const proj = projectedWeightAt(pt.timestamp);
-          const diff = pt.weight - proj;
+        const actualLabel = st.actual
+          ? (st.actual.exactLog ? 'Actual (log)' : 'Actual')
+          : 'Actual';
+        const actualValHtml = st.actual
+          ? `<span class="tt-val">${st.actual.weight.toFixed(1)} lbs</span>`
+          : `<span class="tt-val muted">—</span>`;
+
+        const projValHtml = st.projected
+          ? `<span class="tt-val">${st.projected.weight.toFixed(1)} lbs</span>`
+          : `<span class="tt-val muted">—</span>`;
+
+        let deltaHtml = '';
+        if (st.actual && st.projected) {
+          const diff = st.actual.weight - st.projected.weight;
           const color = diff <= 0 ? 'var(--emerald-bright)' : 'var(--rose)';
           const sign = diff > 0 ? '+' : '';
-          const label = diff <= 0 ? 'ahead of plan' : 'above plan';
-          deltaLine = `<div class="tt-delta" style="color:${color};">${sign}${diff.toFixed(1)} lbs ${label}</div>`;
+          const note = diff <= 0 ? 'ahead of plan' : 'above plan';
+          deltaHtml = `<div class="tt-delta" style="color:${color};">${sign}${diff.toFixed(1)} lbs ${note}</div>`;
         }
 
         chartTooltip.innerHTML = `
-          <div class="tt-badge ${isActual ? 'actual' : 'projected'}">
-            ${isActual ? '● Actual Weight' : '◌ Projected'}
+          <div class="tt-date-top">${dateHeader}</div>
+          <div class="tt-row">
+            <span class="tt-row-label"><span class="tt-dot actual"></span>${actualLabel}</span>
+            ${actualValHtml}
           </div>
-          <div class="tt-weight">${pt.weight.toFixed(1)} lbs</div>
-          <div class="tt-date">${isActual ? formatDateTime(pt.timestamp) : formatShortDate(pt.timestamp)}</div>
-          ${deltaLine}
+          <div class="tt-row">
+            <span class="tt-row-label"><span class="tt-dot projected"></span>Projected</span>
+            ${projValHtml}
+          </div>
+          ${deltaHtml}
         `;
 
         chartTooltip.classList.add('visible');
 
         const wrapW = chartWrap.clientWidth;
-        const ttW = chartTooltip.offsetWidth || 160;
-        const ttH = chartTooltip.offsetHeight || 72;
+        const ttW = chartTooltip.offsetWidth || 168;
+        const ttH = chartTooltip.offsetHeight || 88;
 
-        let left = pt.x - ttW / 2;
-        left = Math.max(6, Math.min(wrapW - ttW - 6, left));
-
-        let top = pt.y - ttH - 14;
-        if (top < 6) {
-          top = Math.min(chartWrap.clientHeight - ttH - 6, pt.y + 16);
+        // Place tooltip on opposite side of crosshair so finger never blocks it
+        let left;
+        if (st.x < wrapW * 0.52) {
+          left = st.x + 14;
+          if (left + ttW > wrapW - 6) left = wrapW - ttW - 6;
+        } else {
+          left = st.x - ttW - 14;
+          if (left < 6) left = 6;
         }
+
+        const refY = st.actual && st.projected
+          ? Math.min(st.actual.y, st.projected.y)
+          : (st.actual ? st.actual.y : st.projected.y);
+        const top = Math.max(8, Math.min(chartWrap.clientHeight - ttH - 34, refY - ttH * 0.35));
 
         chartTooltip.style.left = `${left}px`;
         chartTooltip.style.top = `${top}px`;
@@ -2466,12 +2625,12 @@
       let isPointerDown = false;
       weightChart.addEventListener('pointerdown', (e) => {
         isPointerDown = true;
-        inspectChartAt(e.clientX, e.clientY);
+        inspectChartAt(e.clientX);
       });
 
       weightChart.addEventListener('pointermove', (e) => {
         if (e.pointerType === 'mouse' || isPointerDown) {
-          inspectChartAt(e.clientX, e.clientY);
+          inspectChartAt(e.clientX);
         }
       });
 
@@ -2485,22 +2644,20 @@
 
       weightChart.addEventListener('pointerleave', (e) => {
         if (e.pointerType === 'mouse') {
-          inspectedPoint = null;
+          inspectedState = null;
           hideTooltip();
           drawChart();
         }
       });
 
-      // Dismiss sticky touch tooltip when tapping outside the chart
       document.addEventListener('pointerdown', (e) => {
-        if (inspectedPoint && !chartWrap.contains(e.target)) {
-          inspectedPoint = null;
+        if (inspectedState && !chartWrap.contains(e.target)) {
+          inspectedState = null;
           hideTooltip();
           drawChart();
         }
       });
 
-      // Redraw chart responsively
       if (typeof ResizeObserver !== 'undefined') {
         new ResizeObserver(() => drawChart()).observe(chartWrap);
       } else {
@@ -2520,7 +2677,6 @@
         const yesterdayKey = shiftDateKey(todayKey, -1);
         const tomorrowKey = shiftDateKey(todayKey, 1);
         const dt = parseLocalDateKey(dateKey);
-
         const fullDate = dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 
         if (dateKey === todayKey) return { main: 'Today', sub: fullDate, isToday: true };
@@ -2635,7 +2791,10 @@
         el('calAmountInput').value = '';
         el('calNameInput').value = '';
         openModal('calorieModal');
-        setTimeout(() => el('calAmountInput').focus(), 140);
+        setTimeout(() => {
+          el('calAmountInput').focus();
+          syncVisualViewport();
+        }, 120);
       });
 
       el('calorieForm').addEventListener('submit', (e) => {
@@ -2701,7 +2860,6 @@
           startTimestamp: startTs
         };
 
-        // Seed initial weigh-in at start date if no weights exist yet
         if (state.weights.length === 0) {
           state.weights.push({
             id: uid(),
@@ -2766,7 +2924,7 @@
 
         saveState();
         closeModal('settingsModal');
-        inspectedPoint = null;
+        inspectedState = null;
         hideTooltip();
         renderWeightTab();
         renderCaloriesTab();
