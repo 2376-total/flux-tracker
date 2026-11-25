@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
   <meta name="theme-color" id="metaThemeColor" content="#090c12" />
   <meta name="color-scheme" id="metaColorScheme" content="dark" />
   <title>Flux — Weight &amp; Calorie Tracker</title>
@@ -15,7 +15,7 @@
       --surface-2: #192030;
       --surface-3: #222b3e;
       --border: rgba(255, 255, 255, 0.08);
-      --border-strong: rgba(255, 255, 255, 0.14);
+      --border-strong: rgba(255, 255, 255, 0.15);
       --text: #f1f5f9;
       --text-muted: #8b9bb4;
       --text-dim: #5e6d85;
@@ -45,15 +45,12 @@
       --icon-bg: #192030;
       --icon-axis: #cbd5e1;
       --radius: 20px;
-      --nav-height: 68px;
+      --nav-height: 62px;
       --vvh: 100dvh;
       --vvt: 0px;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     html, body {
       margin: 0;
@@ -68,7 +65,7 @@
       color-scheme: var(--color-scheme);
     }
 
-    /* Fixed 3-part viewport shell — locks bottom nav cleanly on Android Firefox */
+    /* Locked viewport shell — bottom tabs stay flush & fixed with zero bottom gap */
     .app-viewport {
       position: fixed;
       inset: 0;
@@ -83,7 +80,6 @@
         radial-gradient(circle at 90% 15%, var(--bg-glow-2), transparent 40%);
     }
 
-    /* Top Header */
     .top-bar {
       flex-shrink: 0;
       z-index: 30;
@@ -91,7 +87,6 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
-      padding-top: env(safe-area-inset-top, 0px);
     }
 
     .top-bar-inner {
@@ -116,14 +111,7 @@
       flex-shrink: 1;
     }
 
-    .brand-icon {
-      width: 24px;
-      height: 24px;
-      flex-shrink: 0;
-      border-radius: 6px;
-      display: block;
-    }
-
+    .brand-icon { width: 24px; height: 24px; flex-shrink: 0; border-radius: 6px; display: block; }
     .brand-icon .bi-bg { fill: var(--icon-bg); }
     .brand-icon .bi-border { stroke: var(--border-strong); }
     .brand-icon .bi-axis { stroke: var(--icon-axis); }
@@ -131,20 +119,13 @@
 
     .title-full { display: none; }
     .title-short { display: inline; }
-
     @media (min-width: 440px) {
       .title-full { display: inline; }
       .title-short { display: none; }
     }
 
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
+    .top-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
-    /* Scrollable Middle Area */
     .app-scroll {
       flex: 1 1 auto;
       min-height: 0;
@@ -154,10 +135,7 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    .app-content-inner {
-      max-width: 540px;
-      margin: 0 auto;
-    }
+    .app-content-inner { max-width: 540px; margin: 0 auto; }
 
     /* Buttons */
     .btn {
@@ -180,10 +158,7 @@
       transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
       line-height: 1;
     }
-
-    .btn:active {
-      transform: scale(0.96);
-    }
+    .btn:active { transform: scale(0.96); }
 
     .btn-badge {
       display: inline-flex;
@@ -199,10 +174,7 @@
       font-weight: 700;
       font-variant-numeric: tabular-nums;
     }
-
-    .btn-badge.empty {
-      display: none;
-    }
+    .btn-badge.empty { display: none; }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accent-2), var(--accent-2-end));
@@ -225,19 +197,8 @@
       color: var(--rose);
     }
 
-    .btn-icon {
-      width: 36px;
-      height: 36px;
-      padding: 0;
-      border-radius: 50%;
-    }
-
-    .btn-block {
-      width: 100%;
-      padding: 13px 16px;
-      border-radius: 14px;
-      font-size: 0.95rem;
-    }
+    .btn-icon { width: 36px; height: 36px; padding: 0; border-radius: 50%; }
+    .btn-block { width: 100%; padding: 13px 16px; border-radius: 14px; font-size: 0.95rem; }
 
     .icon {
       width: 17px;
@@ -253,19 +214,13 @@
     /* Main Tab Views */
     .tab-view {
       display: none;
-      padding: 14px 14px 24px;
+      padding: 14px 14px 22px;
       flex-direction: column;
       gap: 14px;
       animation: fadeIn 0.2s ease;
     }
-
-    #caloriesTab {
-      padding-bottom: 92px;
-    }
-
-    .tab-view.active {
-      display: flex;
-    }
+    #caloriesTab { padding-bottom: 90px; }
+    .tab-view.active { display: flex; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
@@ -296,7 +251,6 @@
       color: var(--text-muted);
     }
 
-    /* Warning Banner */
     .banner-warn {
       background: rgba(245, 158, 11, 0.13);
       border: 1px solid rgba(245, 158, 11, 0.35);
@@ -307,12 +261,9 @@
       line-height: 1.4;
       display: none;
     }
+    .banner-warn.show { display: block; }
 
-    .banner-warn.show {
-      display: block;
-    }
-
-    /* Day Counter & Realtime Hero */
+    /* Hero Card */
     .hero-card {
       position: relative;
       overflow: hidden;
@@ -338,12 +289,7 @@
       font-weight: 800;
       letter-spacing: -0.02em;
     }
-
-    .day-pill span.muted {
-      font-size: 0.92rem;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
+    .day-pill span.muted { font-size: 0.92rem; font-weight: 600; color: var(--text-muted); }
 
     .goal-eta {
       font-size: 0.8rem;
@@ -372,10 +318,7 @@
       transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .burn-block {
-      text-align: center;
-      padding: 6px 0 16px;
-    }
+    .burn-block { text-align: center; padding: 6px 0 16px; }
 
     .burn-label {
       display: inline-flex;
@@ -416,31 +359,10 @@
       flex-wrap: wrap;
     }
 
-    .burn-main {
-      font-size: clamp(2rem, 9vw, 2.75rem);
-      color: var(--text);
-    }
-
-    .burn-micro {
-      font-size: clamp(1.25rem, 5.2vw, 1.65rem);
-      color: var(--accent-1-bright);
-      font-weight: 700;
-      opacity: 0.92;
-    }
-
-    .burn-unit {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-left: 5px;
-    }
-
-    .burn-sub {
-      margin-top: 8px;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      font-variant-numeric: tabular-nums;
-    }
+    .burn-main { font-size: clamp(2rem, 9vw, 2.75rem); color: var(--text); }
+    .burn-micro { font-size: clamp(1.25rem, 5.2vw, 1.65rem); color: var(--accent-1-bright); font-weight: 700; opacity: 0.92; }
+    .burn-unit { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); margin-left: 5px; }
+    .burn-sub { margin-top: 8px; font-size: 0.82rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 
     .stats-grid {
       display: grid;
@@ -457,28 +379,9 @@
       padding: 10px 8px;
       text-align: center;
     }
-
-    .stat-label {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .stat-value {
-      font-size: 1.02rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      color: var(--text);
-    }
-
-    .stat-sub {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      margin-top: 2px;
-    }
+    .stat-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .stat-value { font-size: 1.02rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); }
+    .stat-sub { font-size: 0.7rem; color: var(--text-dim); margin-top: 2px; }
 
     /* Graph Card */
     .chart-controls {
@@ -490,37 +393,12 @@
       margin-bottom: 12px;
     }
 
-    .legend {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .legend-line {
-      width: 14px;
-      height: 3px;
-      border-radius: 2px;
-    }
-
-    .legend-line.actual {
-      background: var(--accent-2-bright);
-    }
-
+    .legend { display: flex; align-items: center; gap: 12px; font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    .legend-line { width: 14px; height: 3px; border-radius: 2px; }
+    .legend-line.actual { background: var(--accent-2-bright); }
     .legend-line.projected {
-      background: repeating-linear-gradient(
-        90deg,
-        var(--accent-1-bright) 0 4px,
-        transparent 4px 7px
-      );
+      background: repeating-linear-gradient(90deg, var(--accent-1-bright) 0 4px, transparent 4px 7px);
     }
 
     .segmented {
@@ -531,7 +409,6 @@
       padding: 3px;
       gap: 2px;
     }
-
     .segmented button {
       border: none;
       background: transparent;
@@ -545,27 +422,10 @@
       white-space: nowrap;
       transition: background 0.15s, color 0.15s;
     }
+    .segmented button.active { background: var(--surface-3); color: var(--text); }
 
-    .segmented button.active {
-      background: var(--surface-3);
-      color: var(--text);
-    }
-
-    .chart-wrap {
-      position: relative;
-      width: 100%;
-      height: 270px;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-
-    canvas#weightChart {
-      width: 100%;
-      height: 100%;
-      display: block;
-      touch-action: pan-y;
-      cursor: crosshair;
-    }
+    .chart-wrap { position: relative; width: 100%; height: 270px; user-select: none; -webkit-user-select: none; }
+    canvas#weightChart { width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: crosshair; }
 
     .chart-tooltip {
       position: absolute;
@@ -585,11 +445,7 @@
       z-index: 5;
       backdrop-filter: blur(8px);
     }
-
-    .chart-tooltip.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+    .chart-tooltip.visible { opacity: 1; transform: translateY(0) scale(1); }
 
     .tt-date-top {
       font-size: 0.72rem;
@@ -602,70 +458,18 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    .tt-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 0.82rem;
-      line-height: 1.5;
-    }
-
-    .tt-row-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 0.76rem;
-    }
-
-    .tt-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
+    .tt-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.82rem; line-height: 1.5; }
+    .tt-row-label { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); font-weight: 600; font-size: 0.76rem; }
+    .tt-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
     .tt-dot.actual { background: var(--accent-2-bright); }
     .tt-dot.projected { background: var(--accent-1-bright); }
-
-    .tt-val {
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      color: var(--text);
-      white-space: nowrap;
-    }
-
-    .tt-val.muted {
-      color: var(--text-dim);
-      font-weight: 600;
-    }
-
-    .tt-delta {
-      font-size: 0.72rem;
-      font-weight: 700;
-      margin-top: 6px;
-      padding-top: 5px;
-      border-top: 1px solid var(--border);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .chart-hint {
-      text-align: center;
-      font-size: 0.74rem;
-      color: var(--text-dim);
-      margin-top: 8px;
-    }
+    .tt-val { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--text); white-space: nowrap; }
+    .tt-val.muted { color: var(--text-dim); font-weight: 600; }
+    .tt-delta { font-size: 0.72rem; font-weight: 700; margin-top: 6px; padding-top: 5px; border-top: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+    .chart-hint { text-align: center; font-size: 0.74rem; color: var(--text-dim); margin-top: 8px; }
 
     /* Logs */
-    .log-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
+    .log-list { display: flex; flex-direction: column; gap: 8px; }
     .log-row {
       display: flex;
       align-items: center;
@@ -676,61 +480,16 @@
       border-radius: 14px;
       padding: 11px 13px;
     }
+    .log-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .log-primary { font-size: 0.98rem; font-weight: 700; font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px; }
+    .log-secondary { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .log-main {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
+    .delta-chip { font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+    .delta-down { background: var(--accent-1-soft); color: var(--accent-1-bright); }
+    .delta-up { background: var(--rose-soft); color: var(--rose); }
+    .delta-flat { background: var(--surface-2); color: var(--text-muted); }
 
-    .log-primary {
-      font-size: 0.98rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .log-secondary {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .delta-chip {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .delta-down {
-      background: var(--accent-1-soft);
-      color: var(--accent-1-bright);
-    }
-
-    .delta-up {
-      background: var(--rose-soft);
-      color: var(--rose);
-    }
-
-    .delta-flat {
-      background: var(--surface-2);
-      color: var(--text-muted);
-    }
-
-    .log-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
+    .log-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
     .mini-btn {
       width: 34px;
       height: 34px;
@@ -743,18 +502,10 @@
       justify-content: center;
       cursor: pointer;
     }
+    .mini-btn:active { transform: scale(0.94); }
+    .mini-btn.del { color: var(--rose); border-color: rgba(251, 113, 133, 0.25); background: var(--rose-soft); }
 
-    .mini-btn:active {
-      transform: scale(0.94);
-    }
-
-    .mini-btn.del {
-      color: var(--rose);
-      border-color: rgba(251, 113, 133, 0.25);
-      background: var(--rose-soft);
-    }
-
-    /* Calorie Tracker Tab */
+    /* Calorie Tab */
     .date-switcher {
       display: flex;
       align-items: center;
@@ -765,7 +516,6 @@
       border-radius: 16px;
       padding: 8px 10px;
     }
-
     .date-center {
       position: relative;
       display: flex;
@@ -777,33 +527,10 @@
       padding: 4px 8px;
       border-radius: 10px;
     }
-
-    .date-center:active {
-      background: var(--surface-2);
-    }
-
-    .date-label-main {
-      font-size: 0.98rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .date-label-sub {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      margin-top: 1px;
-    }
-
-    .hidden-date-input {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
-    }
+    .date-center:active { background: var(--surface-2); }
+    .date-label-main { font-size: 0.98rem; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .date-label-sub { font-size: 0.74rem; color: var(--text-muted); margin-top: 1px; }
+    .hidden-date-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 
     .today-jump {
       display: none;
@@ -814,42 +541,18 @@
       border-color: var(--accent-2-soft);
       color: var(--accent-2-bright);
     }
-
-    .today-jump.show {
-      display: inline-flex;
-    }
+    .today-jump.show { display: inline-flex; }
 
     .cal-ring-card {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 16px;
-      background:
-        radial-gradient(circle at 50% 0%, var(--accent-2-soft), transparent 60%),
-        var(--surface);
+      background: radial-gradient(circle at 50% 0%, var(--accent-2-soft), transparent 60%), var(--surface);
     }
-
-    .ring-wrap {
-      position: relative;
-      width: 184px;
-      height: 184px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .ring-svg {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-    }
-
-    .ring-bg {
-      fill: none;
-      stroke: var(--surface-2);
-      stroke-width: 13;
-    }
-
+    .ring-wrap { position: relative; width: 184px; height: 184px; display: flex; align-items: center; justify-content: center; }
+    .ring-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: var(--surface-2); stroke-width: 13; }
     .ring-fg {
       fill: none;
       stroke: var(--accent-1-bright);
@@ -857,50 +560,13 @@
       stroke-linecap: round;
       transition: stroke-dashoffset 0.45s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.25s ease;
     }
-
-    .ring-fg.over {
-      stroke: var(--rose);
-    }
-
-    .ring-center {
-      position: absolute;
-      text-align: center;
-      padding: 0 12px;
-    }
-
-    .ring-number {
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      font-variant-numeric: tabular-nums;
-      line-height: 1.05;
-    }
-
-    .ring-number.over {
-      color: var(--rose);
-    }
-
-    .ring-caption {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-top: 4px;
-    }
-
-    .cal-stats-grid {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    .cal-entry-kcal {
-      font-size: 0.96rem;
-      font-weight: 800;
-      color: var(--accent-2-bright);
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
+    .ring-fg.over { stroke: var(--rose); }
+    .ring-center { position: absolute; text-align: center; padding: 0 12px; }
+    .ring-number { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1.05; }
+    .ring-number.over { color: var(--rose); }
+    .ring-caption { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
+    .cal-stats-grid { width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .cal-entry-kcal { font-size: 0.96rem; font-weight: 800; color: var(--accent-2-bright); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
     .empty-state {
       text-align: center;
@@ -911,11 +577,11 @@
       border-radius: 16px;
     }
 
-    /* Floating Plus Button (anchored inside .app-viewport above bottom nav) */
+    /* Floating Plus Button */
     .fab {
       position: absolute;
       right: max(18px, calc(50% - 270px + 18px));
-      bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + 16px);
+      bottom: calc(var(--nav-height) + 16px);
       width: 58px;
       height: 58px;
       border-radius: 50%;
@@ -930,22 +596,11 @@
       z-index: 35;
       transition: transform 0.14s ease;
     }
+    .fab.visible { display: inline-flex; }
+    .fab:active { transform: scale(0.92); }
+    .fab .icon { width: 26px; height: 26px; stroke-width: 2.5; }
 
-    .fab.visible {
-      display: inline-flex;
-    }
-
-    .fab:active {
-      transform: scale(0.92);
-    }
-
-    .fab .icon {
-      width: 26px;
-      height: 26px;
-      stroke-width: 2.5;
-    }
-
-    /* Truly Fixed Bottom Navigation (bottom flex child of locked viewport) */
+    /* Flush Bottom Navigation (zero extra bottom inset gap on Firefox Android) */
     .bottom-nav {
       flex-shrink: 0;
       z-index: 40;
@@ -953,7 +608,8 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
-      padding-bottom: env(safe-area-inset-bottom, 0px);
+      padding: 0;
+      margin: 0;
     }
 
     .bottom-nav-inner {
@@ -962,7 +618,7 @@
       height: var(--nav-height);
       display: grid;
       grid-template-columns: 1fr 1fr;
-      padding: 6px 14px;
+      padding: 6px 12px;
       gap: 8px;
     }
 
@@ -982,19 +638,9 @@
       cursor: pointer;
       transition: background 0.15s ease, color 0.15s ease;
     }
-
-    .nav-btn.active {
-      color: var(--text);
-      background: var(--nav-active-bg);
-    }
-
-    .nav-btn.active .icon {
-      color: var(--accent-1-bright);
-    }
-
-    .nav-btn[data-tab="calories"].active .icon {
-      color: var(--accent-2-bright);
-    }
+    .nav-btn.active { color: var(--text); background: var(--nav-active-bg); }
+    .nav-btn.active .icon { color: var(--accent-1-bright); }
+    .nav-btn[data-tab="calories"].active .icon { color: var(--accent-2-bright); }
 
     /* Centered Keyboard-Safe Modals */
     .modal-backdrop {
@@ -1012,20 +658,10 @@
       justify-content: center;
       padding: 16px;
     }
+    .modal-backdrop.modal-top { z-index: 80; }
+    .modal-backdrop.open { display: flex; animation: fadeOverlay 0.16s ease; }
 
-    .modal-backdrop.modal-top {
-      z-index: 80;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-      animation: fadeOverlay 0.16s ease;
-    }
-
-    @keyframes fadeOverlay {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes fadeOverlay { from { opacity: 0; } to { opacity: 1; } }
 
     .modal-sheet {
       width: 100%;
@@ -1053,12 +689,7 @@
       gap: 10px;
       margin-bottom: 14px;
     }
-
-    .sheet-title {
-      font-size: 1.12rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
+    .sheet-title { font-size: 1.12rem; font-weight: 800; letter-spacing: -0.02em; }
 
     /* Settings Tabs */
     .settings-tabs {
@@ -1089,33 +720,14 @@
       white-space: nowrap;
       transition: background 0.15s, color 0.15s, box-shadow 0.15s;
     }
+    .settings-tab-btn .icon { width: 15px; height: 15px; }
+    .settings-tab-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22); }
 
-    .settings-tab-btn .icon {
-      width: 15px;
-      height: 15px;
-    }
+    .settings-pane { display: none; animation: fadeIn 0.16s ease; }
+    .settings-pane.active { display: block; }
 
-    .settings-tab-btn.active {
-      background: var(--surface);
-      color: var(--text);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
-    }
-
-    .settings-pane {
-      display: none;
-      animation: fadeIn 0.16s ease;
-    }
-
-    .settings-pane.active {
-      display: block;
-    }
-
-    /* Theme Picker Grid */
-    .theme-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    /* Theme Grid */
+    .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .theme-card {
       appearance: none;
@@ -1129,17 +741,9 @@
       flex-direction: column;
       gap: 8px;
       transition: transform 0.12s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-      position: relative;
     }
-
-    .theme-card:active {
-      transform: scale(0.97);
-    }
-
-    .theme-card.active {
-      border-color: var(--accent-2-bright);
-      box-shadow: 0 0 0 2px var(--accent-2-soft);
-    }
+    .theme-card:active { transform: scale(0.97); }
+    .theme-card.active { border-color: var(--accent-2-bright); box-shadow: 0 0 0 2px var(--accent-2-soft); }
 
     .theme-preview {
       height: 50px;
@@ -1149,54 +753,15 @@
       flex-direction: column;
       justify-content: space-between;
       border: 1px solid rgba(128, 128, 128, 0.18);
-      position: relative;
       overflow: hidden;
     }
-
-    .theme-preview-bars {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .theme-preview-pill {
-      height: 8px;
-      width: 44%;
-      border-radius: 999px;
-    }
-
-    .theme-preview-dots {
-      display: flex;
-      gap: 4px;
-    }
-
-    .theme-preview-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .theme-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .theme-name {
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.2;
-    }
-
-    .theme-tag {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      margin-top: 1px;
-    }
-
+    .theme-preview-bars { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .theme-preview-pill { height: 8px; width: 44%; border-radius: 999px; }
+    .theme-preview-dots { display: flex; gap: 4px; }
+    .theme-preview-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .theme-meta { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .theme-name { font-size: 0.84rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .theme-tag { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; }
     .theme-check {
       width: 18px;
       height: 18px;
@@ -1208,37 +773,14 @@
       justify-content: center;
       flex-shrink: 0;
     }
+    .theme-card.active .theme-check { display: inline-flex; }
 
-    .theme-card.active .theme-check {
-      display: inline-flex;
-    }
+    .data-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .data-help { font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; margin: 0 0 14px; }
 
-    /* Data Summary in Backup Tab */
-    .data-summary {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .data-help {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.45;
-      margin: 0 0 14px;
-    }
-
-    /* Form Styling (16px prevents mobile auto-zoom) */
-    .form-group {
-      margin-bottom: 13px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
+    /* Forms (16px prevents mobile auto-zoom) */
+    .form-group { margin-bottom: 13px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     label.field-label {
       display: flex;
       align-items: center;
@@ -1263,22 +805,9 @@
       transition: border-color 0.15s, box-shadow 0.15s;
       color-scheme: var(--color-scheme);
     }
-
-    .input:focus {
-      border-color: var(--accent-2-bright);
-      box-shadow: 0 0 0 3px var(--accent-2-soft);
-    }
-
-    .input-inline-row {
-      display: flex;
-      gap: 8px;
-      align-items: stretch;
-    }
-
-    .input-inline-row .input {
-      flex: 1;
-      min-width: 0;
-    }
+    .input:focus { border-color: var(--accent-2-bright); box-shadow: 0 0 0 3px var(--accent-2-soft); }
+    .input-inline-row { display: flex; gap: 8px; align-items: stretch; }
+    .input-inline-row .input { flex: 1; min-width: 0; }
 
     .preview-box {
       background: var(--surface-2);
@@ -1290,29 +819,13 @@
       line-height: 1.45;
       color: var(--text-muted);
     }
+    .preview-box strong { color: var(--accent-1-bright); }
+    .preview-box.warn strong { color: var(--amber); }
 
-    .preview-box strong {
-      color: var(--accent-1-bright);
-    }
+    .form-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .divider { height: 1px; background: var(--border); margin: 18px 0; }
 
-    .preview-box.warn strong {
-      color: var(--amber);
-    }
-
-    .form-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 18px 0;
-    }
-
-    /* Onboarding Overlay */
+    /* Onboarding */
     .onboarding-wrap {
       position: fixed;
       inset: 0;
@@ -1323,13 +836,9 @@
         radial-gradient(circle at 80% 90%, var(--bg-glow-2), transparent 50%);
       overflow-y: auto;
       display: none;
-      padding: 24px 18px calc(32px + env(safe-area-inset-bottom, 0px));
+      padding: 24px 18px 32px;
     }
-
-    .onboarding-wrap.open {
-      display: block;
-    }
-
+    .onboarding-wrap.open { display: block; }
     .onboarding-card {
       max-width: 460px;
       margin: 12px auto 0;
@@ -1339,25 +848,12 @@
       padding: 22px 20px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
     }
+    .onboarding-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 6px; }
+    .onboarding-sub { font-size: 0.9rem; color: var(--text-muted); margin: 0 0 20px; line-height: 1.45; }
 
-    .onboarding-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin: 0 0 6px;
-    }
-
-    .onboarding-sub {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin: 0 0 20px;
-      line-height: 1.45;
-    }
-
-    /* Toast */
     .toast {
       position: fixed;
-      top: calc(14px + env(safe-area-inset-top, 0px));
+      top: 14px;
       left: 50%;
       transform: translate(-50%, -20px);
       z-index: 120;
@@ -1374,35 +870,17 @@
       transition: opacity 0.2s ease, transform 0.2s ease;
       white-space: nowrap;
     }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-    .toast.show {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    .history-scroll {
-      max-height: calc(var(--vvh, 100dvh) - 150px);
-      overflow-y: auto;
-      padding-right: 2px;
-    }
-
-    .backup-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .backup-row .btn {
-      width: 100%;
-      min-width: 0;
-    }
+    .history-scroll { max-height: calc(var(--vvh, 100dvh) - 150px); overflow-y: auto; padding-right: 2px; }
+    .backup-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .backup-row .btn { width: 100%; min-width: 0; }
   </style>
 </head>
 <body>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <!-- First-Time Setup / Onboarding -->
+  <!-- First-Time Setup -->
   <div id="onboardingView" class="onboarding-wrap" aria-modal="true" role="dialog">
     <div class="onboarding-card">
       <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
@@ -1430,7 +908,6 @@
             <input class="input" id="obGoalWeight" type="number" inputmode="decimal" step="0.1" min="40" max="1000" placeholder="e.g. 175" required />
           </div>
         </div>
-
         <div class="form-row">
           <div class="form-group">
             <label class="field-label" for="obMaintenance">Maintenance (kcal)</label>
@@ -1441,16 +918,11 @@
             <input class="input" id="obDailyTarget" type="number" inputmode="numeric" step="1" min="500" max="10000" placeholder="e.g. 2000" required />
           </div>
         </div>
-
         <div class="form-group">
           <label class="field-label" for="obStartDate">Start Date &amp; Time</label>
           <input class="input" id="obStartDate" type="datetime-local" required />
         </div>
-
-        <div id="obPreview" class="preview-box">
-          Enter your numbers above to preview your projected timeline.
-        </div>
-
+        <div id="obPreview" class="preview-box">Enter your numbers above to preview your projected timeline.</div>
         <button type="submit" class="btn btn-emerald btn-block">Start Tracking</button>
       </form>
     </div>
@@ -1494,7 +966,6 @@
       </div>
     </header>
 
-    <!-- Scrollable Content Pane -->
     <div id="appScroll" class="app-scroll">
       <div class="app-content-inner">
         <!-- WEIGHT TRACKER TAB -->
@@ -1505,28 +976,18 @@
 
           <section class="card hero-card">
             <div class="day-row">
-              <div class="day-pill" id="dayCounterText">
-                Day 1 <span class="muted">of —</span>
-              </div>
+              <div class="day-pill" id="dayCounterText">Day 1 <span class="muted">of —</span></div>
               <div class="goal-eta" id="goalEtaBadge">Est. Goal: —</div>
             </div>
-
-            <div class="progress-track">
-              <div id="journeyProgressFill" class="progress-fill"></div>
-            </div>
-
+            <div class="progress-track"><div id="journeyProgressFill" class="progress-fill"></div></div>
             <div class="burn-block">
-              <div class="burn-label">
-                <span class="live-dot"></span>
-                Realtime Fat Burned
-              </div>
+              <div class="burn-label"><span class="live-dot"></span>Realtime Fat Burned</div>
               <div class="burn-counter" aria-live="off">
                 <span id="burnMain" class="burn-main">0.0000</span><span id="burnMicro" class="burn-micro">0000</span>
                 <span class="burn-unit">lbs</span>
               </div>
               <div id="burnSubText" class="burn-sub">0.00 kcal cumulative deficit</div>
             </div>
-
             <div class="stats-grid">
               <div class="stat-box">
                 <div class="stat-label">Latest</div>
@@ -1557,7 +1018,6 @@
                 <button type="button" data-range="todate">To Date</button>
               </div>
             </div>
-
             <div class="chart-wrap" id="chartWrap">
               <canvas id="weightChart"></canvas>
               <div id="chartTooltip" class="chart-tooltip"></div>
@@ -1580,13 +1040,11 @@
             <button id="prevDayBtn" class="btn btn-icon" aria-label="Previous day">
               <svg class="icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
-
             <div class="date-center" title="Pick a date">
               <div id="calDateMain" class="date-label-main">Today</div>
               <div id="calDateSub" class="date-label-sub">—</div>
               <input id="calDatePicker" class="hidden-date-input" type="date" aria-label="Select date" />
             </div>
-
             <button id="nextDayBtn" class="btn btn-icon" aria-label="Next day">
               <svg class="icon" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
             </button>
@@ -1605,7 +1063,6 @@
                 <div id="calRemainingLabel" class="ring-caption">kcal left</div>
               </div>
             </div>
-
             <div class="cal-stats-grid">
               <div class="stat-box">
                 <div class="stat-label">Target</div>
@@ -1636,12 +1093,10 @@
       </div>
     </div>
 
-    <!-- Floating Plus Button for Calorie Tracker -->
     <button id="addCalorieFab" class="fab" aria-label="Add calories" title="Add calories">
       <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
     </button>
 
-    <!-- Truly Fixed Bottom Navigation -->
     <nav class="bottom-nav" aria-label="Main navigation">
       <div class="bottom-nav-inner">
         <button class="nav-btn active" data-tab="weight" type="button">
@@ -1656,7 +1111,7 @@
     </nav>
   </div>
 
-  <!-- MODAL: All Weight Logs Menu (z-index: 60) -->
+  <!-- MODAL: Weight History -->
   <div id="historyModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-sheet">
       <div class="sheet-header">
@@ -1675,7 +1130,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Log / Edit Weight (z-index: 80) -->
+  <!-- MODAL: Log / Edit Weight -->
   <div id="weightModal" class="modal-backdrop modal-top" role="dialog" aria-modal="true">
     <div class="modal-sheet">
       <div class="sheet-header">
@@ -1727,7 +1182,7 @@
             <span>Name (optional)</span>
             <span style="font-weight:500;color:var(--text-dim);">Blank = Quick add</span>
           </label>
-          <input class="input" id="calNameInput" type="text" maxlength="60" placeholder="Quick add" />
+          <input class="input" id="calNameInput" type="text" maxlength="60" placeholder="Quick add" autocapitalize="sentences" />
         </div>
         <div class="form-actions">
           <button type="button" class="btn btn-block" data-close="calorieModal">Cancel</button>
@@ -1737,7 +1192,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Settings (Tabbed: Goal | Themes | Backup) -->
+  <!-- MODAL: Tabbed Settings (Goal | Themes | Backup) -->
   <div id="settingsModal" class="modal-backdrop modal-top" role="dialog" aria-modal="true">
     <div class="modal-sheet">
       <div class="sheet-header">
@@ -1762,7 +1217,6 @@
         </button>
       </div>
 
-      <!-- Tab 1: Weight & Goal Info -->
       <div id="settingsPaneGoal" class="settings-pane active" role="tabpanel">
         <form id="settingsForm">
           <div class="form-row">
@@ -1775,7 +1229,6 @@
               <input class="input" id="setGoalWeight" type="number" inputmode="decimal" step="0.1" min="40" max="1000" required />
             </div>
           </div>
-
           <div class="form-row">
             <div class="form-group">
               <label class="field-label" for="setMaintenance">Maintenance (kcal)</label>
@@ -1786,25 +1239,20 @@
               <input class="input" id="setDailyTarget" type="number" inputmode="numeric" step="1" min="500" max="10000" required />
             </div>
           </div>
-
           <div class="form-group">
             <label class="field-label" for="setStartDate">Start Date &amp; Time</label>
             <input class="input" id="setStartDate" type="datetime-local" required />
           </div>
-
           <div id="settingsPreview" class="preview-box"></div>
-
           <button type="submit" class="btn btn-emerald btn-block">Save Goal Settings</button>
         </form>
       </div>
 
-      <!-- Tab 2: Themes -->
       <div id="settingsPaneThemes" class="settings-pane" role="tabpanel">
         <p class="data-help" style="margin-bottom:12px;">Pick a color theme. Your selection saves automatically.</p>
         <div id="themeGrid" class="theme-grid"></div>
       </div>
 
-      <!-- Tab 3: Backup & Data -->
       <div id="settingsPaneData" class="settings-pane" role="tabpanel">
         <div class="data-summary">
           <div class="stat-box">
@@ -1818,9 +1266,7 @@
             <div class="stat-sub">tracked</div>
           </div>
         </div>
-
         <p class="data-help">All entries are stored locally in your browser. Export a JSON backup anytime to move devices or keep a safe copy.</p>
-
         <div class="backup-row">
           <button type="button" id="exportDataBtn" class="btn btn-primary" style="border-radius:13px;padding:12px 10px;">
             <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -1832,12 +1278,8 @@
           </button>
         </div>
         <input type="file" id="importFileInput" accept="application/json,.json" style="display:none;" />
-
         <div class="divider"></div>
-
-        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--rose);margin-bottom:8px;">
-          Danger Zone
-        </div>
+        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--rose);margin-bottom:8px;">Danger Zone</div>
         <button type="button" id="resetAllBtn" class="btn btn-danger btn-block">Reset All Data</button>
       </div>
     </div>
@@ -1851,402 +1293,122 @@
       const MS_PER_DAY = 86400000;
       const KCAL_PER_LB = 3500;
 
-      // ============================================================
-      // CURATED THEMES (Single source of truth for CSS + Canvas + Favicon)
-      // ============================================================
+      function rgba(hex, a) {
+        const h = hex.replace('#', '');
+        const r = parseInt(h.slice(0, 2), 16);
+        const g = parseInt(h.slice(2, 4), 16);
+        const b = parseInt(h.slice(4, 6), 16);
+        return `rgba(${r},${g},${b},${a})`;
+      }
+
+      function makeTheme(c) {
+        const light = c.scheme === 'light';
+        const tint = c.tint || (light ? '#0f172a' : '#ffffff');
+        return {
+          name: c.name,
+          tag: c.tag,
+          colorScheme: light ? 'light' : 'dark',
+          bg: c.bg,
+          surface: c.s1,
+          surface2: c.s2,
+          surface3: c.s3,
+          border: rgba(tint, light ? 0.09 : 0.09),
+          borderStrong: rgba(tint, light ? 0.17 : 0.16),
+          text: c.text || (light ? '#0f172a' : '#f1f5f9'),
+          textMuted: c.muted || (light ? '#475569' : '#8b9bb4'),
+          textDim: c.dim || (light ? '#64748b' : '#5e6d85'),
+          accent1: c.a1[0],
+          accent1End: c.a1[1],
+          accent1Bright: c.a1[2],
+          accent1Soft: rgba(c.a1[0], light ? 0.12 : 0.15),
+          accent1BtnText: c.a1Btn || (light ? '#ffffff' : '#031912'),
+          accent2: c.a2[0],
+          accent2End: c.a2[1],
+          accent2Bright: c.a2[2],
+          accent2Soft: rgba(c.a2[0], light ? 0.13 : 0.17),
+          accent2BtnText: c.a2Btn || '#ffffff',
+          rose: c.rose || (light ? '#e11d48' : '#fb7185'),
+          roseSoft: rgba(c.rose || '#fb7185', light ? 0.12 : 0.16),
+          amber: light ? '#d97706' : '#fbbf24',
+          bgGlow1: rgba(c.a1[2], light ? 0.09 : 0.12),
+          bgGlow2: rgba(c.a2[0], light ? 0.08 : 0.10),
+          headerBg: rgba(light ? '#ffffff' : c.bg, 0.92),
+          navBg: rgba(light ? '#ffffff' : c.s1, 0.96),
+          tooltipBg: rgba(light ? '#ffffff' : c.s1, 0.96),
+          rowBg: rgba(tint, light ? 0.03 : 0.03),
+          navActiveBg: rgba(tint, light ? 0.07 : 0.08),
+          badgeBg: rgba(tint, light ? 0.08 : 0.12),
+          backdropBg: light ? 'rgba(15,23,42,0.45)' : 'rgba(3,5,10,0.76)',
+          cardShadow: light ? '0 8px 24px rgba(15,23,42,0.07)' : '0 10px 28px rgba(0,0,0,0.3)',
+          iconBg: c.s2,
+          iconAxis: c.axis || (light ? '#334155' : '#cbd5e1'),
+          chartGrid: rgba(tint, light ? 0.08 : 0.07),
+          chartAxis: c.chartAxis || (light ? '#64748b' : '#7486a3'),
+          chartCrosshair: rgba(tint, 0.24),
+          chartGoalLine: rgba(c.a1[2], 0.26),
+          chartProjFill: rgba(c.a1[0], 0.15),
+          chartProjGlow: rgba(c.a1[2], 0.27),
+          chartActFill: rgba(c.a2[2], light ? 0.16 : 0.24),
+          chartActGlow: rgba(c.a2[2], 0.28),
+          chartDotStroke: c.dot || c.a2[2],
+          chartHighlightBorder: '#ffffff'
+        };
+      }
+
       const THEMES = {
-        obsidian: {
-          name: 'Obsidian',
-          tag: 'Default dark',
-          colorScheme: 'dark',
-          bg: '#090c12',
-          surface: '#121722',
-          surface2: '#192030',
-          surface3: '#222b3e',
-          border: 'rgba(255, 255, 255, 0.08)',
-          borderStrong: 'rgba(255, 255, 255, 0.14)',
-          text: '#f1f5f9',
-          textMuted: '#8b9bb4',
-          textDim: '#5e6d85',
-          accent1: '#10b981',
-          accent1End: '#059669',
-          accent1Bright: '#34d399',
-          accent1Soft: 'rgba(16, 185, 129, 0.14)',
-          accent1BtnText: '#031912',
-          accent2: '#6366f1',
-          accent2End: '#4f46e5',
-          accent2Bright: '#818cf8',
-          accent2Soft: 'rgba(99, 102, 241, 0.16)',
-          accent2BtnText: '#ffffff',
-          rose: '#fb7185',
-          roseSoft: 'rgba(251, 113, 133, 0.15)',
-          amber: '#f59e0b',
-          bgGlow1: 'rgba(16, 185, 129, 0.12)',
-          bgGlow2: 'rgba(99, 102, 241, 0.09)',
-          headerBg: 'rgba(9, 12, 18, 0.9)',
-          navBg: 'rgba(13, 17, 26, 0.96)',
-          tooltipBg: 'rgba(13, 18, 29, 0.95)',
-          rowBg: 'rgba(255, 255, 255, 0.028)',
-          navActiveBg: 'rgba(255, 255, 255, 0.07)',
-          badgeBg: 'rgba(255, 255, 255, 0.11)',
-          backdropBg: 'rgba(3, 5, 10, 0.74)',
-          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.25)',
-          iconBg: '#192030',
-          iconAxis: '#cbd5e1',
-          chartGrid: 'rgba(255, 255, 255, 0.06)',
-          chartAxis: '#6f809c',
-          chartCrosshair: 'rgba(255, 255, 255, 0.22)',
-          chartGoalLine: 'rgba(52, 211, 153, 0.24)',
-          chartProjFill: 'rgba(16, 185, 129, 0.15)',
-          chartProjGlow: 'rgba(52, 211, 153, 0.26)',
-          chartActFill: 'rgba(129, 140, 248, 0.24)',
-          chartActGlow: 'rgba(129, 140, 248, 0.28)',
-          chartDotStroke: '#a5b4fc',
-          chartHighlightBorder: '#ffffff'
-        },
-        amoled: {
-          name: 'AMOLED Pitch',
-          tag: 'True OLED black',
-          colorScheme: 'dark',
-          bg: '#000000',
-          surface: '#0b0d12',
-          surface2: '#141821',
-          surface3: '#1e2433',
-          border: 'rgba(255, 255, 255, 0.09)',
-          borderStrong: 'rgba(255, 255, 255, 0.16)',
-          text: '#f8fafc',
-          textMuted: '#94a3b8',
-          textDim: '#64748b',
-          accent1: '#06b6d4',
-          accent1End: '#0891b2',
-          accent1Bright: '#22d3ee',
-          accent1Soft: 'rgba(6, 182, 212, 0.15)',
-          accent1BtnText: '#02171d',
-          accent2: '#8b5cf6',
-          accent2End: '#7c3aed',
-          accent2Bright: '#a78bfa',
-          accent2Soft: 'rgba(139, 92, 246, 0.18)',
-          accent2BtnText: '#ffffff',
-          rose: '#fb7185',
-          roseSoft: 'rgba(251, 113, 133, 0.16)',
-          amber: '#fbbf24',
-          bgGlow1: 'rgba(34, 211, 238, 0.08)',
-          bgGlow2: 'rgba(139, 92, 246, 0.07)',
-          headerBg: 'rgba(0, 0, 0, 0.94)',
-          navBg: 'rgba(5, 6, 9, 0.98)',
-          tooltipBg: 'rgba(8, 10, 15, 0.96)',
-          rowBg: 'rgba(255, 255, 255, 0.03)',
-          navActiveBg: 'rgba(255, 255, 255, 0.08)',
-          badgeBg: 'rgba(255, 255, 255, 0.12)',
-          backdropBg: 'rgba(0, 0, 0, 0.8)',
-          cardShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
-          iconBg: '#12151e',
-          iconAxis: '#cbd5e1',
-          chartGrid: 'rgba(255, 255, 255, 0.07)',
-          chartAxis: '#73839c',
-          chartCrosshair: 'rgba(255, 255, 255, 0.24)',
-          chartGoalLine: 'rgba(34, 211, 238, 0.25)',
-          chartProjFill: 'rgba(6, 182, 212, 0.16)',
-          chartProjGlow: 'rgba(34, 211, 238, 0.28)',
-          chartActFill: 'rgba(167, 139, 250, 0.25)',
-          chartActGlow: 'rgba(167, 139, 250, 0.3)',
-          chartDotStroke: '#c4b5fd',
-          chartHighlightBorder: '#ffffff'
-        },
-        nordic: {
-          name: 'Nordic Frost',
-          tag: 'Cool arctic blue',
-          colorScheme: 'dark',
-          bg: '#0c131d',
-          surface: '#131d2d',
-          surface2: '#1b283d',
-          surface3: '#253652',
-          border: 'rgba(186, 218, 255, 0.1)',
-          borderStrong: 'rgba(186, 218, 255, 0.18)',
-          text: '#eff6ff',
-          textMuted: '#93adc9',
-          textDim: '#647d99',
-          accent1: '#14b8a6',
-          accent1End: '#0d9488',
-          accent1Bright: '#2dd4bf',
-          accent1Soft: 'rgba(45, 212, 191, 0.15)',
-          accent1BtnText: '#031a18',
-          accent2: '#3b82f6',
-          accent2End: '#2563eb',
-          accent2Bright: '#60a5fa',
-          accent2Soft: 'rgba(59, 130, 246, 0.18)',
-          accent2BtnText: '#ffffff',
-          rose: '#fb7185',
-          roseSoft: 'rgba(251, 113, 133, 0.16)',
-          amber: '#fbbf24',
-          bgGlow1: 'rgba(45, 212, 191, 0.11)',
-          bgGlow2: 'rgba(59, 130, 246, 0.12)',
-          headerBg: 'rgba(12, 19, 29, 0.92)',
-          navBg: 'rgba(15, 23, 36, 0.96)',
-          tooltipBg: 'rgba(15, 24, 38, 0.96)',
-          rowBg: 'rgba(186, 218, 255, 0.035)',
-          navActiveBg: 'rgba(186, 218, 255, 0.09)',
-          badgeBg: 'rgba(186, 218, 255, 0.13)',
-          backdropBg: 'rgba(6, 10, 18, 0.74)',
-          cardShadow: '0 10px 28px rgba(4, 9, 18, 0.35)',
-          iconBg: '#1b283d',
-          iconAxis: '#dbeafe',
-          chartGrid: 'rgba(186, 218, 255, 0.07)',
-          chartAxis: '#7a95b3',
-          chartCrosshair: 'rgba(219, 234, 254, 0.24)',
-          chartGoalLine: 'rgba(45, 212, 191, 0.24)',
-          chartProjFill: 'rgba(45, 212, 191, 0.15)',
-          chartProjGlow: 'rgba(45, 212, 191, 0.28)',
-          chartActFill: 'rgba(96, 165, 250, 0.24)',
-          chartActGlow: 'rgba(96, 165, 250, 0.28)',
-          chartDotStroke: '#93c5fd',
-          chartHighlightBorder: '#ffffff'
-        },
-        forest: {
-          name: 'Emerald Forest',
-          tag: 'Deep pine & lime',
-          colorScheme: 'dark',
-          bg: '#07110d',
-          surface: '#0e1b15',
-          surface2: '#15271f',
-          surface3: '#1e362b',
-          border: 'rgba(167, 243, 208, 0.09)',
-          borderStrong: 'rgba(167, 243, 208, 0.17)',
-          text: '#ecfdf5',
-          textMuted: '#88b39f',
-          textDim: '#5b8270',
-          accent1: '#10b981',
-          accent1End: '#059669',
-          accent1Bright: '#34d399',
-          accent1Soft: 'rgba(16, 185, 129, 0.16)',
-          accent1BtnText: '#031912',
-          accent2: '#84cc16',
-          accent2End: '#65a30d',
-          accent2Bright: '#a3e635',
-          accent2Soft: 'rgba(132, 204, 22, 0.17)',
-          accent2BtnText: '#0e1b02',
-          rose: '#fb7185',
-          roseSoft: 'rgba(251, 113, 133, 0.16)',
-          amber: '#fbbf24',
-          bgGlow1: 'rgba(16, 185, 129, 0.14)',
-          bgGlow2: 'rgba(132, 204, 22, 0.09)',
-          headerBg: 'rgba(7, 17, 13, 0.92)',
-          navBg: 'rgba(10, 22, 17, 0.96)',
-          tooltipBg: 'rgba(11, 24, 18, 0.96)',
-          rowBg: 'rgba(167, 243, 208, 0.03)',
-          navActiveBg: 'rgba(167, 243, 208, 0.08)',
-          badgeBg: 'rgba(167, 243, 208, 0.12)',
-          backdropBg: 'rgba(3, 10, 7, 0.76)',
-          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.34)',
-          iconBg: '#15271f',
-          iconAxis: '#d1fae5',
-          chartGrid: 'rgba(167, 243, 208, 0.07)',
-          chartAxis: '#6b9482',
-          chartCrosshair: 'rgba(209, 250, 229, 0.22)',
-          chartGoalLine: 'rgba(52, 211, 153, 0.24)',
-          chartProjFill: 'rgba(16, 185, 129, 0.15)',
-          chartProjGlow: 'rgba(52, 211, 153, 0.26)',
-          chartActFill: 'rgba(163, 230, 53, 0.22)',
-          chartActGlow: 'rgba(163, 230, 53, 0.28)',
-          chartDotStroke: '#bef264',
-          chartHighlightBorder: '#ffffff'
-        },
-        ember: {
-          name: 'Crimson Ember',
-          tag: 'Warm rose & gold',
-          colorScheme: 'dark',
-          bg: '#120a0d',
-          surface: '#1c1116',
-          surface2: '#27181f',
-          surface3: '#36222b',
-          border: 'rgba(255, 204, 213, 0.09)',
-          borderStrong: 'rgba(255, 204, 213, 0.17)',
-          text: '#fff1f2',
-          textMuted: '#be95a1',
-          textDim: '#886571',
-          accent1: '#f59e0b',
-          accent1End: '#d97706',
-          accent1Bright: '#fbbf24',
-          accent1Soft: 'rgba(245, 158, 11, 0.16)',
-          accent1BtnText: '#1e1002',
-          accent2: '#e11d48',
-          accent2End: '#be123c',
-          accent2Bright: '#fb7185',
-          accent2Soft: 'rgba(225, 29, 72, 0.18)',
-          accent2BtnText: '#ffffff',
-          rose: '#fda4af',
-          roseSoft: 'rgba(251, 113, 133, 0.18)',
-          amber: '#fbbf24',
-          bgGlow1: 'rgba(245, 158, 11, 0.12)',
-          bgGlow2: 'rgba(225, 29, 72, 0.12)',
-          headerBg: 'rgba(18, 10, 13, 0.92)',
-          navBg: 'rgba(22, 13, 17, 0.96)',
-          tooltipBg: 'rgba(24, 14, 19, 0.96)',
-          rowBg: 'rgba(255, 204, 213, 0.032)',
-          navActiveBg: 'rgba(255, 204, 213, 0.08)',
-          badgeBg: 'rgba(255, 204, 213, 0.13)',
-          backdropBg: 'rgba(10, 4, 7, 0.78)',
-          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.36)',
-          iconBg: '#27181f',
-          iconAxis: '#ffe4e6',
-          chartGrid: 'rgba(255, 204, 213, 0.07)',
-          chartAxis: '#a07985',
-          chartCrosshair: 'rgba(255, 228, 230, 0.22)',
-          chartGoalLine: 'rgba(251, 191, 36, 0.25)',
-          chartProjFill: 'rgba(245, 158, 11, 0.15)',
-          chartProjGlow: 'rgba(251, 191, 36, 0.28)',
-          chartActFill: 'rgba(251, 113, 133, 0.24)',
-          chartActGlow: 'rgba(251, 113, 133, 0.3)',
-          chartDotStroke: '#fda4af',
-          chartHighlightBorder: '#ffffff'
-        },
-        twilight: {
-          name: 'Sunset Violet',
-          tag: 'Plum, pink & teal',
-          colorScheme: 'dark',
-          bg: '#0f0a19',
-          surface: '#191128',
-          surface2: '#241939',
-          surface3: '#32234d',
-          border: 'rgba(221, 214, 254, 0.1)',
-          borderStrong: 'rgba(221, 214, 254, 0.18)',
-          text: '#f5f3ff',
-          textMuted: '#a99bc4',
-          textDim: '#776994',
-          accent1: '#14b8a6',
-          accent1End: '#0d9488',
-          accent1Bright: '#2dd4bf',
-          accent1Soft: 'rgba(20, 184, 166, 0.15)',
-          accent1BtnText: '#031a18',
-          accent2: '#ec4899',
-          accent2End: '#db2777',
-          accent2Bright: '#f472b6',
-          accent2Soft: 'rgba(236, 72, 153, 0.18)',
-          accent2BtnText: '#ffffff',
-          rose: '#fb7185',
-          roseSoft: 'rgba(251, 113, 133, 0.17)',
-          amber: '#fbbf24',
-          bgGlow1: 'rgba(45, 212, 191, 0.11)',
-          bgGlow2: 'rgba(236, 72, 153, 0.13)',
-          headerBg: 'rgba(15, 10, 25, 0.92)',
-          navBg: 'rgba(19, 13, 31, 0.96)',
-          tooltipBg: 'rgba(21, 14, 34, 0.96)',
-          rowBg: 'rgba(221, 214, 254, 0.032)',
-          navActiveBg: 'rgba(221, 214, 254, 0.08)',
-          badgeBg: 'rgba(221, 214, 254, 0.13)',
-          backdropBg: 'rgba(8, 5, 16, 0.78)',
-          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.36)',
-          iconBg: '#241939',
-          iconAxis: '#ede9fe',
-          chartGrid: 'rgba(221, 214, 254, 0.07)',
-          chartAxis: '#8f80ad',
-          chartCrosshair: 'rgba(237, 233, 254, 0.22)',
-          chartGoalLine: 'rgba(45, 212, 191, 0.24)',
-          chartProjFill: 'rgba(45, 212, 191, 0.15)',
-          chartProjGlow: 'rgba(45, 212, 191, 0.28)',
-          chartActFill: 'rgba(244, 114, 182, 0.24)',
-          chartActGlow: 'rgba(244, 114, 182, 0.3)',
-          chartDotStroke: '#f9a8d4',
-          chartHighlightBorder: '#ffffff'
-        },
-        carbon: {
-          name: 'Carbon Gold',
-          tag: 'Matte grey & gold',
-          colorScheme: 'dark',
-          bg: '#0c0c0e',
-          surface: '#16161a',
-          surface2: '#202026',
-          surface3: '#2c2c34',
-          border: 'rgba(255, 255, 255, 0.08)',
-          borderStrong: 'rgba(255, 255, 255, 0.15)',
-          text: '#f4f4f5',
-          textMuted: '#a1a1aa',
-          textDim: '#71717a',
-          accent1: '#10b981',
-          accent1End: '#059669',
-          accent1Bright: '#34d399',
-          accent1Soft: 'rgba(16, 185, 129, 0.15)',
-          accent1BtnText: '#031912',
-          accent2: '#f59e0b',
-          accent2End: '#d97706',
-          accent2Bright: '#fbbf24',
-          accent2Soft: 'rgba(245, 158, 11, 0.17)',
-          accent2BtnText: '#1c1102',
-          rose: '#fb7185',
-          roseSoft: 'rgba(251, 113, 133, 0.16)',
-          amber: '#fbbf24',
-          bgGlow1: 'rgba(245, 158, 11, 0.1)',
-          bgGlow2: 'rgba(16, 185, 129, 0.08)',
-          headerBg: 'rgba(12, 12, 14, 0.92)',
-          navBg: 'rgba(17, 17, 20, 0.96)',
-          tooltipBg: 'rgba(20, 20, 24, 0.96)',
-          rowBg: 'rgba(255, 255, 255, 0.03)',
-          navActiveBg: 'rgba(255, 255, 255, 0.08)',
-          badgeBg: 'rgba(255, 255, 255, 0.12)',
-          backdropBg: 'rgba(4, 4, 6, 0.78)',
-          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.35)',
-          iconBg: '#202026',
-          iconAxis: '#e4e4e7',
-          chartGrid: 'rgba(255, 255, 255, 0.07)',
-          chartAxis: '#878791',
-          chartCrosshair: 'rgba(255, 255, 255, 0.22)',
-          chartGoalLine: 'rgba(52, 211, 153, 0.24)',
-          chartProjFill: 'rgba(16, 185, 129, 0.15)',
-          chartProjGlow: 'rgba(52, 211, 153, 0.26)',
-          chartActFill: 'rgba(251, 191, 36, 0.23)',
-          chartActGlow: 'rgba(251, 191, 36, 0.28)',
-          chartDotStroke: '#fcd34d',
-          chartHighlightBorder: '#ffffff'
-        },
-        daylight: {
-          name: 'Daylight',
-          tag: 'Crisp light mode',
-          colorScheme: 'light',
-          bg: '#f2f5fa',
-          surface: '#ffffff',
-          surface2: '#e8edf5',
-          surface3: '#d8e1ee',
-          border: 'rgba(15, 23, 42, 0.09)',
-          borderStrong: 'rgba(15, 23, 42, 0.17)',
-          text: '#0f172a',
-          textMuted: '#475569',
-          textDim: '#64748b',
-          accent1: '#059669',
-          accent1End: '#047857',
-          accent1Bright: '#059669',
-          accent1Soft: 'rgba(5, 150, 105, 0.12)',
-          accent1BtnText: '#ffffff',
-          accent2: '#4f46e5',
-          accent2End: '#4338ca',
-          accent2Bright: '#4f46e5',
-          accent2Soft: 'rgba(79, 70, 229, 0.13)',
-          accent2BtnText: '#ffffff',
-          rose: '#e11d48',
-          roseSoft: 'rgba(225, 29, 72, 0.12)',
-          amber: '#d97706',
-          bgGlow1: 'rgba(16, 185, 129, 0.09)',
-          bgGlow2: 'rgba(99, 102, 241, 0.08)',
-          headerBg: 'rgba(255, 255, 255, 0.9)',
-          navBg: 'rgba(255, 255, 255, 0.96)',
-          tooltipBg: 'rgba(255, 255, 255, 0.96)',
-          rowBg: 'rgba(15, 23, 42, 0.03)',
-          navActiveBg: 'rgba(15, 23, 42, 0.07)',
-          badgeBg: 'rgba(15, 23, 42, 0.08)',
-          backdropBg: 'rgba(15, 23, 42, 0.45)',
-          cardShadow: '0 8px 24px rgba(15, 23, 42, 0.07)',
-          iconBg: '#e8edf5',
-          iconAxis: '#334155',
-          chartGrid: 'rgba(15, 23, 42, 0.08)',
-          chartAxis: '#64748b',
-          chartCrosshair: 'rgba(15, 23, 42, 0.25)',
-          chartGoalLine: 'rgba(5, 150, 105, 0.3)',
-          chartProjFill: 'rgba(5, 150, 105, 0.14)',
-          chartProjGlow: 'rgba(5, 150, 105, 0.22)',
-          chartActFill: 'rgba(79, 70, 229, 0.16)',
-          chartActGlow: 'rgba(79, 70, 229, 0.22)',
-          chartDotStroke: '#4f46e5',
-          chartHighlightBorder: '#ffffff'
-        }
+        obsidian: makeTheme({
+          name: 'Obsidian', tag: 'Default dark',
+          bg: '#090c12', s1: '#121722', s2: '#192030', s3: '#222b3e',
+          a1: ['#10b981', '#059669', '#34d399'], a2: ['#6366f1', '#4f46e5', '#818cf8'], dot: '#a5b4fc'
+        }),
+        amoled: makeTheme({
+          name: 'AMOLED Pitch', tag: 'True OLED black',
+          bg: '#000000', s1: '#0b0d12', s2: '#141821', s3: '#1e2433',
+          text: '#f8fafc', muted: '#94a3b8', dim: '#64748b',
+          a1: ['#06b6d4', '#0891b2', '#22d3ee'], a1Btn: '#02171d',
+          a2: ['#8b5cf6', '#7c3aed', '#a78bfa'], dot: '#c4b5fd'
+        }),
+        nordic: makeTheme({
+          name: 'Nordic Frost', tag: 'Cool arctic blue', tint: '#badaff',
+          bg: '#0c131d', s1: '#131d2d', s2: '#1b283d', s3: '#253652',
+          text: '#eff6ff', muted: '#93adc9', dim: '#647d99', axis: '#dbeafe', chartAxis: '#7a95b3',
+          a1: ['#14b8a6', '#0d9488', '#2dd4bf'], a1Btn: '#031a18',
+          a2: ['#3b82f6', '#2563eb', '#60a5fa'], dot: '#93c5fd'
+        }),
+        forest: makeTheme({
+          name: 'Emerald Forest', tag: 'Deep pine & lime', tint: '#a7f3d0',
+          bg: '#07110d', s1: '#0e1b15', s2: '#15271f', s3: '#1e362b',
+          text: '#ecfdf5', muted: '#88b39f', dim: '#5b8270', axis: '#d1fae5', chartAxis: '#6b9482',
+          a1: ['#10b981', '#059669', '#34d399'],
+          a2: ['#84cc16', '#65a30d', '#a3e635'], a2Btn: '#0e1b02', dot: '#bef264'
+        }),
+        ember: makeTheme({
+          name: 'Crimson Ember', tag: 'Warm rose & gold', tint: '#ffccd5',
+          bg: '#120a0d', s1: '#1c1116', s2: '#27181f', s3: '#36222b',
+          text: '#fff1f2', muted: '#be95a1', dim: '#886571', axis: '#ffe4e6', chartAxis: '#a07985',
+          a1: ['#f59e0b', '#d97706', '#fbbf24'], a1Btn: '#1e1002',
+          a2: ['#e11d48', '#be123c', '#fb7185'], dot: '#fda4af', rose: '#fda4af'
+        }),
+        twilight: makeTheme({
+          name: 'Sunset Violet', tag: 'Plum, pink & teal', tint: '#ddd6fe',
+          bg: '#0f0a19', s1: '#191128', s2: '#241939', s3: '#32234d',
+          text: '#f5f3ff', muted: '#a99bc4', dim: '#776994', axis: '#ede9fe', chartAxis: '#8f80ad',
+          a1: ['#14b8a6', '#0d9488', '#2dd4bf'], a1Btn: '#031a18',
+          a2: ['#ec4899', '#db2777', '#f472b6'], dot: '#f9a8d4'
+        }),
+        carbon: makeTheme({
+          name: 'Carbon Gold', tag: 'Matte grey & gold',
+          bg: '#0c0c0e', s1: '#16161a', s2: '#202026', s3: '#2c2c34',
+          text: '#f4f4f5', muted: '#a1a1aa', dim: '#71717a', axis: '#e4e4e7', chartAxis: '#878791',
+          a1: ['#10b981', '#059669', '#34d399'],
+          a2: ['#f59e0b', '#d97706', '#fbbf24'], a2Btn: '#1c1102', dot: '#fcd34d'
+        }),
+        daylight: makeTheme({
+          name: 'Daylight', tag: 'Crisp light mode', scheme: 'light',
+          bg: '#f2f5fa', s1: '#ffffff', s2: '#e8edf5', s3: '#d8e1ee',
+          a1: ['#059669', '#047857', '#059669'],
+          a2: ['#4f46e5', '#4338ca', '#4f46e5'], dot: '#4f46e5'
+        })
       };
 
       let state = {
@@ -2259,12 +1421,11 @@
           startTimestamp: Date.now(),
           theme: 'obsidian'
         },
-        weights: [], // { id, weight, timestamp }
-        calories: {} // { 'YYYY-MM-DD': [{ id, name, calories, timestamp }] }
+        weights: [],
+        calories: {}
       };
 
       let activeTab = 'weight';
-      let activeSettingsTab = 'goal';
       let chartRange = 'goal';
       let selectedCalorieDate = getLocalDateKey(new Date());
       let inspectedState = null;
@@ -2272,7 +1433,6 @@
       let rafId = null;
       const tabScrollPos = { weight: 0, calories: 0 };
 
-      // Keep modals centered in visible viewport above mobile keyboards
       function syncVisualViewport() {
         const vv = window.visualViewport;
         if (vv) {
@@ -2286,7 +1446,6 @@
         syncVisualViewport();
       }
 
-      // DOM References
       const el = (id) => document.getElementById(id);
       const toastEl = el('toast');
       const onboardingView = el('onboardingView');
@@ -2297,7 +1456,6 @@
       const historyBadge = el('historyBadge');
       const addCalorieFab = el('addCalorieFab');
 
-      // Weight Tab DOM
       const deficitWarn = el('deficitWarn');
       const dayCounterText = el('dayCounterText');
       const goalEtaBadge = el('goalEtaBadge');
@@ -2315,7 +1473,6 @@
       const chartWrap = el('chartWrap');
       const chartTooltip = el('chartTooltip');
 
-      // Calorie Tab DOM
       const calDateMain = el('calDateMain');
       const calDateSub = el('calDateSub');
       const calDatePicker = el('calDatePicker');
@@ -2340,51 +1497,31 @@
         state.settings.theme = key;
 
         const root = document.documentElement.style;
-        root.setProperty('--color-scheme', t.colorScheme);
-        root.setProperty('--bg', t.bg);
-        root.setProperty('--surface', t.surface);
-        root.setProperty('--surface-2', t.surface2);
-        root.setProperty('--surface-3', t.surface3);
-        root.setProperty('--border', t.border);
-        root.setProperty('--border-strong', t.borderStrong);
-        root.setProperty('--text', t.text);
-        root.setProperty('--text-muted', t.textMuted);
-        root.setProperty('--text-dim', t.textDim);
-        root.setProperty('--accent-1', t.accent1);
-        root.setProperty('--accent-1-end', t.accent1End);
-        root.setProperty('--accent-1-bright', t.accent1Bright);
-        root.setProperty('--accent-1-soft', t.accent1Soft);
-        root.setProperty('--accent-1-btn-text', t.accent1BtnText);
-        root.setProperty('--accent-2', t.accent2);
-        root.setProperty('--accent-2-end', t.accent2End);
-        root.setProperty('--accent-2-bright', t.accent2Bright);
-        root.setProperty('--accent-2-soft', t.accent2Soft);
-        root.setProperty('--accent-2-btn-text', t.accent2BtnText);
-        root.setProperty('--rose', t.rose);
-        root.setProperty('--rose-soft', t.roseSoft);
-        root.setProperty('--amber', t.amber);
-        root.setProperty('--bg-glow-1', t.bgGlow1);
-        root.setProperty('--bg-glow-2', t.bgGlow2);
-        root.setProperty('--header-bg', t.headerBg);
-        root.setProperty('--nav-bg', t.navBg);
-        root.setProperty('--tooltip-bg', t.tooltipBg);
-        root.setProperty('--row-bg', t.rowBg);
-        root.setProperty('--nav-active-bg', t.navActiveBg);
-        root.setProperty('--badge-bg', t.badgeBg);
-        root.setProperty('--backdrop-bg', t.backdropBg);
-        root.setProperty('--card-shadow', t.cardShadow);
-        root.setProperty('--icon-bg', t.iconBg);
-        root.setProperty('--icon-axis', t.iconAxis);
+        const map = {
+          '--color-scheme': t.colorScheme, '--bg': t.bg, '--surface': t.surface,
+          '--surface-2': t.surface2, '--surface-3': t.surface3, '--border': t.border,
+          '--border-strong': t.borderStrong, '--text': t.text, '--text-muted': t.textMuted,
+          '--text-dim': t.textDim, '--accent-1': t.accent1, '--accent-1-end': t.accent1End,
+          '--accent-1-bright': t.accent1Bright, '--accent-1-soft': t.accent1Soft,
+          '--accent-1-btn-text': t.accent1BtnText, '--accent-2': t.accent2,
+          '--accent-2-end': t.accent2End, '--accent-2-bright': t.accent2Bright,
+          '--accent-2-soft': t.accent2Soft, '--accent-2-btn-text': t.accent2BtnText,
+          '--rose': t.rose, '--rose-soft': t.roseSoft, '--amber': t.amber,
+          '--bg-glow-1': t.bgGlow1, '--bg-glow-2': t.bgGlow2, '--header-bg': t.headerBg,
+          '--nav-bg': t.navBg, '--tooltip-bg': t.tooltipBg, '--row-bg': t.rowBg,
+          '--nav-active-bg': t.navActiveBg, '--badge-bg': t.badgeBg,
+          '--backdrop-bg': t.backdropBg, '--card-shadow': t.cardShadow,
+          '--icon-bg': t.iconBg, '--icon-axis': t.iconAxis
+        };
+        for (const [k, v] of Object.entries(map)) root.setProperty(k, v);
 
         const metaTheme = el('metaThemeColor');
         if (metaTheme) metaTheme.setAttribute('content', t.bg);
         const metaScheme = el('metaColorScheme');
         if (metaScheme) metaScheme.setAttribute('content', t.colorScheme);
 
-        // Update SVG favicon to match theme colors
         const fav = el('siteFavicon');
         if (fav) {
-          const enc = (c) => encodeURIComponent(c);
           const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>`
             + `<rect width='32' height='32' rx='8' fill='${t.surface}'/>`
             + `<rect x='0.75' y='0.75' width='30.5' height='30.5' rx='7.25' fill='none' stroke='${t.iconAxis}' stroke-opacity='0.22' stroke-width='1.5'/>`
@@ -2392,7 +1529,7 @@
             + `<path d='M3 3v18h18' stroke='${t.iconAxis}'/>`
             + `<path d='M7 14l4-4 4 3 5-6' stroke='${t.accent1Bright}'/>`
             + `</g></svg>`;
-          fav.href = `data:image/svg+xml,${enc(svg)}`;
+          fav.href = `data:image/svg+xml,${encodeURIComponent(svg)}`;
         }
 
         if (persist) saveState();
@@ -2404,35 +1541,32 @@
         const grid = el('themeGrid');
         if (!grid) return;
         const current = state.settings.theme || 'obsidian';
-        grid.innerHTML = Object.entries(THEMES).map(([id, t]) => {
-          const isActive = id === current;
-          return `
-            <button type="button" class="theme-card ${isActive ? 'active' : ''}" data-theme-id="${id}">
-              <div class="theme-preview" style="background:${t.bg};">
-                <div class="theme-preview-bars">
-                  <span class="theme-preview-pill" style="background:${t.surface2};"></span>
-                  <span class="theme-preview-dots">
-                    <span class="theme-preview-dot" style="background:${t.accent1Bright};"></span>
-                    <span class="theme-preview-dot" style="background:${t.accent2Bright};"></span>
-                  </span>
-                </div>
-                <svg viewBox="0 0 100 22" style="width:100%;height:18px;display:block;overflow:visible;">
-                  <line x1="2" y1="4" x2="98" y2="18" stroke="${t.accent1Bright}" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round"/>
-                  <path d="M2 5 C26 7, 42 15, 62 12 C78 10, 86 17, 98 16" fill="none" stroke="${t.accent2Bright}" stroke-width="2.4" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="theme-meta">
-                <div>
-                  <div class="theme-name">${escapeHtml(t.name)}</div>
-                  <div class="theme-tag">${escapeHtml(t.tag)}</div>
-                </div>
-                <span class="theme-check" aria-hidden="true">
-                  <svg class="icon" style="width:12px;height:12px;stroke-width:3;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        grid.innerHTML = Object.entries(THEMES).map(([id, t]) => `
+          <button type="button" class="theme-card ${id === current ? 'active' : ''}" data-theme-id="${id}">
+            <div class="theme-preview" style="background:${t.bg};">
+              <div class="theme-preview-bars">
+                <span class="theme-preview-pill" style="background:${t.surface2};"></span>
+                <span class="theme-preview-dots">
+                  <span class="theme-preview-dot" style="background:${t.accent1Bright};"></span>
+                  <span class="theme-preview-dot" style="background:${t.accent2Bright};"></span>
                 </span>
               </div>
-            </button>
-          `;
-        }).join('');
+              <svg viewBox="0 0 100 22" style="width:100%;height:18px;display:block;overflow:visible;">
+                <line x1="2" y1="4" x2="98" y2="18" stroke="${t.accent1Bright}" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round"/>
+                <path d="M2 5 C26 7, 42 15, 62 12 C78 10, 86 17, 98 16" fill="none" stroke="${t.accent2Bright}" stroke-width="2.4" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="theme-meta">
+              <div>
+                <div class="theme-name">${escapeHtml(t.name)}</div>
+                <div class="theme-tag">${escapeHtml(t.tag)}</div>
+              </div>
+              <span class="theme-check" aria-hidden="true">
+                <svg class="icon" style="width:12px;height:12px;stroke-width:3;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+            </div>
+          </button>
+        `).join('');
 
         grid.querySelectorAll('[data-theme-id]').forEach((btn) => {
           btn.addEventListener('click', () => {
@@ -2483,17 +1617,14 @@
 
       function formatDateTime(ts) {
         const d = new Date(ts);
-        const dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-        const timeStr = d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-        return `${dateStr} • ${timeStr}`;
+        return `${d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })} • ${d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`;
       }
 
       function formatAxisDate(ts, spanDays) {
         const d = new Date(ts);
-        if (spanDays <= 2) {
-          return d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-        }
-        return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        return spanDays <= 2
+          ? d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })
+          : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
       }
 
       let toastTimer = null;
@@ -2511,21 +1642,17 @@
           if (!raw) return;
           const parsed = JSON.parse(raw);
           if (parsed && typeof parsed === 'object') {
-            if (parsed.settings) {
-              state.settings = { ...state.settings, ...parsed.settings };
-            }
+            if (parsed.settings) state.settings = { ...state.settings, ...parsed.settings };
             if (Array.isArray(parsed.weights)) {
               state.weights = parsed.weights
                 .filter(w => w && Number.isFinite(Number(w.weight)) && Number.isFinite(Number(w.timestamp)))
                 .map(w => ({ id: w.id || uid(), weight: Number(w.weight), timestamp: Number(w.timestamp) }))
                 .sort((a, b) => a.timestamp - b.timestamp);
             }
-            if (parsed.calories && typeof parsed.calories === 'object') {
-              state.calories = parsed.calories;
-            }
+            if (parsed.calories && typeof parsed.calories === 'object') state.calories = parsed.calories;
           }
         } catch (err) {
-          console.error('Failed to load saved state:', err);
+          console.error('Failed to load state:', err);
         }
       }
 
@@ -2538,7 +1665,7 @@
         }
       }
 
-      // Core Projection Math
+      // Projection Math
       function getMetrics(now = Date.now()) {
         const { startWeight, goalWeight, maintenance, dailyTarget, startTimestamp } = state.settings;
         const dailyDeficit = maintenance - dailyTarget;
@@ -2555,70 +1682,41 @@
         const projectedNow = valid ? startWeight - fatBurned : startWeight;
         const deficitKcalBurned = valid ? elapsedDays * dailyDeficit : 0;
         const progressPct = valid ? Math.min(100, Math.max(0, (elapsedDays / totalDays) * 100)) : 0;
-
-        return {
-          valid,
-          dailyDeficit,
-          totalToLose,
-          lbsPerDay,
-          totalDays,
-          totalDaysDisplay,
-          goalTimestamp,
-          elapsedMs,
-          elapsedDays,
-          currentDay,
-          fatBurned,
-          projectedNow,
-          deficitKcalBurned,
-          progressPct
-        };
+        return { valid, dailyDeficit, totalToLose, lbsPerDay, totalDays, totalDaysDisplay, goalTimestamp, elapsedMs, elapsedDays, currentDay, fatBurned, projectedNow, deficitKcalBurned, progressPct };
       }
 
       function projectedWeightAt(ts) {
         const { startWeight, maintenance, dailyTarget, startTimestamp } = state.settings;
         const dailyDeficit = maintenance - dailyTarget;
         if (dailyDeficit <= 0) return startWeight;
-        const days = (ts - startTimestamp) / MS_PER_DAY;
-        return startWeight - days * (dailyDeficit / KCAL_PER_LB);
+        return startWeight - ((ts - startTimestamp) / MS_PER_DAY) * (dailyDeficit / KCAL_PER_LB);
       }
 
-      // Preview Helper for Onboarding & Settings
       function updatePlanPreview(boxEl, swVal, gwVal, maintVal, targetVal, startStr) {
-        const sw = parseFloat(swVal);
-        const gw = parseFloat(gwVal);
-        const maint = parseFloat(maintVal);
-        const target = parseFloat(targetVal);
-
-        if (!Number.isFinite(sw) || !Number.isFinite(gw) || !Number.isFinite(maint) || !Number.isFinite(target)) {
+        const sw = parseFloat(swVal), gw = parseFloat(gwVal), maint = parseFloat(maintVal), target = parseFloat(targetVal);
+        if (![sw, gw, maint, target].every(Number.isFinite)) {
           boxEl.className = 'preview-box';
           boxEl.innerHTML = 'Enter your numbers above to preview your projected timeline.';
           return;
         }
-
         const deficit = maint - target;
         const toLose = sw - gw;
-
         if (deficit <= 0) {
           boxEl.className = 'preview-box warn';
           boxEl.innerHTML = '<strong>No deficit:</strong> Set Daily Target lower than Maintenance to track fat burn.';
           return;
         }
-
         if (toLose <= 0) {
           boxEl.className = 'preview-box warn';
           boxEl.innerHTML = '<strong>Check goal:</strong> Goal Weight should be lower than Start Weight for fat-loss tracking.';
           return;
         }
-
         const lbsPerWeek = (deficit * 7) / KCAL_PER_LB;
         const days = Math.ceil((toLose * KCAL_PER_LB) / deficit);
         const startTs = startStr ? new Date(startStr).getTime() : Date.now();
         const estGoalDate = Number.isFinite(startTs) ? formatShortDate(startTs + days * MS_PER_DAY) : '—';
-
         boxEl.className = 'preview-box';
-        boxEl.innerHTML =
-          `Deficit: <strong>${Math.round(deficit).toLocaleString()} kcal/day</strong> (${lbsPerWeek.toFixed(2)} lbs/wk)<br>` +
-          `Goal timeline: <strong>${days} days</strong> to lose ${toLose.toFixed(1)} lbs • Est. <strong>${estGoalDate}</strong>`;
+        boxEl.innerHTML = `Deficit: <strong>${Math.round(deficit).toLocaleString()} kcal/day</strong> (${lbsPerWeek.toFixed(2)} lbs/wk)<br>Goal timeline: <strong>${days} days</strong> to lose ${toLose.toFixed(1)} lbs • Est. <strong>${estGoalDate}</strong>`;
       }
 
       // Modals
@@ -2627,31 +1725,24 @@
         const modal = el(id);
         if (modal) modal.classList.add('open');
       }
-
       function closeModal(id) {
         const modal = el(id);
         if (modal) modal.classList.remove('open');
       }
-
       document.querySelectorAll('[data-close]').forEach((btn) => {
         btn.addEventListener('click', () => closeModal(btn.dataset.close));
       });
-
       document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
         backdrop.addEventListener('click', (e) => {
           if (e.target === backdrop) backdrop.classList.remove('open');
         });
       });
 
-      // Main Tab Switching (preserves per-tab scroll position inside .app-scroll)
+      // Main Tab Switching
       function switchTab(tab) {
-        if (activeTab !== tab) {
-          tabScrollPos[activeTab] = appScroll.scrollTop;
-        }
+        if (activeTab !== tab) tabScrollPos[activeTab] = appScroll.scrollTop;
         activeTab = tab;
-        document.querySelectorAll('.nav-btn').forEach((b) => {
-          b.classList.toggle('active', b.dataset.tab === tab);
-        });
+        document.querySelectorAll('.nav-btn').forEach((b) => b.classList.toggle('active', b.dataset.tab === tab));
         el('weightTab').classList.toggle('active', tab === 'weight');
         el('caloriesTab').classList.toggle('active', tab === 'calories');
 
@@ -2672,14 +1763,10 @@
           appScroll.scrollTop = tabScrollPos.calories || 0;
         }
       }
+      document.querySelectorAll('.nav-btn').forEach((btn) => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
 
-      document.querySelectorAll('.nav-btn').forEach((btn) => {
-        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-      });
-
-      // Settings Tab Switching
+      // Settings Tabs
       function switchSettingsTab(stab) {
-        activeSettingsTab = stab;
         document.querySelectorAll('.settings-tab-btn').forEach((b) => {
           const on = b.dataset.stab === stab;
           b.classList.toggle('active', on);
@@ -2688,20 +1775,15 @@
         el('settingsPaneGoal').classList.toggle('active', stab === 'goal');
         el('settingsPaneThemes').classList.toggle('active', stab === 'themes');
         el('settingsPaneData').classList.toggle('active', stab === 'data');
-
-        if (stab === 'themes') {
-          renderThemeGrid();
-        } else if (stab === 'data') {
+        if (stab === 'themes') renderThemeGrid();
+        if (stab === 'data') {
           el('dataStatWeights').textContent = state.weights.length.toLocaleString();
           el('dataStatCalDays').textContent = Object.keys(state.calories).length.toLocaleString();
         }
       }
+      document.querySelectorAll('.settings-tab-btn').forEach((btn) => btn.addEventListener('click', () => switchSettingsTab(btn.dataset.stab)));
 
-      document.querySelectorAll('.settings-tab-btn').forEach((btn) => {
-        btn.addEventListener('click', () => switchSettingsTab(btn.dataset.stab));
-      });
-
-      // Weight Tab Rendering
+      // Weight Tab
       function renderWeightTab() {
         const m = getMetrics();
         deficitWarn.classList.toggle('show', state.settings.configured && !m.valid);
@@ -2712,9 +1794,7 @@
 
         if (m.valid) {
           dayCounterText.innerHTML = `Day ${m.currentDay} <span class="muted">of ${m.totalDaysDisplay}</span>`;
-          goalEtaBadge.textContent = Date.now() >= m.goalTimestamp
-            ? 'Goal date reached!'
-            : `Est. ${formatShortDate(m.goalTimestamp)}`;
+          goalEtaBadge.textContent = Date.now() >= m.goalTimestamp ? 'Goal date reached!' : `Est. ${formatShortDate(m.goalTimestamp)}`;
           journeyProgressFill.style.width = `${m.progressPct.toFixed(1)}%`;
         } else {
           dayCounterText.innerHTML = `Day ${m.currentDay} <span class="muted">of —</span>`;
@@ -2722,9 +1802,7 @@
           journeyProgressFill.style.width = '0%';
         }
 
-        const latestWeight = state.weights.length > 0
-          ? state.weights[state.weights.length - 1]
-          : null;
+        const latestWeight = state.weights.length > 0 ? state.weights[state.weights.length - 1] : null;
         const currentWeight = latestWeight ? latestWeight.weight : state.settings.startWeight;
         const remainingToGoal = currentWeight - state.settings.goalWeight;
 
@@ -2765,35 +1843,28 @@
         rafId = requestAnimationFrame(tick);
       }
 
-      function buildWeightLogRowHtml(entry, prevEntry, showControls = true) {
+      function buildWeightLogRowHtml(entry, prevEntry) {
         let deltaHtml = '';
         if (prevEntry) {
           const diff = entry.weight - prevEntry.weight;
-          if (Math.abs(diff) < 0.05) {
-            deltaHtml = `<span class="delta-chip delta-flat">0.0</span>`;
-          } else if (diff < 0) {
-            deltaHtml = `<span class="delta-chip delta-down">${diff.toFixed(1)}</span>`;
-          } else {
-            deltaHtml = `<span class="delta-chip delta-up">+${diff.toFixed(1)}</span>`;
-          }
+          if (Math.abs(diff) < 0.05) deltaHtml = `<span class="delta-chip delta-flat">0.0</span>`;
+          else if (diff < 0) deltaHtml = `<span class="delta-chip delta-down">${diff.toFixed(1)}</span>`;
+          else deltaHtml = `<span class="delta-chip delta-up">+${diff.toFixed(1)}</span>`;
         }
-        const actions = showControls ? `
-          <div class="log-actions">
-            <button type="button" class="mini-btn" data-edit-weight="${entry.id}" aria-label="Edit weight">
-              <svg class="icon" style="width:15px;height:15px;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            </button>
-            <button type="button" class="mini-btn del" data-del-weight="${entry.id}" aria-label="Delete weight">
-              <svg class="icon" style="width:15px;height:15px;" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-            </button>
-          </div>` : '';
-
         return `
           <div class="log-row">
             <div class="log-main">
               <div class="log-primary">${entry.weight.toFixed(1)} lbs ${deltaHtml}</div>
               <div class="log-secondary">${formatDateTime(entry.timestamp)}</div>
             </div>
-            ${actions}
+            <div class="log-actions">
+              <button type="button" class="mini-btn" data-edit-weight="${entry.id}" aria-label="Edit weight">
+                <svg class="icon" style="width:15px;height:15px;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </button>
+              <button type="button" class="mini-btn del" data-del-weight="${entry.id}" aria-label="Delete weight">
+                <svg class="icon" style="width:15px;height:15px;" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
           </div>`;
       }
 
@@ -2803,28 +1874,19 @@
           return;
         }
         const desc = [...state.weights].reverse();
-        const top3 = desc.slice(0, 3);
-        recentLogsList.innerHTML = top3.map((entry, idx) => {
-          const prev = desc[idx + 1] || null;
-          return buildWeightLogRowHtml(entry, prev, true);
-        }).join('');
+        recentLogsList.innerHTML = desc.slice(0, 3).map((e, i) => buildWeightLogRowHtml(e, desc[i + 1] || null)).join('');
         attachWeightRowListeners(recentLogsList);
       }
 
       function renderFullHistoryModal() {
         const listEl = el('fullHistoryList');
-        const subEl = el('historyModalSub');
-        subEl.textContent = `${state.weights.length} ${state.weights.length === 1 ? 'entry' : 'entries'} logged`;
-
+        el('historyModalSub').textContent = `${state.weights.length} ${state.weights.length === 1 ? 'entry' : 'entries'} logged`;
         if (state.weights.length === 0) {
           listEl.innerHTML = `<div class="empty-state">No weight logs yet.</div>`;
           return;
         }
         const desc = [...state.weights].reverse();
-        listEl.innerHTML = desc.map((entry, idx) => {
-          const prev = desc[idx + 1] || null;
-          return buildWeightLogRowHtml(entry, prev, true);
-        }).join('');
+        listEl.innerHTML = desc.map((e, i) => buildWeightLogRowHtml(e, desc[i + 1] || null)).join('');
         attachWeightRowListeners(listEl);
       }
 
@@ -2836,22 +1898,18 @@
           btn.addEventListener('click', () => {
             const id = btn.dataset.delWeight;
             const entry = state.weights.find((w) => w.id === id);
-            if (!entry) return;
-            if (!confirm(`Delete ${entry.weight.toFixed(1)} lbs logged on ${formatDateTime(entry.timestamp)}?`)) return;
+            if (!entry || !confirm(`Delete ${entry.weight.toFixed(1)} lbs logged on ${formatDateTime(entry.timestamp)}?`)) return;
             state.weights = state.weights.filter((w) => w.id !== id);
             saveState();
             inspectedState = null;
             hideTooltip();
             renderWeightTab();
-            if (el('historyModal').classList.contains('open')) {
-              renderFullHistoryModal();
-            }
+            if (el('historyModal').classList.contains('open')) renderFullHistoryModal();
             showToast('Weight log deleted');
           });
         });
       }
 
-      // Log / Edit Weight Modal
       function openNewWeightModal() {
         el('weightModalTitle').textContent = 'Log Weight';
         el('editWeightId').value = '';
@@ -2875,16 +1933,12 @@
 
       openLogWeightBtn.addEventListener('click', openNewWeightModal);
       el('historyAddWeightBtn').addEventListener('click', openNewWeightModal);
-
-      el('setNowBtn').addEventListener('click', () => {
-        el('weightDateTimeInput').value = toDateTimeLocalString(new Date());
-      });
+      el('setNowBtn').addEventListener('click', () => { el('weightDateTimeInput').value = toDateTimeLocalString(new Date()); });
 
       el('weightForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const weight = parseFloat(el('weightInput').value);
-        const dtStr = el('weightDateTimeInput').value;
-        const ts = new Date(dtStr).getTime();
+        const ts = new Date(el('weightDateTimeInput').value).getTime();
         if (!Number.isFinite(weight) || weight <= 0 || !Number.isFinite(ts)) {
           showToast('Please enter a valid weight and date');
           return;
@@ -2892,17 +1946,10 @@
         const editId = el('editWeightId').value;
         if (editId) {
           const item = state.weights.find((w) => w.id === editId);
-          if (item) {
-            item.weight = Math.round(weight * 10) / 10;
-            item.timestamp = ts;
-          }
+          if (item) { item.weight = Math.round(weight * 10) / 10; item.timestamp = ts; }
           showToast('Weight updated');
         } else {
-          state.weights.push({
-            id: uid(),
-            weight: Math.round(weight * 10) / 10,
-            timestamp: ts
-          });
+          state.weights.push({ id: uid(), weight: Math.round(weight * 10) / 10, timestamp: ts });
           showToast(`Logged ${weight.toFixed(1)} lbs`);
         }
         saveState();
@@ -2910,9 +1957,7 @@
         inspectedState = null;
         hideTooltip();
         renderWeightTab();
-        if (el('historyModal').classList.contains('open')) {
-          renderFullHistoryModal();
-        }
+        if (el('historyModal').classList.contains('open')) renderFullHistoryModal();
       });
 
       function openHistoryMenu() {
@@ -2922,9 +1967,7 @@
       openHistoryBtn.addEventListener('click', openHistoryMenu);
       el('viewAllLogsInlineBtn').addEventListener('click', openHistoryMenu);
 
-      // ============================================================
-      // CUSTOM HIGH-DPI INTERACTIVE CANVAS GRAPH (THEME-AWARE)
-      // ============================================================
+      // Interactive Theme-Aware HiDPI Canvas Graph
       document.querySelectorAll('.segmented button').forEach((btn) => {
         btn.addEventListener('click', () => {
           chartRange = btn.dataset.range;
@@ -2940,96 +1983,60 @@
         if (pts.length < 2) return segments;
         if (pts.length === 2) {
           const dy = pts[1].y - pts[0].y;
-          segments.push({
-            x0: pts[0].x, y0: pts[0].y,
-            cp1y: pts[0].y + dy / 3,
-            cp2y: pts[1].y - dy / 3,
-            x1: pts[1].x, y1: pts[1].y
-          });
+          segments.push({ x0: pts[0].x, y0: pts[0].y, cp1y: pts[0].y + dy / 3, cp2y: pts[1].y - dy / 3, x1: pts[1].x, y1: pts[1].y });
           return segments;
         }
-
         const n = pts.length;
-        const dx = new Array(n - 1);
-        const dy = new Array(n - 1);
-        const slopes = new Array(n - 1);
-
+        const dx = new Array(n - 1), dy = new Array(n - 1), slopes = new Array(n - 1);
         for (let i = 0; i < n - 1; i++) {
           dx[i] = pts[i + 1].x - pts[i].x;
           dy[i] = pts[i + 1].y - pts[i].y;
           slopes[i] = Math.abs(dx[i]) > 0.001 ? dy[i] / dx[i] : 0;
         }
-
         const tangents = new Array(n);
         tangents[0] = slopes[0];
         tangents[n - 1] = slopes[n - 2];
-
         for (let i = 1; i < n - 1; i++) {
-          if (slopes[i - 1] * slopes[i] <= 0) {
-            tangents[i] = 0;
-          } else {
-            tangents[i] = (slopes[i - 1] + slopes[i]) / 2;
-          }
+          tangents[i] = slopes[i - 1] * slopes[i] <= 0 ? 0 : (slopes[i - 1] + slopes[i]) / 2;
         }
-
         for (let i = 0; i < n - 1; i++) {
           if (Math.abs(slopes[i]) < 1e-6) {
-            tangents[i] = 0;
-            tangents[i + 1] = 0;
+            tangents[i] = 0; tangents[i + 1] = 0;
           } else {
-            const a = tangents[i] / slopes[i];
-            const b = tangents[i + 1] / slopes[i];
-            const h = Math.hypot(a, b);
-            if (h > 3) {
-              const s = 3 / h;
-              tangents[i] = s * a * slopes[i];
-              tangents[i + 1] = s * b * slopes[i];
-            }
+            const a = tangents[i] / slopes[i], b = tangents[i + 1] / slopes[i], h = Math.hypot(a, b);
+            if (h > 3) { const s = 3 / h; tangents[i] = s * a * slopes[i]; tangents[i + 1] = s * b * slopes[i]; }
           }
         }
-
         for (let i = 0; i < n - 1; i++) {
-          const segDx = dx[i];
           segments.push({
-            x0: pts[i].x,
-            y0: pts[i].y,
-            cp1y: pts[i].y + tangents[i] * segDx / 3,
-            cp2y: pts[i + 1].y - tangents[i + 1] * segDx / 3,
-            x1: pts[i + 1].x,
-            y1: pts[i + 1].y
+            x0: pts[i].x, y0: pts[i].y,
+            cp1y: pts[i].y + tangents[i] * dx[i] / 3,
+            cp2y: pts[i + 1].y - tangents[i + 1] * dx[i] / 3,
+            x1: pts[i + 1].x, y1: pts[i + 1].y
           });
         }
         return segments;
       }
 
       function traceMonotonePath(ctx, pts, segments) {
-        if (pts.length === 0) return;
+        if (!pts.length) return;
         ctx.beginPath();
         ctx.moveTo(pts[0].x, pts[0].y);
         for (const seg of segments) {
           const segDx = seg.x1 - seg.x0;
-          if (Math.abs(segDx) <= 0.001) {
-            ctx.lineTo(seg.x1, seg.y1);
-          } else {
-            ctx.bezierCurveTo(
-              seg.x0 + segDx / 3, seg.cp1y,
-              seg.x1 - segDx / 3, seg.cp2y,
-              seg.x1, seg.y1
-            );
-          }
+          if (Math.abs(segDx) <= 0.001) ctx.lineTo(seg.x1, seg.y1);
+          else ctx.bezierCurveTo(seg.x0 + segDx / 3, seg.cp1y, seg.x1 - segDx / 3, seg.cp2y, seg.x1, seg.y1);
         }
       }
 
       function drawChart() {
         if (activeTab !== 'weight') return;
         const rect = chartWrap.getBoundingClientRect();
-        if (rect.width === 0 || rect.height === 0) return;
+        if (!rect.width || !rect.height) return;
 
         const t = getActiveTheme();
         const dpr = Math.min(window.devicePixelRatio || 1, 3);
-        const w = rect.width;
-        const h = rect.height;
-
+        const w = rect.width, h = rect.height;
         if (weightChart.width !== Math.round(w * dpr) || weightChart.height !== Math.round(h * dpr)) {
           weightChart.width = Math.round(w * dpr);
           weightChart.height = Math.round(h * dpr);
@@ -3047,31 +2054,22 @@
         const now = Date.now();
         const startTs = state.settings.startTimestamp;
         const goalTs = m.valid ? m.goalTimestamp : startTs + 30 * MS_PER_DAY;
-
         const firstLogTs = state.weights.length ? state.weights[0].timestamp : startTs;
         const lastLogTs = state.weights.length ? state.weights[state.weights.length - 1].timestamp : startTs;
 
-        let xMin = Math.min(startTs, firstLogTs);
-        let xMax;
-
+        let xMin = Math.min(startTs, firstLogTs), xMax;
         if (chartRange === 'todate') {
           const latestPoint = Math.max(now, lastLogTs);
           const span = Math.max(MS_PER_DAY * 3, latestPoint - xMin);
           xMax = latestPoint + span * 0.16;
-          if (m.valid && xMax > goalTs && latestPoint < goalTs) {
-            xMax = goalTs;
-          }
+          if (m.valid && xMax > goalTs && latestPoint < goalTs) xMax = goalTs;
         } else {
           xMax = Math.max(goalTs, lastLogTs, now);
         }
-
-        if (xMax <= xMin + 60000) {
-          xMax = xMin + 7 * MS_PER_DAY;
-        }
+        if (xMax <= xMin + 60000) xMax = xMin + 7 * MS_PER_DAY;
 
         const projStartTs = Math.max(startTs, xMin);
         const projEndTs = Math.max(projStartTs, Math.min(xMax, Math.max(goalTs, lastLogTs, now)));
-
         const visibleWeights = state.weights.filter((p) => p.timestamp >= xMin && p.timestamp <= xMax);
 
         const yCandidates = [];
@@ -3083,138 +2081,90 @@
         }
         visibleWeights.forEach((p) => yCandidates.push(p.weight));
 
-        let rawYMin = Math.min(...yCandidates);
-        let rawYMax = Math.max(...yCandidates);
-        if (Math.abs(rawYMax - rawYMin) < 2) {
-          rawYMin -= 2;
-          rawYMax += 2;
-        }
+        let rawYMin = Math.min(...yCandidates), rawYMax = Math.max(...yCandidates);
+        if (Math.abs(rawYMax - rawYMin) < 2) { rawYMin -= 2; rawYMax += 2; }
         const yPad = (rawYMax - rawYMin) * 0.13;
-        const yMin = rawYMin - yPad;
-        const yMax = rawYMax + yPad;
+        const yMin = rawYMin - yPad, yMax = rawYMax + yPad;
 
         const xToPx = (ts) => pad.left + ((ts - xMin) / (xMax - xMin)) * plotW;
         const yToPx = (wt) => pad.top + ((yMax - wt) / (yMax - yMin)) * plotH;
         const pxToTs = (px) => xMin + ((px - pad.left) / plotW) * (xMax - xMin);
         const pxToWt = (py) => yMax - ((py - pad.top) / plotH) * (yMax - yMin);
 
-        // Horizontal Gridlines + Y Labels
-        const ySteps = 4;
         ctx.font = '600 11px -apple-system, BlinkMacSystemFont, Roboto, sans-serif';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
-
-        for (let i = 0; i <= ySteps; i++) {
-          const val = yMin + ((yMax - yMin) * i) / ySteps;
+        for (let i = 0; i <= 4; i++) {
+          const val = yMin + ((yMax - yMin) * i) / 4;
           const y = yToPx(val);
           ctx.strokeStyle = t.chartGrid;
           ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(pad.left, y);
-          ctx.lineTo(w - pad.right, y);
-          ctx.stroke();
-
+          ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
           ctx.fillStyle = t.chartAxis;
           ctx.fillText(val.toFixed(1), pad.left - 8, y);
         }
 
-        // X Axis Labels
         const spanDays = (xMax - xMin) / MS_PER_DAY;
-        const xTicks = 4;
         ctx.textBaseline = 'top';
         ctx.fillStyle = t.chartAxis;
-
-        for (let i = 0; i <= xTicks; i++) {
-          const ts = xMin + ((xMax - xMin) * i) / xTicks;
-          const x = xToPx(ts);
-          if (i === 0) ctx.textAlign = 'left';
-          else if (i === xTicks) ctx.textAlign = 'right';
-          else ctx.textAlign = 'center';
-          ctx.fillText(formatAxisDate(ts, spanDays), x, h - pad.bottom + 10);
+        for (let i = 0; i <= 4; i++) {
+          const ts = xMin + ((xMax - xMin) * i) / 4;
+          ctx.textAlign = i === 0 ? 'left' : (i === 4 ? 'right' : 'center');
+          ctx.fillText(formatAxisDate(ts, spanDays), xToPx(ts), h - pad.bottom + 10);
         }
 
-        // Subtle Goal Weight Reference Line
         if (state.settings.goalWeight >= yMin && state.settings.goalWeight <= yMax) {
           const gy = yToPx(state.settings.goalWeight);
           ctx.save();
           ctx.strokeStyle = t.chartGoalLine;
           ctx.setLineDash([3, 5]);
           ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(pad.left, gy);
-          ctx.lineTo(w - pad.right, gy);
-          ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(w - pad.right, gy); ctx.stroke();
           ctx.restore();
         }
 
-        // Projected Diagonal Line + Soft Fill
         if (m.valid && projEndTs > projStartTs) {
-          const px1 = xToPx(projStartTs);
-          const py1 = yToPx(projectedWeightAt(projStartTs));
-          const px2 = xToPx(projEndTs);
-          const py2 = yToPx(projectedWeightAt(projEndTs));
+          const px1 = xToPx(projStartTs), py1 = yToPx(projectedWeightAt(projStartTs));
+          const px2 = xToPx(projEndTs), py2 = yToPx(projectedWeightAt(projEndTs));
 
           const projGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + plotH);
           projGrad.addColorStop(0, t.chartProjFill);
-          projGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          projGrad.addColorStop(1, 'rgba(0,0,0,0)');
           ctx.fillStyle = projGrad;
           ctx.beginPath();
-          ctx.moveTo(px1, py1);
-          ctx.lineTo(px2, py2);
-          ctx.lineTo(px2, pad.top + plotH);
-          ctx.lineTo(px1, pad.top + plotH);
-          ctx.closePath();
-          ctx.fill();
+          ctx.moveTo(px1, py1); ctx.lineTo(px2, py2); ctx.lineTo(px2, pad.top + plotH); ctx.lineTo(px1, pad.top + plotH);
+          ctx.closePath(); ctx.fill();
 
           ctx.save();
           ctx.strokeStyle = t.accent1Bright;
           ctx.lineWidth = 2.2;
           ctx.setLineDash([6, 5]);
-          ctx.beginPath();
-          ctx.moveTo(px1, py1);
-          ctx.lineTo(px2, py2);
-          ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(px1, py1); ctx.lineTo(px2, py2); ctx.stroke();
           ctx.restore();
 
-          // Subtle "Now" dot on projected line
           if (now >= projStartTs && now <= projEndTs) {
-            const nx = xToPx(now);
-            const ny = yToPx(projectedWeightAt(now));
             ctx.beginPath();
-            ctx.arc(nx, ny, 4, 0, Math.PI * 2);
-            ctx.fillStyle = t.surface;
-            ctx.fill();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = t.accent1Bright;
-            ctx.stroke();
+            ctx.arc(xToPx(now), yToPx(projectedWeightAt(now)), 4, 0, Math.PI * 2);
+            ctx.fillStyle = t.surface; ctx.fill();
+            ctx.lineWidth = 2; ctx.strokeStyle = t.accent1Bright; ctx.stroke();
           }
         }
 
-        // Actual Weight Curve & Data Points
-        const screenActualPts = visibleWeights.map((p) => ({
-          ...p,
-          x: xToPx(p.timestamp),
-          y: yToPx(p.weight)
-        }));
-
+        const screenActualPts = visibleWeights.map((p) => ({ ...p, x: xToPx(p.timestamp), y: yToPx(p.weight) }));
         const actualSegments = computeMonotoneSegments(screenActualPts);
 
         if (screenActualPts.length >= 2) {
           const actGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + plotH);
           actGrad.addColorStop(0, t.chartActFill);
-          actGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          actGrad.addColorStop(1, 'rgba(0,0,0,0)');
           traceMonotonePath(ctx, screenActualPts, actualSegments);
           ctx.lineTo(screenActualPts[screenActualPts.length - 1].x, pad.top + plotH);
           ctx.lineTo(screenActualPts[0].x, pad.top + plotH);
-          ctx.closePath();
-          ctx.fillStyle = actGrad;
-          ctx.fill();
+          ctx.closePath(); ctx.fillStyle = actGrad; ctx.fill();
 
           traceMonotonePath(ctx, screenActualPts, actualSegments);
           ctx.strokeStyle = t.accent2Bright;
-          ctx.lineWidth = 2.6;
-          ctx.lineJoin = 'round';
-          ctx.lineCap = 'round';
+          ctx.lineWidth = 2.6; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
           ctx.stroke();
         }
 
@@ -3222,96 +2172,53 @@
         screenActualPts.forEach((pt) => {
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, dotRadius, 0, Math.PI * 2);
-          ctx.fillStyle = t.surface;
-          ctx.fill();
-          ctx.lineWidth = 2.2;
-          ctx.strokeStyle = t.chartDotStroke;
-          ctx.stroke();
+          ctx.fillStyle = t.surface; ctx.fill();
+          ctx.lineWidth = 2.2; ctx.strokeStyle = t.chartDotStroke; ctx.stroke();
         });
 
-        chartLayout = {
-          w, h, pad, plotW, plotH,
-          xMin, xMax, yMin, yMax, spanDays,
-          projStartTs, projEndTs,
-          validProjection: m.valid,
-          xToPx, yToPx, pxToTs, pxToWt,
-          screenActualPts, actualSegments
-        };
+        chartLayout = { w, h, pad, plotW, plotH, xMin, xMax, yMin, yMax, spanDays, projStartTs, projEndTs, validProjection: m.valid, xToPx, yToPx, pxToTs, pxToWt, screenActualPts, actualSegments };
 
-        // Highlight BOTH Projected & Actual markers along the smooth crosshair
         if (inspectedState) {
           const ix = inspectedState.x;
-
           ctx.save();
           ctx.strokeStyle = t.chartCrosshair;
-          ctx.lineWidth = 1;
-          ctx.setLineDash([3, 3]);
-          ctx.beginPath();
-          ctx.moveTo(ix, pad.top);
-          ctx.lineTo(ix, pad.top + plotH);
-          ctx.stroke();
+          ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+          ctx.beginPath(); ctx.moveTo(ix, pad.top); ctx.lineTo(ix, pad.top + plotH); ctx.stroke();
           ctx.restore();
 
           if (inspectedState.projected) {
             const py = inspectedState.projected.y;
-            ctx.beginPath();
-            ctx.arc(ix, py, 8.5, 0, Math.PI * 2);
-            ctx.fillStyle = t.chartProjGlow;
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(ix, py, 4.4, 0, Math.PI * 2);
-            ctx.fillStyle = t.accent1Bright;
-            ctx.fill();
-            ctx.lineWidth = 1.8;
-            ctx.strokeStyle = t.chartHighlightBorder;
-            ctx.stroke();
+            ctx.beginPath(); ctx.arc(ix, py, 8.5, 0, Math.PI * 2); ctx.fillStyle = t.chartProjGlow; ctx.fill();
+            ctx.beginPath(); ctx.arc(ix, py, 4.4, 0, Math.PI * 2); ctx.fillStyle = t.accent1Bright; ctx.fill();
+            ctx.lineWidth = 1.8; ctx.strokeStyle = t.chartHighlightBorder; ctx.stroke();
           }
-
           if (inspectedState.actual) {
             const ay = inspectedState.actual.y;
-            ctx.beginPath();
-            ctx.arc(ix, ay, 8.5, 0, Math.PI * 2);
-            ctx.fillStyle = t.chartActGlow;
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(ix, ay, 4.6, 0, Math.PI * 2);
-            ctx.fillStyle = t.accent2Bright;
-            ctx.fill();
-            ctx.lineWidth = 1.8;
-            ctx.strokeStyle = t.chartHighlightBorder;
-            ctx.stroke();
+            ctx.beginPath(); ctx.arc(ix, ay, 8.5, 0, Math.PI * 2); ctx.fillStyle = t.chartActGlow; ctx.fill();
+            ctx.beginPath(); ctx.arc(ix, ay, 4.6, 0, Math.PI * 2); ctx.fillStyle = t.accent2Bright; ctx.fill();
+            ctx.lineWidth = 1.8; ctx.strokeStyle = t.chartHighlightBorder; ctx.stroke();
           }
         }
       }
 
-      function hideTooltip() {
-        chartTooltip.classList.remove('visible');
-      }
+      function hideTooltip() { chartTooltip.classList.remove('visible'); }
 
       function inspectChartAt(clientX) {
         if (!chartLayout) return;
         const rect = weightChart.getBoundingClientRect();
         const rawX = clientX - rect.left;
         const L = chartLayout;
-
         if (rawX < L.pad.left - 16 || rawX > L.w - L.pad.right + 16) return;
+
         let x = Math.max(L.pad.left, Math.min(L.w - L.pad.right, rawX));
         let ts = L.pxToTs(x);
 
-        let exactPt = null;
-        let minDx = Infinity;
+        let exactPt = null, minDx = Infinity;
         for (const pt of L.screenActualPts) {
           const dx = Math.abs(pt.x - x);
-          if (dx <= 5 && dx < minDx) {
-            minDx = dx;
-            exactPt = pt;
-          }
+          if (dx <= 5 && dx < minDx) { minDx = dx; exactPt = pt; }
         }
-
-        if (exactPt) {
-          x = exactPt.x;
-          ts = exactPt.timestamp;
-        }
+        if (exactPt) { x = exactPt.x; ts = exactPt.timestamp; }
 
         let projected = null;
         if (L.validProjection && ts >= L.projStartTs - 1000 && ts <= L.projEndTs + 1000) {
@@ -3322,41 +2229,20 @@
 
         let actual = null;
         if (exactPt) {
-          actual = {
-            y: exactPt.y,
-            weight: exactPt.weight,
-            exactLog: true,
-            timestamp: exactPt.timestamp
-          };
+          actual = { y: exactPt.y, weight: exactPt.weight, exactLog: true, timestamp: exactPt.timestamp };
         } else if (L.screenActualPts.length === 1) {
           const onlyPt = L.screenActualPts[0];
-          if (Math.abs(onlyPt.x - x) <= 8) {
-            actual = {
-              y: onlyPt.y,
-              weight: onlyPt.weight,
-              exactLog: true,
-              timestamp: onlyPt.timestamp
-            };
-          }
+          if (Math.abs(onlyPt.x - x) <= 8) actual = { y: onlyPt.y, weight: onlyPt.weight, exactLog: true, timestamp: onlyPt.timestamp };
         } else if (L.actualSegments.length > 0) {
-          const firstX = L.screenActualPts[0].x;
-          const lastX = L.screenActualPts[L.screenActualPts.length - 1].x;
+          const firstX = L.screenActualPts[0].x, lastX = L.screenActualPts[L.screenActualPts.length - 1].x;
           if (x >= firstX && x <= lastX) {
             for (const seg of L.actualSegments) {
               if (x >= seg.x0 && x <= seg.x1) {
                 const segDx = seg.x1 - seg.x0;
                 const t = segDx > 0.001 ? (x - seg.x0) / segDx : 0;
                 const mt = 1 - t;
-                const y = (mt * mt * mt * seg.y0)
-                  + (3 * mt * mt * t * seg.cp1y)
-                  + (3 * mt * t * t * seg.cp2y)
-                  + (t * t * t * seg.y1);
-                actual = {
-                  y,
-                  weight: L.pxToWt(y),
-                  exactLog: false,
-                  timestamp: ts
-                };
+                const y = (mt * mt * mt * seg.y0) + (3 * mt * mt * t * seg.cp1y) + (3 * mt * t * t * seg.cp2y) + (t * t * t * seg.y1);
+                actual = { y, weight: L.pxToWt(y), exactLog: false, timestamp: ts };
                 break;
               }
             }
@@ -3364,7 +2250,6 @@
         }
 
         if (!projected && !actual) return;
-
         inspectedState = { x, timestamp: ts, projected, actual };
         drawChart();
         showTooltipFor(inspectedState);
@@ -3376,129 +2261,62 @@
           ? formatDateTime(st.timestamp)
           : formatShortDate(st.timestamp);
 
-        const actualLabel = st.actual
-          ? (st.actual.exactLog ? 'Actual (log)' : 'Actual')
-          : 'Actual';
-        const actualValHtml = st.actual
-          ? `<span class="tt-val">${st.actual.weight.toFixed(1)} lbs</span>`
-          : `<span class="tt-val muted">—</span>`;
-
-        const projValHtml = st.projected
-          ? `<span class="tt-val">${st.projected.weight.toFixed(1)} lbs</span>`
-          : `<span class="tt-val muted">—</span>`;
+        const actualLabel = st.actual && st.actual.exactLog ? 'Actual (log)' : 'Actual';
+        const actualValHtml = st.actual ? `<span class="tt-val">${st.actual.weight.toFixed(1)} lbs</span>` : `<span class="tt-val muted">—</span>`;
+        const projValHtml = st.projected ? `<span class="tt-val">${st.projected.weight.toFixed(1)} lbs</span>` : `<span class="tt-val muted">—</span>`;
 
         let deltaHtml = '';
         if (st.actual && st.projected) {
           const diff = st.actual.weight - st.projected.weight;
           const color = diff <= 0 ? 'var(--accent-1-bright)' : 'var(--rose)';
-          const sign = diff > 0 ? '+' : '';
-          const note = diff <= 0 ? 'ahead of plan' : 'above plan';
-          deltaHtml = `<div class="tt-delta" style="color:${color};">${sign}${diff.toFixed(1)} lbs ${note}</div>`;
+          deltaHtml = `<div class="tt-delta" style="color:${color};">${diff > 0 ? '+' : ''}${diff.toFixed(1)} lbs ${diff <= 0 ? 'ahead of plan' : 'above plan'}</div>`;
         }
 
         chartTooltip.innerHTML = `
           <div class="tt-date-top">${dateHeader}</div>
-          <div class="tt-row">
-            <span class="tt-row-label"><span class="tt-dot actual"></span>${actualLabel}</span>
-            ${actualValHtml}
-          </div>
-          <div class="tt-row">
-            <span class="tt-row-label"><span class="tt-dot projected"></span>Projected</span>
-            ${projValHtml}
-          </div>
+          <div class="tt-row"><span class="tt-row-label"><span class="tt-dot actual"></span>${actualLabel}</span>${actualValHtml}</div>
+          <div class="tt-row"><span class="tt-row-label"><span class="tt-dot projected"></span>Projected</span>${projValHtml}</div>
           ${deltaHtml}
         `;
-
         chartTooltip.classList.add('visible');
 
         const wrapW = chartWrap.clientWidth;
         const ttW = chartTooltip.offsetWidth || 168;
         const ttH = chartTooltip.offsetHeight || 88;
-
-        let left;
-        if (st.x < wrapW * 0.52) {
-          left = st.x + 14;
-          if (left + ttW > wrapW - 6) left = wrapW - ttW - 6;
-        } else {
-          left = st.x - ttW - 14;
-          if (left < 6) left = 6;
-        }
-
-        const refY = st.actual && st.projected
-          ? Math.min(st.actual.y, st.projected.y)
-          : (st.actual ? st.actual.y : st.projected.y);
+        let left = st.x < wrapW * 0.52 ? Math.min(wrapW - ttW - 6, st.x + 14) : Math.max(6, st.x - ttW - 14);
+        const refY = st.actual && st.projected ? Math.min(st.actual.y, st.projected.y) : (st.actual ? st.actual.y : st.projected.y);
         const top = Math.max(8, Math.min(chartWrap.clientHeight - ttH - 34, refY - ttH * 0.35));
-
         chartTooltip.style.left = `${left}px`;
         chartTooltip.style.top = `${top}px`;
       }
 
       let isPointerDown = false;
-      weightChart.addEventListener('pointerdown', (e) => {
-        isPointerDown = true;
-        inspectChartAt(e.clientX);
-      });
-
-      weightChart.addEventListener('pointermove', (e) => {
-        if (e.pointerType === 'mouse' || isPointerDown) {
-          inspectChartAt(e.clientX);
-        }
-      });
-
-      window.addEventListener('pointerup', () => {
-        isPointerDown = false;
-      });
-
-      weightChart.addEventListener('pointercancel', () => {
-        isPointerDown = false;
-      });
-
+      weightChart.addEventListener('pointerdown', (e) => { isPointerDown = true; inspectChartAt(e.clientX); });
+      weightChart.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse' || isPointerDown) inspectChartAt(e.clientX); });
+      window.addEventListener('pointerup', () => { isPointerDown = false; });
+      weightChart.addEventListener('pointercancel', () => { isPointerDown = false; });
       weightChart.addEventListener('pointerleave', (e) => {
-        if (e.pointerType === 'mouse') {
-          inspectedState = null;
-          hideTooltip();
-          drawChart();
-        }
+        if (e.pointerType === 'mouse') { inspectedState = null; hideTooltip(); drawChart(); }
       });
-
       document.addEventListener('pointerdown', (e) => {
-        if (inspectedState && !chartWrap.contains(e.target)) {
-          inspectedState = null;
-          hideTooltip();
-          drawChart();
-        }
+        if (inspectedState && !chartWrap.contains(e.target)) { inspectedState = null; hideTooltip(); drawChart(); }
       });
+      if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => drawChart()).observe(chartWrap);
+      else window.addEventListener('resize', drawChart);
 
-      if (typeof ResizeObserver !== 'undefined') {
-        new ResizeObserver(() => drawChart()).observe(chartWrap);
-      } else {
-        window.addEventListener('resize', drawChart);
-      }
-
-      // ============================================================
-      // CALORIE TRACKER TAB
-      // ============================================================
-      const RING_RADIUS = 66;
-      const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+      // Calorie Tracker
+      const RING_CIRCUMFERENCE = 2 * Math.PI * 66;
       calRingFg.style.strokeDasharray = `${RING_CIRCUMFERENCE}`;
       calRingFg.style.strokeDashoffset = `${RING_CIRCUMFERENCE}`;
 
       function formatCalorieDayLabels(dateKey) {
         const todayKey = getLocalDateKey(new Date());
-        const yesterdayKey = shiftDateKey(todayKey, -1);
-        const tomorrowKey = shiftDateKey(todayKey, 1);
         const dt = parseLocalDateKey(dateKey);
         const fullDate = dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-
         if (dateKey === todayKey) return { main: 'Today', sub: fullDate, isToday: true };
-        if (dateKey === yesterdayKey) return { main: 'Yesterday', sub: fullDate, isToday: false };
-        if (dateKey === tomorrowKey) return { main: 'Tomorrow', sub: fullDate, isToday: false };
-
-        return {
-          main: dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }),
-          sub: dt.getFullYear().toString(),
-          isToday: false
-        };
+        if (dateKey === shiftDateKey(todayKey, -1)) return { main: 'Yesterday', sub: fullDate, isToday: false };
+        if (dateKey === shiftDateKey(todayKey, 1)) return { main: 'Tomorrow', sub: fullDate, isToday: false };
+        return { main: dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }), sub: dt.getFullYear().toString(), isToday: false };
       }
 
       function renderCaloriesTab() {
@@ -3515,22 +2333,17 @@
         const remaining = target - eaten;
         const isOver = remaining < 0;
 
-        const ratio = Math.min(1, Math.max(0, eaten / target));
-        const offset = RING_CIRCUMFERENCE * (1 - ratio);
-        calRingFg.style.strokeDashoffset = `${offset}`;
+        calRingFg.style.strokeDashoffset = `${RING_CIRCUMFERENCE * (1 - Math.min(1, Math.max(0, eaten / target)))}`;
         calRingFg.classList.toggle('over', isOver);
-
         calRemainingNum.textContent = Math.abs(Math.round(remaining)).toLocaleString();
         calRemainingNum.classList.toggle('over', isOver);
         calRemainingLabel.textContent = isOver ? 'kcal over target' : 'kcal left';
 
         calStatTarget.textContent = Math.round(target).toLocaleString();
         calStatEaten.textContent = Math.round(eaten).toLocaleString();
-
         const dayDeficit = Math.round(maint - eaten);
         calStatDeficit.textContent = `${dayDeficit >= 0 ? '' : '+'}${Math.abs(dayDeficit).toLocaleString()}`;
         calStatDeficit.style.color = dayDeficit >= 0 ? 'var(--accent-1-bright)' : 'var(--rose)';
-
         calEntryCount.textContent = `${entries.length} ${entries.length === 1 ? 'item' : 'items'}`;
 
         if (entries.length === 0) {
@@ -3538,11 +2351,8 @@
           return;
         }
 
-        const reversed = [...entries].reverse();
-        calEntriesList.innerHTML = reversed.map((item) => {
-          const timeStr = item.timestamp
-            ? new Date(item.timestamp).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })
-            : '';
+        calEntriesList.innerHTML = [...entries].reverse().map((item) => {
+          const timeStr = item.timestamp ? new Date(item.timestamp).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) : '';
           return `
             <div class="log-row">
               <div class="log-main">
@@ -3560,12 +2370,9 @@
 
         calEntriesList.querySelectorAll('[data-del-cal]').forEach((btn) => {
           btn.addEventListener('click', () => {
-            const id = btn.dataset.delCal;
             const list = state.calories[selectedCalorieDate] || [];
-            state.calories[selectedCalorieDate] = list.filter((i) => i.id !== id);
-            if (state.calories[selectedCalorieDate].length === 0) {
-              delete state.calories[selectedCalorieDate];
-            }
+            state.calories[selectedCalorieDate] = list.filter((i) => i.id !== btn.dataset.delCal);
+            if (!state.calories[selectedCalorieDate].length) delete state.calories[selectedCalorieDate];
             saveState();
             renderCaloriesTab();
             showToast('Entry removed');
@@ -3573,79 +2380,50 @@
         });
       }
 
-      el('prevDayBtn').addEventListener('click', () => {
-        selectedCalorieDate = shiftDateKey(selectedCalorieDate, -1);
-        renderCaloriesTab();
-      });
+      el('prevDayBtn').addEventListener('click', () => { selectedCalorieDate = shiftDateKey(selectedCalorieDate, -1); renderCaloriesTab(); });
+      el('nextDayBtn').addEventListener('click', () => { selectedCalorieDate = shiftDateKey(selectedCalorieDate, 1); renderCaloriesTab(); });
+      calDatePicker.addEventListener('change', (e) => { if (e.target.value) { selectedCalorieDate = e.target.value; renderCaloriesTab(); } });
+      jumpTodayBtn.addEventListener('click', () => { selectedCalorieDate = getLocalDateKey(new Date()); renderCaloriesTab(); });
 
-      el('nextDayBtn').addEventListener('click', () => {
-        selectedCalorieDate = shiftDateKey(selectedCalorieDate, 1);
-        renderCaloriesTab();
-      });
-
-      calDatePicker.addEventListener('change', (e) => {
-        if (e.target.value) {
-          selectedCalorieDate = e.target.value;
-          renderCaloriesTab();
+      // Auto-uppercase first letter live in Calorie Name input
+      el('calNameInput').addEventListener('input', (e) => {
+        const inp = e.target;
+        const val = inp.value;
+        const match = val.match(/^(\s*)([a-z])/);
+        if (match) {
+          const pos = inp.selectionStart;
+          inp.value = match[1] + match[2].toUpperCase() + val.slice(match[0].length);
+          if (pos !== null) inp.setSelectionRange(pos, pos);
         }
       });
 
-      jumpTodayBtn.addEventListener('click', () => {
-        selectedCalorieDate = getLocalDateKey(new Date());
-        renderCaloriesTab();
-      });
-
-      // Add Calories Modal (+)
       addCalorieFab.addEventListener('click', () => {
         const labels = formatCalorieDayLabels(selectedCalorieDate);
         el('calModalDayHint').textContent = `Adding to ${labels.main} (${labels.sub})`;
         el('calAmountInput').value = '';
         el('calNameInput').value = '';
         openModal('calorieModal');
-        setTimeout(() => {
-          el('calAmountInput').focus();
-          syncVisualViewport();
-        }, 120);
+        setTimeout(() => { el('calAmountInput').focus(); syncVisualViewport(); }, 120);
       });
 
       el('calorieForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const kcal = parseFloat(el('calAmountInput').value);
-        if (!Number.isFinite(kcal) || kcal <= 0) {
-          showToast('Enter a valid calorie amount');
-          return;
-        }
+        if (!Number.isFinite(kcal) || kcal <= 0) { showToast('Enter a valid calorie amount'); return; }
         const rawName = el('calNameInput').value.trim();
-        const name = rawName.length > 0 ? rawName : 'Quick add';
-
-        if (!state.calories[selectedCalorieDate]) {
-          state.calories[selectedCalorieDate] = [];
-        }
-        state.calories[selectedCalorieDate].push({
-          id: uid(),
-          name,
-          calories: Math.round(kcal),
-          timestamp: Date.now()
-        });
+        const name = rawName.length > 0 ? rawName.charAt(0).toUpperCase() + rawName.slice(1) : 'Quick add';
+        if (!state.calories[selectedCalorieDate]) state.calories[selectedCalorieDate] = [];
+        state.calories[selectedCalorieDate].push({ id: uid(), name, calories: Math.round(kcal), timestamp: Date.now() });
         saveState();
         closeModal('calorieModal');
         renderCaloriesTab();
         showToast(`Added ${Math.round(kcal)} kcal (${name})`);
       });
 
-      // ============================================================
-      // ONBOARDING & SETTINGS
-      // ============================================================
+      // Onboarding & Settings
       const obInputs = ['obStartWeight', 'obGoalWeight', 'obMaintenance', 'obDailyTarget', 'obStartDate'];
       function refreshOnboardingPreview() {
-        updatePlanPreview(
-          el('obPreview'),
-          el('obStartWeight').value,
-          el('obGoalWeight').value,
-          el('obMaintenance').value,
-          el('obDailyTarget').value,
-          el('obStartDate').value
-        );
+        updatePlanPreview(el('obPreview'), el('obStartWeight').value, el('obGoalWeight').value, el('obMaintenance').value, el('obDailyTarget').value, el('obStartDate').value);
       }
       obInputs.forEach((id) => el(id).addEventListener('input', refreshOnboardingPreview));
 
@@ -3656,11 +2434,7 @@
         const maintenance = parseFloat(el('obMaintenance').value);
         const dailyTarget = parseFloat(el('obDailyTarget').value);
         const startTs = new Date(el('obStartDate').value).getTime();
-
-        if (![startWeight, goalWeight, maintenance, dailyTarget, startTs].every(Number.isFinite)) {
-          showToast('Please fill in all fields');
-          return;
-        }
+        if (![startWeight, goalWeight, maintenance, dailyTarget, startTs].every(Number.isFinite)) { showToast('Please fill in all fields'); return; }
 
         state.settings = {
           ...state.settings,
@@ -3671,15 +2445,7 @@
           dailyTarget: Math.round(dailyTarget),
           startTimestamp: startTs
         };
-
-        if (state.weights.length === 0) {
-          state.weights.push({
-            id: uid(),
-            weight: state.settings.startWeight,
-            timestamp: startTs
-          });
-        }
-
+        if (!state.weights.length) state.weights.push({ id: uid(), weight: state.settings.startWeight, timestamp: startTs });
         saveState();
         onboardingView.classList.remove('open');
         renderWeightTab();
@@ -3688,17 +2454,9 @@
         showToast('You’re all set!');
       });
 
-      // Settings Modal
       const setInputs = ['setStartWeight', 'setGoalWeight', 'setMaintenance', 'setDailyTarget', 'setStartDate'];
       function refreshSettingsPreview() {
-        updatePlanPreview(
-          el('settingsPreview'),
-          el('setStartWeight').value,
-          el('setGoalWeight').value,
-          el('setMaintenance').value,
-          el('setDailyTarget').value,
-          el('setStartDate').value
-        );
+        updatePlanPreview(el('settingsPreview'), el('setStartWeight').value, el('setGoalWeight').value, el('setMaintenance').value, el('setDailyTarget').value, el('setStartDate').value);
       }
       setInputs.forEach((id) => el(id).addEventListener('input', refreshSettingsPreview));
 
@@ -3722,11 +2480,7 @@
         const maintenance = parseFloat(el('setMaintenance').value);
         const dailyTarget = parseFloat(el('setDailyTarget').value);
         const startTs = new Date(el('setStartDate').value).getTime();
-
-        if (![startWeight, goalWeight, maintenance, dailyTarget, startTs].every(Number.isFinite)) {
-          showToast('Please enter valid numbers');
-          return;
-        }
+        if (![startWeight, goalWeight, maintenance, dailyTarget, startTs].every(Number.isFinite)) { showToast('Please enter valid numbers'); return; }
 
         state.settings = {
           ...state.settings,
@@ -3737,7 +2491,6 @@
           dailyTarget: Math.round(dailyTarget),
           startTimestamp: startTs
         };
-
         saveState();
         closeModal('settingsModal');
         inspectedState = null;
@@ -3747,7 +2500,6 @@
         showToast('Settings saved');
       });
 
-      // Export / Import / Reset
       el('exportDataBtn').addEventListener('click', () => {
         const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
@@ -3761,10 +2513,7 @@
         showToast('Backup exported');
       });
 
-      el('importDataBtn').addEventListener('click', () => {
-        el('importFileInput').value = '';
-        el('importFileInput').click();
-      });
+      el('importDataBtn').addEventListener('click', () => { el('importFileInput').value = ''; el('importFileInput').click(); });
 
       el('importFileInput').addEventListener('change', (e) => {
         const file = e.target.files[0];
@@ -3773,7 +2522,7 @@
         reader.onload = () => {
           try {
             const imported = JSON.parse(reader.result);
-            if (!imported || !imported.settings) throw new Error('Invalid backup');
+            if (!imported || !imported.settings) throw new Error('Invalid');
             state = {
               settings: { ...state.settings, ...imported.settings, configured: true },
               weights: Array.isArray(imported.weights) ? imported.weights : [],
@@ -3799,9 +2548,7 @@
         location.reload();
       });
 
-      // ============================================================
-      // INITIALIZE APP
-      // ============================================================
+      // Init
       loadState();
       applyTheme(state.settings.theme || 'obsidian', false);
 
