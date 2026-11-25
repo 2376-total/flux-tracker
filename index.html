@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
-  <meta name="theme-color" content="#090c12" />
-  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" id="metaThemeColor" content="#090c12" />
+  <meta name="color-scheme" id="metaColorScheme" content="dark" />
   <title>Flux — Weight &amp; Calorie Tracker</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23121722'/%3E%3Crect x='0.75' y='0.75' width='30.5' height='30.5' rx='7.25' fill='none' stroke='%23ffffff' stroke-opacity='0.14' stroke-width='1.5'/%3E%3Cg transform='translate(4 4)' fill='none' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18' stroke='%23cbd5e1'/%3E%3Cpath d='M7 14l4-4 4 3 5-6' stroke='%2334d399'/%3E%3C/g%3E%3C/svg%3E" />
+  <link id="siteFavicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23121722'/%3E%3Crect x='0.75' y='0.75' width='30.5' height='30.5' rx='7.25' fill='none' stroke='%23ffffff' stroke-opacity='0.14' stroke-width='1.5'/%3E%3Cg transform='translate(4 4)' fill='none' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18' stroke='%23cbd5e1'/%3E%3Cpath d='M7 14l4-4 4 3 5-6' stroke='%2334d399'/%3E%3C/g%3E%3C/svg%3E" />
   <style>
     :root {
+      --color-scheme: dark;
       --bg: #090c12;
       --surface: #121722;
       --surface-2: #192030;
@@ -18,15 +19,31 @@
       --text: #f1f5f9;
       --text-muted: #8b9bb4;
       --text-dim: #5e6d85;
-      --emerald: #10b981;
-      --emerald-bright: #34d399;
-      --emerald-soft: rgba(16, 185, 129, 0.14);
-      --indigo: #6366f1;
-      --indigo-bright: #818cf8;
-      --indigo-soft: rgba(99, 102, 241, 0.16);
+      --accent-1: #10b981;
+      --accent-1-end: #059669;
+      --accent-1-bright: #34d399;
+      --accent-1-soft: rgba(16, 185, 129, 0.14);
+      --accent-1-btn-text: #031912;
+      --accent-2: #6366f1;
+      --accent-2-end: #4f46e5;
+      --accent-2-bright: #818cf8;
+      --accent-2-soft: rgba(99, 102, 241, 0.16);
+      --accent-2-btn-text: #ffffff;
       --rose: #fb7185;
       --rose-soft: rgba(251, 113, 133, 0.15);
       --amber: #f59e0b;
+      --bg-glow-1: rgba(16, 185, 129, 0.12);
+      --bg-glow-2: rgba(99, 102, 241, 0.09);
+      --header-bg: rgba(9, 12, 18, 0.9);
+      --nav-bg: rgba(13, 17, 26, 0.96);
+      --tooltip-bg: rgba(13, 18, 29, 0.95);
+      --row-bg: rgba(255, 255, 255, 0.028);
+      --nav-active-bg: rgba(255, 255, 255, 0.07);
+      --badge-bg: rgba(255, 255, 255, 0.11);
+      --backdrop-bg: rgba(3, 5, 10, 0.74);
+      --card-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+      --icon-bg: #192030;
+      --icon-axis: #cbd5e1;
       --radius: 20px;
       --nav-height: 68px;
       --vvh: 100dvh;
@@ -41,44 +58,50 @@
     html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
       background-color: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
-      min-height: 100vh;
-      min-height: 100dvh;
-      overscroll-behavior-y: contain;
-      color-scheme: dark;
+      color-scheme: var(--color-scheme);
     }
 
-    body {
+    /* Fixed 3-part viewport shell — locks bottom nav cleanly on Android Firefox */
+    .app-viewport {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background-color: var(--bg);
       background-image:
-        radial-gradient(circle at 50% -10%, rgba(16, 185, 129, 0.12), transparent 48%),
-        radial-gradient(circle at 90% 15%, rgba(99, 102, 241, 0.09), transparent 40%);
-      background-attachment: fixed;
+        radial-gradient(circle at 50% -10%, var(--bg-glow-1), transparent 48%),
+        radial-gradient(circle at 90% 15%, var(--bg-glow-2), transparent 40%);
     }
 
-    .app-shell {
+    /* Top Header */
+    .top-bar {
+      flex-shrink: 0;
+      z-index: 30;
+      background: var(--header-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    .top-bar-inner {
       max-width: 540px;
       margin: 0 auto;
-      padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + 28px);
-      min-height: 100vh;
-      min-height: 100dvh;
-    }
-
-    /* Header */
-    .top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 30;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding: calc(12px + env(safe-area-inset-top, 0px)) 14px 12px;
-      background: rgba(9, 12, 18, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
+      padding: 12px 14px;
     }
 
     .top-bar-title {
@@ -101,13 +124,13 @@
       display: block;
     }
 
-    .title-full {
-      display: none;
-    }
+    .brand-icon .bi-bg { fill: var(--icon-bg); }
+    .brand-icon .bi-border { stroke: var(--border-strong); }
+    .brand-icon .bi-axis { stroke: var(--icon-axis); }
+    .brand-icon .bi-line { stroke: var(--accent-1-bright); }
 
-    .title-short {
-      display: inline;
-    }
+    .title-full { display: none; }
+    .title-short { display: inline; }
 
     @media (min-width: 440px) {
       .title-full { display: inline; }
@@ -121,6 +144,22 @@
       flex-shrink: 0;
     }
 
+    /* Scrollable Middle Area */
+    .app-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .app-content-inner {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* Buttons */
     .btn {
       appearance: none;
       border: 1px solid var(--border);
@@ -154,7 +193,7 @@
       height: 18px;
       padding: 0 5px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--badge-bg);
       color: var(--text);
       font-size: 0.72rem;
       font-weight: 700;
@@ -166,18 +205,18 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--indigo), #4f46e5);
-      border-color: rgba(129, 140, 248, 0.4);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.28);
+      background: linear-gradient(135deg, var(--accent-2), var(--accent-2-end));
+      border-color: var(--accent-2-soft);
+      color: var(--accent-2-btn-text);
+      box-shadow: 0 4px 14px var(--accent-2-soft);
     }
 
     .btn-emerald {
-      background: linear-gradient(135deg, var(--emerald), #059669);
-      border-color: rgba(52, 211, 153, 0.4);
-      color: #031912;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-1-end));
+      border-color: var(--accent-1-soft);
+      color: var(--accent-1-btn-text);
       font-weight: 700;
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.28);
+      box-shadow: 0 4px 14px var(--accent-1-soft);
     }
 
     .btn-danger {
@@ -211,13 +250,17 @@
       flex-shrink: 0;
     }
 
-    /* Main Layout */
+    /* Main Tab Views */
     .tab-view {
       display: none;
-      padding: 14px;
+      padding: 14px 14px 24px;
       flex-direction: column;
       gap: 14px;
       animation: fadeIn 0.2s ease;
+    }
+
+    #caloriesTab {
+      padding-bottom: 92px;
     }
 
     .tab-view.active {
@@ -234,7 +277,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 18px;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+      box-shadow: var(--card-shadow);
     }
 
     .card-header {
@@ -255,9 +298,9 @@
 
     /* Warning Banner */
     .banner-warn {
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.32);
-      color: #fcd34d;
+      background: rgba(245, 158, 11, 0.13);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--amber);
       padding: 12px 14px;
       border-radius: 14px;
       font-size: 0.85rem;
@@ -274,7 +317,7 @@
       position: relative;
       overflow: hidden;
       background:
-        radial-gradient(circle at 85% 10%, rgba(16, 185, 129, 0.13), transparent 55%),
+        radial-gradient(circle at 85% 10%, var(--accent-1-soft), transparent 58%),
         var(--surface);
     }
 
@@ -325,7 +368,7 @@
       height: 100%;
       width: 0%;
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--indigo-bright), var(--emerald-bright));
+      background: linear-gradient(90deg, var(--accent-2-bright), var(--accent-1-bright));
       transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -342,7 +385,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.09em;
-      color: var(--emerald-bright);
+      color: var(--accent-1-bright);
       margin-bottom: 8px;
     }
 
@@ -350,8 +393,8 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--emerald-bright);
-      box-shadow: 0 0 8px var(--emerald-bright);
+      background: var(--accent-1-bright);
+      box-shadow: 0 0 8px var(--accent-1-bright);
       animation: pulse 1.6s ease-in-out infinite;
     }
 
@@ -380,7 +423,7 @@
 
     .burn-micro {
       font-size: clamp(1.25rem, 5.2vw, 1.65rem);
-      color: var(--emerald-bright);
+      color: var(--accent-1-bright);
       font-weight: 700;
       opacity: 0.92;
     }
@@ -408,7 +451,7 @@
     }
 
     .stat-box {
-      background: rgba(255, 255, 255, 0.025);
+      background: var(--row-bg);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 10px 8px;
@@ -469,13 +512,13 @@
     }
 
     .legend-line.actual {
-      background: var(--indigo-bright);
+      background: var(--accent-2-bright);
     }
 
     .legend-line.projected {
       background: repeating-linear-gradient(
         90deg,
-        var(--emerald-bright) 0 4px,
+        var(--accent-1-bright) 0 4px,
         transparent 4px 7px
       );
     }
@@ -529,11 +572,11 @@
       top: 10px;
       left: 10px;
       pointer-events: none;
-      background: rgba(13, 18, 29, 0.94);
+      background: var(--tooltip-bg);
       border: 1px solid var(--border-strong);
       border-radius: 12px;
       padding: 9px 11px;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.48);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
       min-width: 158px;
       max-width: 210px;
       opacity: 0;
@@ -585,8 +628,8 @@
       flex-shrink: 0;
     }
 
-    .tt-dot.actual { background: var(--indigo-bright); }
-    .tt-dot.projected { background: var(--emerald-bright); }
+    .tt-dot.actual { background: var(--accent-2-bright); }
+    .tt-dot.projected { background: var(--accent-1-bright); }
 
     .tt-val {
       font-weight: 800;
@@ -628,7 +671,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      background: rgba(255, 255, 255, 0.025);
+      background: var(--row-bg);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 11px 13px;
@@ -667,8 +710,8 @@
     }
 
     .delta-down {
-      background: var(--emerald-soft);
-      color: var(--emerald-bright);
+      background: var(--accent-1-soft);
+      color: var(--accent-1-bright);
     }
 
     .delta-up {
@@ -707,8 +750,8 @@
 
     .mini-btn.del {
       color: var(--rose);
-      border-color: rgba(251, 113, 133, 0.22);
-      background: rgba(251, 113, 133, 0.08);
+      border-color: rgba(251, 113, 133, 0.25);
+      background: var(--rose-soft);
     }
 
     /* Calorie Tracker Tab */
@@ -767,9 +810,9 @@
       margin: -4px auto 0;
       font-size: 0.76rem;
       padding: 6px 12px;
-      background: var(--indigo-soft);
-      border-color: rgba(129, 140, 248, 0.32);
-      color: var(--indigo-bright);
+      background: var(--accent-2-soft);
+      border-color: var(--accent-2-soft);
+      color: var(--accent-2-bright);
     }
 
     .today-jump.show {
@@ -782,7 +825,7 @@
       align-items: center;
       gap: 16px;
       background:
-        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.13), transparent 60%),
+        radial-gradient(circle at 50% 0%, var(--accent-2-soft), transparent 60%),
         var(--surface);
     }
 
@@ -809,7 +852,7 @@
 
     .ring-fg {
       fill: none;
-      stroke: var(--emerald-bright);
+      stroke: var(--accent-1-bright);
       stroke-width: 13;
       stroke-linecap: round;
       transition: stroke-dashoffset 0.45s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.25s ease;
@@ -854,7 +897,7 @@
     .cal-entry-kcal {
       font-size: 0.96rem;
       font-weight: 800;
-      color: var(--indigo-bright);
+      color: var(--accent-2-bright);
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
@@ -868,21 +911,21 @@
       border-radius: 16px;
     }
 
-    /* Floating Plus Button (Calorie Tab) */
+    /* Floating Plus Button (anchored inside .app-viewport above bottom nav) */
     .fab {
-      position: fixed;
+      position: absolute;
       right: max(18px, calc(50% - 270px + 18px));
-      bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + 18px);
+      bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + 16px);
       width: 58px;
       height: 58px;
       border-radius: 50%;
-      border: 1px solid rgba(129, 140, 248, 0.45);
-      background: linear-gradient(135deg, var(--indigo), #4f46e5);
-      color: #fff;
+      border: 1px solid var(--accent-2-soft);
+      background: linear-gradient(135deg, var(--accent-2), var(--accent-2-end));
+      color: var(--accent-2-btn-text);
       display: none;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 28px rgba(79, 70, 229, 0.48);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.36);
       cursor: pointer;
       z-index: 35;
       transition: transform 0.14s ease;
@@ -902,14 +945,11 @@
       stroke-width: 2.5;
     }
 
-    /* Bottom Navigation */
+    /* Truly Fixed Bottom Navigation (bottom flex child of locked viewport) */
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      flex-shrink: 0;
       z-index: 40;
-      background: rgba(13, 17, 26, 0.92);
+      background: var(--nav-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
@@ -945,15 +985,15 @@
 
     .nav-btn.active {
       color: var(--text);
-      background: rgba(255, 255, 255, 0.06);
+      background: var(--nav-active-bg);
     }
 
     .nav-btn.active .icon {
-      color: var(--emerald-bright);
+      color: var(--accent-1-bright);
     }
 
     .nav-btn[data-tab="calories"].active .icon {
-      color: var(--indigo-bright);
+      color: var(--accent-2-bright);
     }
 
     /* Centered Keyboard-Safe Modals */
@@ -964,7 +1004,7 @@
       right: 0;
       height: var(--vvh, 100dvh);
       z-index: 60;
-      background: rgba(3, 5, 10, 0.74);
+      background: var(--backdrop-bg);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       display: none;
@@ -997,7 +1037,7 @@
       border: 1px solid var(--border-strong);
       border-radius: 22px;
       padding: 18px 18px 20px;
-      box-shadow: 0 20px 54px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 54px rgba(0, 0, 0, 0.45);
       animation: popIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -1018,6 +1058,174 @@
       font-size: 1.12rem;
       font-weight: 800;
       letter-spacing: -0.02em;
+    }
+
+    /* Settings Tabs */
+    .settings-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 4px;
+      margin-bottom: 16px;
+    }
+
+    .settings-tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 9px 6px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    }
+
+    .settings-tab-btn .icon {
+      width: 15px;
+      height: 15px;
+    }
+
+    .settings-tab-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+    }
+
+    .settings-pane {
+      display: none;
+      animation: fadeIn 0.16s ease;
+    }
+
+    .settings-pane.active {
+      display: block;
+    }
+
+    /* Theme Picker Grid */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .theme-card {
+      appearance: none;
+      border: 1.5px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 16px;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.12s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+    }
+
+    .theme-card:active {
+      transform: scale(0.97);
+    }
+
+    .theme-card.active {
+      border-color: var(--accent-2-bright);
+      box-shadow: 0 0 0 2px var(--accent-2-soft);
+    }
+
+    .theme-preview {
+      height: 50px;
+      border-radius: 10px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(128, 128, 128, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .theme-preview-bars {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .theme-preview-pill {
+      height: 8px;
+      width: 44%;
+      border-radius: 999px;
+    }
+
+    .theme-preview-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .theme-preview-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .theme-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .theme-name {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .theme-tag {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .theme-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      color: var(--accent-2-btn-text);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .theme-card.active .theme-check {
+      display: inline-flex;
+    }
+
+    /* Data Summary in Backup Tab */
+    .data-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .data-help {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin: 0 0 14px;
     }
 
     /* Form Styling (16px prevents mobile auto-zoom) */
@@ -1053,12 +1261,12 @@
       font-weight: 500;
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
-      color-scheme: dark;
+      color-scheme: var(--color-scheme);
     }
 
     .input:focus {
-      border-color: var(--indigo-bright);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22);
+      border-color: var(--accent-2-bright);
+      box-shadow: 0 0 0 3px var(--accent-2-soft);
     }
 
     .input-inline-row {
@@ -1084,7 +1292,7 @@
     }
 
     .preview-box strong {
-      color: var(--emerald-bright);
+      color: var(--accent-1-bright);
     }
 
     .preview-box.warn strong {
@@ -1111,8 +1319,8 @@
       z-index: 95;
       background: var(--bg);
       background-image:
-        radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.16), transparent 50%),
-        radial-gradient(circle at 80% 90%, rgba(99, 102, 241, 0.14), transparent 50%);
+        radial-gradient(circle at 50% 0%, var(--bg-glow-1), transparent 50%),
+        radial-gradient(circle at 80% 90%, var(--bg-glow-2), transparent 50%);
       overflow-y: auto;
       display: none;
       padding: 24px 18px calc(32px + env(safe-area-inset-bottom, 0px));
@@ -1129,7 +1337,7 @@
       border: 1px solid var(--border-strong);
       border-radius: 24px;
       padding: 22px 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
     }
 
     .onboarding-title {
@@ -1160,7 +1368,7 @@
       border-radius: 999px;
       font-size: 0.85rem;
       font-weight: 600;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease, transform 0.2s ease;
@@ -1199,14 +1407,14 @@
     <div class="onboarding-card">
       <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
         <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true">
-          <rect width="32" height="32" rx="8" fill="#192030"/>
-          <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="7.25" fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="1.5"/>
+          <rect class="bi-bg" width="32" height="32" rx="8"/>
+          <rect class="bi-border" x="0.75" y="0.75" width="30.5" height="30.5" rx="7.25" fill="none" stroke-width="1.5"/>
           <g transform="translate(4 4)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18" stroke="#cbd5e1"/>
-            <path d="M7 14l4-4 4 3 5-6" stroke="#34d399"/>
+            <path class="bi-axis" d="M3 3v18h18"/>
+            <path class="bi-line" d="M7 14l4-4 4 3 5-6"/>
           </g>
         </svg>
-        <span style="font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--emerald-bright);">Flux Setup</span>
+        <span style="font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent-1-bright);">Flux Setup</span>
       </div>
       <h1 class="onboarding-title">Set up your goal</h1>
       <p class="onboarding-sub">Enter your starting weight, goal weight, and calorie numbers. Everything is saved privately on your phone.</p>
@@ -1248,201 +1456,205 @@
     </div>
   </div>
 
-  <!-- Main Application Shell -->
-  <div class="app-shell">
+  <!-- Locked Viewport Shell -->
+  <div class="app-viewport">
     <header class="top-bar">
-      <div class="top-bar-title">
-        <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true">
-          <rect width="32" height="32" rx="8" fill="#192030"/>
-          <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="7.25" fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="1.5"/>
-          <g transform="translate(4 4)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18" stroke="#cbd5e1"/>
-            <path d="M7 14l4-4 4 3 5-6" stroke="#34d399"/>
-          </g>
-        </svg>
-        <span id="headerTitle">
-          <span class="title-short">Weight</span>
-          <span class="title-full">Weight Tracker</span>
-        </span>
-      </div>
-      <div class="top-actions">
-        <button id="openHistoryBtn" class="btn" title="All logged weights" aria-label="Weight history">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-          <span>Logs</span>
-          <span id="historyBadge" class="btn-badge empty">0</span>
-        </button>
-        <button id="openLogWeightBtn" class="btn btn-primary" aria-label="Log weight">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-          <span>Weight</span>
-        </button>
-        <button id="openSettingsBtn" class="btn btn-icon" title="Settings" aria-label="Settings">
-          <svg class="icon" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      <div class="top-bar-inner">
+        <div class="top-bar-title">
+          <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true">
+            <rect class="bi-bg" width="32" height="32" rx="8"/>
+            <rect class="bi-border" x="0.75" y="0.75" width="30.5" height="30.5" rx="7.25" fill="none" stroke-width="1.5"/>
+            <g transform="translate(4 4)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path class="bi-axis" d="M3 3v18h18"/>
+              <path class="bi-line" d="M7 14l4-4 4 3 5-6"/>
+            </g>
           </svg>
-        </button>
+          <span id="headerTitle">
+            <span class="title-short">Weight</span>
+            <span class="title-full">Weight Tracker</span>
+          </span>
+        </div>
+        <div class="top-actions">
+          <button id="openHistoryBtn" class="btn" title="All logged weights" aria-label="Weight history">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+            <span>Logs</span>
+            <span id="historyBadge" class="btn-badge empty">0</span>
+          </button>
+          <button id="openLogWeightBtn" class="btn btn-primary" aria-label="Log weight">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Weight</span>
+          </button>
+          <button id="openSettingsBtn" class="btn btn-icon" title="Settings" aria-label="Settings">
+            <svg class="icon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </header>
 
-    <!-- WEIGHT TRACKER TAB -->
-    <main id="weightTab" class="tab-view active">
-      <div id="deficitWarn" class="banner-warn">
-        Your Maintenance calories must be higher than your Daily Target (and Start Weight higher than Goal Weight) to calculate live fat burn and your projected curve. Tap the gear icon to adjust Settings.
+    <!-- Scrollable Content Pane -->
+    <div id="appScroll" class="app-scroll">
+      <div class="app-content-inner">
+        <!-- WEIGHT TRACKER TAB -->
+        <main id="weightTab" class="tab-view active">
+          <div id="deficitWarn" class="banner-warn">
+            Your Maintenance calories must be higher than your Daily Target (and Start Weight higher than Goal Weight) to calculate live fat burn and your projected curve. Tap the gear icon to adjust Settings.
+          </div>
+
+          <section class="card hero-card">
+            <div class="day-row">
+              <div class="day-pill" id="dayCounterText">
+                Day 1 <span class="muted">of —</span>
+              </div>
+              <div class="goal-eta" id="goalEtaBadge">Est. Goal: —</div>
+            </div>
+
+            <div class="progress-track">
+              <div id="journeyProgressFill" class="progress-fill"></div>
+            </div>
+
+            <div class="burn-block">
+              <div class="burn-label">
+                <span class="live-dot"></span>
+                Realtime Fat Burned
+              </div>
+              <div class="burn-counter" aria-live="off">
+                <span id="burnMain" class="burn-main">0.0000</span><span id="burnMicro" class="burn-micro">0000</span>
+                <span class="burn-unit">lbs</span>
+              </div>
+              <div id="burnSubText" class="burn-sub">0.00 kcal cumulative deficit</div>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-box">
+                <div class="stat-label">Latest</div>
+                <div id="statLatest" class="stat-value">—</div>
+                <div id="statLatestSub" class="stat-sub">lbs</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Projected</div>
+                <div id="statProjected" class="stat-value">—</div>
+                <div class="stat-sub">right now</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">To Goal</div>
+                <div id="statToGoal" class="stat-value">—</div>
+                <div id="statGoalTarget" class="stat-sub">Goal: —</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="chart-controls">
+              <div class="legend">
+                <span class="legend-item"><span class="legend-line projected"></span>Projected</span>
+                <span class="legend-item"><span class="legend-line actual"></span>Actual</span>
+              </div>
+              <div class="segmented" role="group" aria-label="Chart range">
+                <button type="button" class="active" data-range="goal">Full Goal</button>
+                <button type="button" data-range="todate">To Date</button>
+              </div>
+            </div>
+
+            <div class="chart-wrap" id="chartWrap">
+              <canvas id="weightChart"></canvas>
+              <div id="chartTooltip" class="chart-tooltip"></div>
+            </div>
+            <div class="chart-hint">Drag across graph to compare actual &amp; projected weights</div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">
+              <span class="card-title">Recent Weigh-Ins</span>
+              <button id="viewAllLogsInlineBtn" class="btn" style="padding:6px 11px;font-size:0.78rem;">View All</button>
+            </div>
+            <div id="recentLogsList" class="log-list"></div>
+          </section>
+        </main>
+
+        <!-- CALORIE TRACKER TAB -->
+        <main id="caloriesTab" class="tab-view">
+          <div class="date-switcher">
+            <button id="prevDayBtn" class="btn btn-icon" aria-label="Previous day">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="date-center" title="Pick a date">
+              <div id="calDateMain" class="date-label-main">Today</div>
+              <div id="calDateSub" class="date-label-sub">—</div>
+              <input id="calDatePicker" class="hidden-date-input" type="date" aria-label="Select date" />
+            </div>
+
+            <button id="nextDayBtn" class="btn btn-icon" aria-label="Next day">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+
+          <button id="jumpTodayBtn" class="btn today-jump">Back to Today</button>
+
+          <section class="card cal-ring-card">
+            <div class="ring-wrap">
+              <svg class="ring-svg" viewBox="0 0 160 160">
+                <circle class="ring-bg" cx="80" cy="80" r="66"></circle>
+                <circle id="calRingFg" class="ring-fg" cx="80" cy="80" r="66"></circle>
+              </svg>
+              <div class="ring-center">
+                <div id="calRemainingNum" class="ring-number">0</div>
+                <div id="calRemainingLabel" class="ring-caption">kcal left</div>
+              </div>
+            </div>
+
+            <div class="cal-stats-grid">
+              <div class="stat-box">
+                <div class="stat-label">Target</div>
+                <div id="calStatTarget" class="stat-value">0</div>
+                <div class="stat-sub">kcal/day</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Eaten</div>
+                <div id="calStatEaten" class="stat-value">0</div>
+                <div class="stat-sub">logged</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Deficit</div>
+                <div id="calStatDeficit" class="stat-value">0</div>
+                <div class="stat-sub">vs maint.</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">
+              <span class="card-title">Logged Calories</span>
+              <span id="calEntryCount" style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">0 items</span>
+            </div>
+            <div id="calEntriesList" class="log-list"></div>
+          </section>
+        </main>
       </div>
-
-      <!-- Hero Card: Day X of Y + Realtime Fat Burned -->
-      <section class="card hero-card">
-        <div class="day-row">
-          <div class="day-pill" id="dayCounterText">
-            Day 1 <span class="muted">of —</span>
-          </div>
-          <div class="goal-eta" id="goalEtaBadge">Est. Goal: —</div>
-        </div>
-
-        <div class="progress-track">
-          <div id="journeyProgressFill" class="progress-fill"></div>
-        </div>
-
-        <div class="burn-block">
-          <div class="burn-label">
-            <span class="live-dot"></span>
-            Realtime Fat Burned
-          </div>
-          <div class="burn-counter" aria-live="off">
-            <span id="burnMain" class="burn-main">0.0000</span><span id="burnMicro" class="burn-micro">0000</span>
-            <span class="burn-unit">lbs</span>
-          </div>
-          <div id="burnSubText" class="burn-sub">0.00 kcal cumulative deficit</div>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="stat-label">Latest</div>
-            <div id="statLatest" class="stat-value">—</div>
-            <div id="statLatestSub" class="stat-sub">lbs</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Projected</div>
-            <div id="statProjected" class="stat-value">—</div>
-            <div class="stat-sub">right now</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">To Goal</div>
-            <div id="statToGoal" class="stat-value">—</div>
-            <div id="statGoalTarget" class="stat-sub">Goal: —</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Visual Weight Graph Card -->
-      <section class="card">
-        <div class="chart-controls">
-          <div class="legend">
-            <span class="legend-item"><span class="legend-line projected"></span>Projected</span>
-            <span class="legend-item"><span class="legend-line actual"></span>Actual</span>
-          </div>
-          <div class="segmented" role="group" aria-label="Chart range">
-            <button type="button" class="active" data-range="goal">Full Goal</button>
-            <button type="button" data-range="todate">To Date</button>
-          </div>
-        </div>
-
-        <div class="chart-wrap" id="chartWrap">
-          <canvas id="weightChart"></canvas>
-          <div id="chartTooltip" class="chart-tooltip"></div>
-        </div>
-        <div class="chart-hint">Drag across graph to compare actual &amp; projected weights</div>
-      </section>
-
-      <!-- Recent Logs Quick Preview -->
-      <section class="card">
-        <div class="card-header">
-          <span class="card-title">Recent Weigh-Ins</span>
-          <button id="viewAllLogsInlineBtn" class="btn" style="padding:6px 11px;font-size:0.78rem;">View All</button>
-        </div>
-        <div id="recentLogsList" class="log-list"></div>
-      </section>
-    </main>
-
-    <!-- CALORIE TRACKER TAB -->
-    <main id="caloriesTab" class="tab-view">
-      <div class="date-switcher">
-        <button id="prevDayBtn" class="btn btn-icon" aria-label="Previous day">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-
-        <div class="date-center" title="Pick a date">
-          <div id="calDateMain" class="date-label-main">Today</div>
-          <div id="calDateSub" class="date-label-sub">—</div>
-          <input id="calDatePicker" class="hidden-date-input" type="date" aria-label="Select date" />
-        </div>
-
-        <button id="nextDayBtn" class="btn btn-icon" aria-label="Next day">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-      </div>
-
-      <button id="jumpTodayBtn" class="btn today-jump">Back to Today</button>
-
-      <section class="card cal-ring-card">
-        <div class="ring-wrap">
-          <svg class="ring-svg" viewBox="0 0 160 160">
-            <circle class="ring-bg" cx="80" cy="80" r="66"></circle>
-            <circle id="calRingFg" class="ring-fg" cx="80" cy="80" r="66"></circle>
-          </svg>
-          <div class="ring-center">
-            <div id="calRemainingNum" class="ring-number">0</div>
-            <div id="calRemainingLabel" class="ring-caption">kcal left</div>
-          </div>
-        </div>
-
-        <div class="cal-stats-grid">
-          <div class="stat-box">
-            <div class="stat-label">Target</div>
-            <div id="calStatTarget" class="stat-value">0</div>
-            <div class="stat-sub">kcal/day</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Eaten</div>
-            <div id="calStatEaten" class="stat-value">0</div>
-            <div class="stat-sub">logged</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Deficit</div>
-            <div id="calStatDeficit" class="stat-value">0</div>
-            <div class="stat-sub">vs maint.</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-header">
-          <span class="card-title">Logged Calories</span>
-          <span id="calEntryCount" style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">0 items</span>
-        </div>
-        <div id="calEntriesList" class="log-list"></div>
-      </section>
-    </main>
-  </div>
-
-  <!-- Floating Plus Button for Calorie Tracker -->
-  <button id="addCalorieFab" class="fab" aria-label="Add calories" title="Add calories">
-    <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-  </button>
-
-  <!-- Bottom Tab Navigation -->
-  <nav class="bottom-nav" aria-label="Main navigation">
-    <div class="bottom-nav-inner">
-      <button class="nav-btn active" data-tab="weight" type="button">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-6"/></svg>
-        <span>Weight Tracker</span>
-      </button>
-      <button class="nav-btn" data-tab="calories" type="button">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2c.6 3.5-2 5.5-2 8.5a4 4 0 0 0 8 0c0-3.2-2.2-5.5-2.6-8.5 2.8 1.6 5.6 5 5.6 9.5a9 9 0 1 1-18 0c0-3.8 2.1-6.9 5-8.5-.3 1.7.2 3.1 1 4 .3-2.2 1.4-4 3-5z"/></svg>
-        <span>Calorie Tracker</span>
-      </button>
     </div>
-  </nav>
+
+    <!-- Floating Plus Button for Calorie Tracker -->
+    <button id="addCalorieFab" class="fab" aria-label="Add calories" title="Add calories">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+
+    <!-- Truly Fixed Bottom Navigation -->
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <div class="bottom-nav-inner">
+        <button class="nav-btn active" data-tab="weight" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-6"/></svg>
+          <span>Weight Tracker</span>
+        </button>
+        <button class="nav-btn" data-tab="calories" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 2c.6 3.5-2 5.5-2 8.5a4 4 0 0 0 8 0c0-3.2-2.2-5.5-2.6-8.5 2.8 1.6 5.6 5 5.6 9.5a9 9 0 1 1-18 0c0-3.8 2.1-6.9 5-8.5-.3 1.7.2 3.1 1 4 .3-2.2 1.4-4 3-5z"/></svg>
+          <span>Calorie Tracker</span>
+        </button>
+      </div>
+    </nav>
+  </div>
 
   <!-- MODAL: All Weight Logs Menu (z-index: 60) -->
   <div id="historyModal" class="modal-backdrop" role="dialog" aria-modal="true">
@@ -1463,7 +1675,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Log / Edit Weight (z-index: 80 — always cleanly above Weight History) -->
+  <!-- MODAL: Log / Edit Weight (z-index: 80) -->
   <div id="weightModal" class="modal-backdrop modal-top" role="dialog" aria-modal="true">
     <div class="modal-sheet">
       <div class="sheet-header">
@@ -1525,7 +1737,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Settings -->
+  <!-- MODAL: Settings (Tabbed: Goal | Themes | Backup) -->
   <div id="settingsModal" class="modal-backdrop modal-top" role="dialog" aria-modal="true">
     <div class="modal-sheet">
       <div class="sheet-header">
@@ -1534,50 +1746,100 @@
           <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
         </button>
       </div>
-      <form id="settingsForm">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="field-label" for="setStartWeight">Start Weight (lbs)</label>
-            <input class="input" id="setStartWeight" type="number" inputmode="decimal" step="0.1" min="40" max="1000" required />
-          </div>
-          <div class="form-group">
-            <label class="field-label" for="setGoalWeight">Goal Weight (lbs)</label>
-            <input class="input" id="setGoalWeight" type="number" inputmode="decimal" step="0.1" min="40" max="1000" required />
-          </div>
-        </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="field-label" for="setMaintenance">Maintenance (kcal)</label>
-            <input class="input" id="setMaintenance" type="number" inputmode="numeric" step="1" min="500" max="10000" required />
-          </div>
-          <div class="form-group">
-            <label class="field-label" for="setDailyTarget">Daily Target (kcal)</label>
-            <input class="input" id="setDailyTarget" type="number" inputmode="numeric" step="1" min="500" max="10000" required />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="field-label" for="setStartDate">Start Date &amp; Time</label>
-          <input class="input" id="setStartDate" type="datetime-local" required />
-        </div>
-
-        <div id="settingsPreview" class="preview-box"></div>
-
-        <button type="submit" class="btn btn-emerald btn-block">Save Settings</button>
-      </form>
-
-      <div class="divider"></div>
-
-      <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px;">
-        Backup &amp; Data
+      <div class="settings-tabs" role="tablist" aria-label="Settings sections">
+        <button type="button" class="settings-tab-btn active" data-stab="goal" role="tab" aria-selected="true">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg>
+          <span>Goal</span>
+        </button>
+        <button type="button" class="settings-tab-btn" data-stab="themes" role="tab" aria-selected="false">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          <span>Themes</span>
+        </button>
+        <button type="button" class="settings-tab-btn" data-stab="data" role="tab" aria-selected="false">
+          <svg class="icon" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <span>Backup</span>
+        </button>
       </div>
-      <div class="backup-row">
-        <button type="button" id="exportDataBtn" class="btn" style="border-radius:12px;padding:11px;">Export Backup</button>
-        <button type="button" id="importDataBtn" class="btn" style="border-radius:12px;padding:11px;">Import Backup</button>
+
+      <!-- Tab 1: Weight & Goal Info -->
+      <div id="settingsPaneGoal" class="settings-pane active" role="tabpanel">
+        <form id="settingsForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="field-label" for="setStartWeight">Start Weight (lbs)</label>
+              <input class="input" id="setStartWeight" type="number" inputmode="decimal" step="0.1" min="40" max="1000" required />
+            </div>
+            <div class="form-group">
+              <label class="field-label" for="setGoalWeight">Goal Weight (lbs)</label>
+              <input class="input" id="setGoalWeight" type="number" inputmode="decimal" step="0.1" min="40" max="1000" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="field-label" for="setMaintenance">Maintenance (kcal)</label>
+              <input class="input" id="setMaintenance" type="number" inputmode="numeric" step="1" min="500" max="10000" required />
+            </div>
+            <div class="form-group">
+              <label class="field-label" for="setDailyTarget">Daily Target (kcal)</label>
+              <input class="input" id="setDailyTarget" type="number" inputmode="numeric" step="1" min="500" max="10000" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label" for="setStartDate">Start Date &amp; Time</label>
+            <input class="input" id="setStartDate" type="datetime-local" required />
+          </div>
+
+          <div id="settingsPreview" class="preview-box"></div>
+
+          <button type="submit" class="btn btn-emerald btn-block">Save Goal Settings</button>
+        </form>
       </div>
-      <input type="file" id="importFileInput" accept="application/json,.json" style="display:none;" />
-      <button type="button" id="resetAllBtn" class="btn btn-danger btn-block">Reset All Data</button>
+
+      <!-- Tab 2: Themes -->
+      <div id="settingsPaneThemes" class="settings-pane" role="tabpanel">
+        <p class="data-help" style="margin-bottom:12px;">Pick a color theme. Your selection saves automatically.</p>
+        <div id="themeGrid" class="theme-grid"></div>
+      </div>
+
+      <!-- Tab 3: Backup & Data -->
+      <div id="settingsPaneData" class="settings-pane" role="tabpanel">
+        <div class="data-summary">
+          <div class="stat-box">
+            <div class="stat-label">Weight Logs</div>
+            <div id="dataStatWeights" class="stat-value">0</div>
+            <div class="stat-sub">saved locally</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Calorie Days</div>
+            <div id="dataStatCalDays" class="stat-value">0</div>
+            <div class="stat-sub">tracked</div>
+          </div>
+        </div>
+
+        <p class="data-help">All entries are stored locally in your browser. Export a JSON backup anytime to move devices or keep a safe copy.</p>
+
+        <div class="backup-row">
+          <button type="button" id="exportDataBtn" class="btn btn-primary" style="border-radius:13px;padding:12px 10px;">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Export</span>
+          </button>
+          <button type="button" id="importDataBtn" class="btn" style="border-radius:13px;padding:12px 10px;">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span>Import</span>
+          </button>
+        </div>
+        <input type="file" id="importFileInput" accept="application/json,.json" style="display:none;" />
+
+        <div class="divider"></div>
+
+        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--rose);margin-bottom:8px;">
+          Danger Zone
+        </div>
+        <button type="button" id="resetAllBtn" class="btn btn-danger btn-block">Reset All Data</button>
+      </div>
     </div>
   </div>
 
@@ -1589,6 +1851,404 @@
       const MS_PER_DAY = 86400000;
       const KCAL_PER_LB = 3500;
 
+      // ============================================================
+      // CURATED THEMES (Single source of truth for CSS + Canvas + Favicon)
+      // ============================================================
+      const THEMES = {
+        obsidian: {
+          name: 'Obsidian',
+          tag: 'Default dark',
+          colorScheme: 'dark',
+          bg: '#090c12',
+          surface: '#121722',
+          surface2: '#192030',
+          surface3: '#222b3e',
+          border: 'rgba(255, 255, 255, 0.08)',
+          borderStrong: 'rgba(255, 255, 255, 0.14)',
+          text: '#f1f5f9',
+          textMuted: '#8b9bb4',
+          textDim: '#5e6d85',
+          accent1: '#10b981',
+          accent1End: '#059669',
+          accent1Bright: '#34d399',
+          accent1Soft: 'rgba(16, 185, 129, 0.14)',
+          accent1BtnText: '#031912',
+          accent2: '#6366f1',
+          accent2End: '#4f46e5',
+          accent2Bright: '#818cf8',
+          accent2Soft: 'rgba(99, 102, 241, 0.16)',
+          accent2BtnText: '#ffffff',
+          rose: '#fb7185',
+          roseSoft: 'rgba(251, 113, 133, 0.15)',
+          amber: '#f59e0b',
+          bgGlow1: 'rgba(16, 185, 129, 0.12)',
+          bgGlow2: 'rgba(99, 102, 241, 0.09)',
+          headerBg: 'rgba(9, 12, 18, 0.9)',
+          navBg: 'rgba(13, 17, 26, 0.96)',
+          tooltipBg: 'rgba(13, 18, 29, 0.95)',
+          rowBg: 'rgba(255, 255, 255, 0.028)',
+          navActiveBg: 'rgba(255, 255, 255, 0.07)',
+          badgeBg: 'rgba(255, 255, 255, 0.11)',
+          backdropBg: 'rgba(3, 5, 10, 0.74)',
+          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.25)',
+          iconBg: '#192030',
+          iconAxis: '#cbd5e1',
+          chartGrid: 'rgba(255, 255, 255, 0.06)',
+          chartAxis: '#6f809c',
+          chartCrosshair: 'rgba(255, 255, 255, 0.22)',
+          chartGoalLine: 'rgba(52, 211, 153, 0.24)',
+          chartProjFill: 'rgba(16, 185, 129, 0.15)',
+          chartProjGlow: 'rgba(52, 211, 153, 0.26)',
+          chartActFill: 'rgba(129, 140, 248, 0.24)',
+          chartActGlow: 'rgba(129, 140, 248, 0.28)',
+          chartDotStroke: '#a5b4fc',
+          chartHighlightBorder: '#ffffff'
+        },
+        amoled: {
+          name: 'AMOLED Pitch',
+          tag: 'True OLED black',
+          colorScheme: 'dark',
+          bg: '#000000',
+          surface: '#0b0d12',
+          surface2: '#141821',
+          surface3: '#1e2433',
+          border: 'rgba(255, 255, 255, 0.09)',
+          borderStrong: 'rgba(255, 255, 255, 0.16)',
+          text: '#f8fafc',
+          textMuted: '#94a3b8',
+          textDim: '#64748b',
+          accent1: '#06b6d4',
+          accent1End: '#0891b2',
+          accent1Bright: '#22d3ee',
+          accent1Soft: 'rgba(6, 182, 212, 0.15)',
+          accent1BtnText: '#02171d',
+          accent2: '#8b5cf6',
+          accent2End: '#7c3aed',
+          accent2Bright: '#a78bfa',
+          accent2Soft: 'rgba(139, 92, 246, 0.18)',
+          accent2BtnText: '#ffffff',
+          rose: '#fb7185',
+          roseSoft: 'rgba(251, 113, 133, 0.16)',
+          amber: '#fbbf24',
+          bgGlow1: 'rgba(34, 211, 238, 0.08)',
+          bgGlow2: 'rgba(139, 92, 246, 0.07)',
+          headerBg: 'rgba(0, 0, 0, 0.94)',
+          navBg: 'rgba(5, 6, 9, 0.98)',
+          tooltipBg: 'rgba(8, 10, 15, 0.96)',
+          rowBg: 'rgba(255, 255, 255, 0.03)',
+          navActiveBg: 'rgba(255, 255, 255, 0.08)',
+          badgeBg: 'rgba(255, 255, 255, 0.12)',
+          backdropBg: 'rgba(0, 0, 0, 0.8)',
+          cardShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
+          iconBg: '#12151e',
+          iconAxis: '#cbd5e1',
+          chartGrid: 'rgba(255, 255, 255, 0.07)',
+          chartAxis: '#73839c',
+          chartCrosshair: 'rgba(255, 255, 255, 0.24)',
+          chartGoalLine: 'rgba(34, 211, 238, 0.25)',
+          chartProjFill: 'rgba(6, 182, 212, 0.16)',
+          chartProjGlow: 'rgba(34, 211, 238, 0.28)',
+          chartActFill: 'rgba(167, 139, 250, 0.25)',
+          chartActGlow: 'rgba(167, 139, 250, 0.3)',
+          chartDotStroke: '#c4b5fd',
+          chartHighlightBorder: '#ffffff'
+        },
+        nordic: {
+          name: 'Nordic Frost',
+          tag: 'Cool arctic blue',
+          colorScheme: 'dark',
+          bg: '#0c131d',
+          surface: '#131d2d',
+          surface2: '#1b283d',
+          surface3: '#253652',
+          border: 'rgba(186, 218, 255, 0.1)',
+          borderStrong: 'rgba(186, 218, 255, 0.18)',
+          text: '#eff6ff',
+          textMuted: '#93adc9',
+          textDim: '#647d99',
+          accent1: '#14b8a6',
+          accent1End: '#0d9488',
+          accent1Bright: '#2dd4bf',
+          accent1Soft: 'rgba(45, 212, 191, 0.15)',
+          accent1BtnText: '#031a18',
+          accent2: '#3b82f6',
+          accent2End: '#2563eb',
+          accent2Bright: '#60a5fa',
+          accent2Soft: 'rgba(59, 130, 246, 0.18)',
+          accent2BtnText: '#ffffff',
+          rose: '#fb7185',
+          roseSoft: 'rgba(251, 113, 133, 0.16)',
+          amber: '#fbbf24',
+          bgGlow1: 'rgba(45, 212, 191, 0.11)',
+          bgGlow2: 'rgba(59, 130, 246, 0.12)',
+          headerBg: 'rgba(12, 19, 29, 0.92)',
+          navBg: 'rgba(15, 23, 36, 0.96)',
+          tooltipBg: 'rgba(15, 24, 38, 0.96)',
+          rowBg: 'rgba(186, 218, 255, 0.035)',
+          navActiveBg: 'rgba(186, 218, 255, 0.09)',
+          badgeBg: 'rgba(186, 218, 255, 0.13)',
+          backdropBg: 'rgba(6, 10, 18, 0.74)',
+          cardShadow: '0 10px 28px rgba(4, 9, 18, 0.35)',
+          iconBg: '#1b283d',
+          iconAxis: '#dbeafe',
+          chartGrid: 'rgba(186, 218, 255, 0.07)',
+          chartAxis: '#7a95b3',
+          chartCrosshair: 'rgba(219, 234, 254, 0.24)',
+          chartGoalLine: 'rgba(45, 212, 191, 0.24)',
+          chartProjFill: 'rgba(45, 212, 191, 0.15)',
+          chartProjGlow: 'rgba(45, 212, 191, 0.28)',
+          chartActFill: 'rgba(96, 165, 250, 0.24)',
+          chartActGlow: 'rgba(96, 165, 250, 0.28)',
+          chartDotStroke: '#93c5fd',
+          chartHighlightBorder: '#ffffff'
+        },
+        forest: {
+          name: 'Emerald Forest',
+          tag: 'Deep pine & lime',
+          colorScheme: 'dark',
+          bg: '#07110d',
+          surface: '#0e1b15',
+          surface2: '#15271f',
+          surface3: '#1e362b',
+          border: 'rgba(167, 243, 208, 0.09)',
+          borderStrong: 'rgba(167, 243, 208, 0.17)',
+          text: '#ecfdf5',
+          textMuted: '#88b39f',
+          textDim: '#5b8270',
+          accent1: '#10b981',
+          accent1End: '#059669',
+          accent1Bright: '#34d399',
+          accent1Soft: 'rgba(16, 185, 129, 0.16)',
+          accent1BtnText: '#031912',
+          accent2: '#84cc16',
+          accent2End: '#65a30d',
+          accent2Bright: '#a3e635',
+          accent2Soft: 'rgba(132, 204, 22, 0.17)',
+          accent2BtnText: '#0e1b02',
+          rose: '#fb7185',
+          roseSoft: 'rgba(251, 113, 133, 0.16)',
+          amber: '#fbbf24',
+          bgGlow1: 'rgba(16, 185, 129, 0.14)',
+          bgGlow2: 'rgba(132, 204, 22, 0.09)',
+          headerBg: 'rgba(7, 17, 13, 0.92)',
+          navBg: 'rgba(10, 22, 17, 0.96)',
+          tooltipBg: 'rgba(11, 24, 18, 0.96)',
+          rowBg: 'rgba(167, 243, 208, 0.03)',
+          navActiveBg: 'rgba(167, 243, 208, 0.08)',
+          badgeBg: 'rgba(167, 243, 208, 0.12)',
+          backdropBg: 'rgba(3, 10, 7, 0.76)',
+          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.34)',
+          iconBg: '#15271f',
+          iconAxis: '#d1fae5',
+          chartGrid: 'rgba(167, 243, 208, 0.07)',
+          chartAxis: '#6b9482',
+          chartCrosshair: 'rgba(209, 250, 229, 0.22)',
+          chartGoalLine: 'rgba(52, 211, 153, 0.24)',
+          chartProjFill: 'rgba(16, 185, 129, 0.15)',
+          chartProjGlow: 'rgba(52, 211, 153, 0.26)',
+          chartActFill: 'rgba(163, 230, 53, 0.22)',
+          chartActGlow: 'rgba(163, 230, 53, 0.28)',
+          chartDotStroke: '#bef264',
+          chartHighlightBorder: '#ffffff'
+        },
+        ember: {
+          name: 'Crimson Ember',
+          tag: 'Warm rose & gold',
+          colorScheme: 'dark',
+          bg: '#120a0d',
+          surface: '#1c1116',
+          surface2: '#27181f',
+          surface3: '#36222b',
+          border: 'rgba(255, 204, 213, 0.09)',
+          borderStrong: 'rgba(255, 204, 213, 0.17)',
+          text: '#fff1f2',
+          textMuted: '#be95a1',
+          textDim: '#886571',
+          accent1: '#f59e0b',
+          accent1End: '#d97706',
+          accent1Bright: '#fbbf24',
+          accent1Soft: 'rgba(245, 158, 11, 0.16)',
+          accent1BtnText: '#1e1002',
+          accent2: '#e11d48',
+          accent2End: '#be123c',
+          accent2Bright: '#fb7185',
+          accent2Soft: 'rgba(225, 29, 72, 0.18)',
+          accent2BtnText: '#ffffff',
+          rose: '#fda4af',
+          roseSoft: 'rgba(251, 113, 133, 0.18)',
+          amber: '#fbbf24',
+          bgGlow1: 'rgba(245, 158, 11, 0.12)',
+          bgGlow2: 'rgba(225, 29, 72, 0.12)',
+          headerBg: 'rgba(18, 10, 13, 0.92)',
+          navBg: 'rgba(22, 13, 17, 0.96)',
+          tooltipBg: 'rgba(24, 14, 19, 0.96)',
+          rowBg: 'rgba(255, 204, 213, 0.032)',
+          navActiveBg: 'rgba(255, 204, 213, 0.08)',
+          badgeBg: 'rgba(255, 204, 213, 0.13)',
+          backdropBg: 'rgba(10, 4, 7, 0.78)',
+          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.36)',
+          iconBg: '#27181f',
+          iconAxis: '#ffe4e6',
+          chartGrid: 'rgba(255, 204, 213, 0.07)',
+          chartAxis: '#a07985',
+          chartCrosshair: 'rgba(255, 228, 230, 0.22)',
+          chartGoalLine: 'rgba(251, 191, 36, 0.25)',
+          chartProjFill: 'rgba(245, 158, 11, 0.15)',
+          chartProjGlow: 'rgba(251, 191, 36, 0.28)',
+          chartActFill: 'rgba(251, 113, 133, 0.24)',
+          chartActGlow: 'rgba(251, 113, 133, 0.3)',
+          chartDotStroke: '#fda4af',
+          chartHighlightBorder: '#ffffff'
+        },
+        twilight: {
+          name: 'Sunset Violet',
+          tag: 'Plum, pink & teal',
+          colorScheme: 'dark',
+          bg: '#0f0a19',
+          surface: '#191128',
+          surface2: '#241939',
+          surface3: '#32234d',
+          border: 'rgba(221, 214, 254, 0.1)',
+          borderStrong: 'rgba(221, 214, 254, 0.18)',
+          text: '#f5f3ff',
+          textMuted: '#a99bc4',
+          textDim: '#776994',
+          accent1: '#14b8a6',
+          accent1End: '#0d9488',
+          accent1Bright: '#2dd4bf',
+          accent1Soft: 'rgba(20, 184, 166, 0.15)',
+          accent1BtnText: '#031a18',
+          accent2: '#ec4899',
+          accent2End: '#db2777',
+          accent2Bright: '#f472b6',
+          accent2Soft: 'rgba(236, 72, 153, 0.18)',
+          accent2BtnText: '#ffffff',
+          rose: '#fb7185',
+          roseSoft: 'rgba(251, 113, 133, 0.17)',
+          amber: '#fbbf24',
+          bgGlow1: 'rgba(45, 212, 191, 0.11)',
+          bgGlow2: 'rgba(236, 72, 153, 0.13)',
+          headerBg: 'rgba(15, 10, 25, 0.92)',
+          navBg: 'rgba(19, 13, 31, 0.96)',
+          tooltipBg: 'rgba(21, 14, 34, 0.96)',
+          rowBg: 'rgba(221, 214, 254, 0.032)',
+          navActiveBg: 'rgba(221, 214, 254, 0.08)',
+          badgeBg: 'rgba(221, 214, 254, 0.13)',
+          backdropBg: 'rgba(8, 5, 16, 0.78)',
+          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.36)',
+          iconBg: '#241939',
+          iconAxis: '#ede9fe',
+          chartGrid: 'rgba(221, 214, 254, 0.07)',
+          chartAxis: '#8f80ad',
+          chartCrosshair: 'rgba(237, 233, 254, 0.22)',
+          chartGoalLine: 'rgba(45, 212, 191, 0.24)',
+          chartProjFill: 'rgba(45, 212, 191, 0.15)',
+          chartProjGlow: 'rgba(45, 212, 191, 0.28)',
+          chartActFill: 'rgba(244, 114, 182, 0.24)',
+          chartActGlow: 'rgba(244, 114, 182, 0.3)',
+          chartDotStroke: '#f9a8d4',
+          chartHighlightBorder: '#ffffff'
+        },
+        carbon: {
+          name: 'Carbon Gold',
+          tag: 'Matte grey & gold',
+          colorScheme: 'dark',
+          bg: '#0c0c0e',
+          surface: '#16161a',
+          surface2: '#202026',
+          surface3: '#2c2c34',
+          border: 'rgba(255, 255, 255, 0.08)',
+          borderStrong: 'rgba(255, 255, 255, 0.15)',
+          text: '#f4f4f5',
+          textMuted: '#a1a1aa',
+          textDim: '#71717a',
+          accent1: '#10b981',
+          accent1End: '#059669',
+          accent1Bright: '#34d399',
+          accent1Soft: 'rgba(16, 185, 129, 0.15)',
+          accent1BtnText: '#031912',
+          accent2: '#f59e0b',
+          accent2End: '#d97706',
+          accent2Bright: '#fbbf24',
+          accent2Soft: 'rgba(245, 158, 11, 0.17)',
+          accent2BtnText: '#1c1102',
+          rose: '#fb7185',
+          roseSoft: 'rgba(251, 113, 133, 0.16)',
+          amber: '#fbbf24',
+          bgGlow1: 'rgba(245, 158, 11, 0.1)',
+          bgGlow2: 'rgba(16, 185, 129, 0.08)',
+          headerBg: 'rgba(12, 12, 14, 0.92)',
+          navBg: 'rgba(17, 17, 20, 0.96)',
+          tooltipBg: 'rgba(20, 20, 24, 0.96)',
+          rowBg: 'rgba(255, 255, 255, 0.03)',
+          navActiveBg: 'rgba(255, 255, 255, 0.08)',
+          badgeBg: 'rgba(255, 255, 255, 0.12)',
+          backdropBg: 'rgba(4, 4, 6, 0.78)',
+          cardShadow: '0 10px 28px rgba(0, 0, 0, 0.35)',
+          iconBg: '#202026',
+          iconAxis: '#e4e4e7',
+          chartGrid: 'rgba(255, 255, 255, 0.07)',
+          chartAxis: '#878791',
+          chartCrosshair: 'rgba(255, 255, 255, 0.22)',
+          chartGoalLine: 'rgba(52, 211, 153, 0.24)',
+          chartProjFill: 'rgba(16, 185, 129, 0.15)',
+          chartProjGlow: 'rgba(52, 211, 153, 0.26)',
+          chartActFill: 'rgba(251, 191, 36, 0.23)',
+          chartActGlow: 'rgba(251, 191, 36, 0.28)',
+          chartDotStroke: '#fcd34d',
+          chartHighlightBorder: '#ffffff'
+        },
+        daylight: {
+          name: 'Daylight',
+          tag: 'Crisp light mode',
+          colorScheme: 'light',
+          bg: '#f2f5fa',
+          surface: '#ffffff',
+          surface2: '#e8edf5',
+          surface3: '#d8e1ee',
+          border: 'rgba(15, 23, 42, 0.09)',
+          borderStrong: 'rgba(15, 23, 42, 0.17)',
+          text: '#0f172a',
+          textMuted: '#475569',
+          textDim: '#64748b',
+          accent1: '#059669',
+          accent1End: '#047857',
+          accent1Bright: '#059669',
+          accent1Soft: 'rgba(5, 150, 105, 0.12)',
+          accent1BtnText: '#ffffff',
+          accent2: '#4f46e5',
+          accent2End: '#4338ca',
+          accent2Bright: '#4f46e5',
+          accent2Soft: 'rgba(79, 70, 229, 0.13)',
+          accent2BtnText: '#ffffff',
+          rose: '#e11d48',
+          roseSoft: 'rgba(225, 29, 72, 0.12)',
+          amber: '#d97706',
+          bgGlow1: 'rgba(16, 185, 129, 0.09)',
+          bgGlow2: 'rgba(99, 102, 241, 0.08)',
+          headerBg: 'rgba(255, 255, 255, 0.9)',
+          navBg: 'rgba(255, 255, 255, 0.96)',
+          tooltipBg: 'rgba(255, 255, 255, 0.96)',
+          rowBg: 'rgba(15, 23, 42, 0.03)',
+          navActiveBg: 'rgba(15, 23, 42, 0.07)',
+          badgeBg: 'rgba(15, 23, 42, 0.08)',
+          backdropBg: 'rgba(15, 23, 42, 0.45)',
+          cardShadow: '0 8px 24px rgba(15, 23, 42, 0.07)',
+          iconBg: '#e8edf5',
+          iconAxis: '#334155',
+          chartGrid: 'rgba(15, 23, 42, 0.08)',
+          chartAxis: '#64748b',
+          chartCrosshair: 'rgba(15, 23, 42, 0.25)',
+          chartGoalLine: 'rgba(5, 150, 105, 0.3)',
+          chartProjFill: 'rgba(5, 150, 105, 0.14)',
+          chartProjGlow: 'rgba(5, 150, 105, 0.22)',
+          chartActFill: 'rgba(79, 70, 229, 0.16)',
+          chartActGlow: 'rgba(79, 70, 229, 0.22)',
+          chartDotStroke: '#4f46e5',
+          chartHighlightBorder: '#ffffff'
+        }
+      };
+
       let state = {
         settings: {
           configured: false,
@@ -1596,18 +2256,21 @@
           goalWeight: 180,
           maintenance: 2500,
           dailyTarget: 2000,
-          startTimestamp: Date.now()
+          startTimestamp: Date.now(),
+          theme: 'obsidian'
         },
         weights: [], // { id, weight, timestamp }
         calories: {} // { 'YYYY-MM-DD': [{ id, name, calories, timestamp }] }
       };
 
       let activeTab = 'weight';
-      let chartRange = 'goal'; // 'goal' | 'todate'
+      let activeSettingsTab = 'goal';
+      let chartRange = 'goal';
       let selectedCalorieDate = getLocalDateKey(new Date());
       let inspectedState = null;
       let chartLayout = null;
       let rafId = null;
+      const tabScrollPos = { weight: 0, calories: 0 };
 
       // Keep modals centered in visible viewport above mobile keyboards
       function syncVisualViewport() {
@@ -1627,6 +2290,7 @@
       const el = (id) => document.getElementById(id);
       const toastEl = el('toast');
       const onboardingView = el('onboardingView');
+      const appScroll = el('appScroll');
       const headerTitle = el('headerTitle');
       const openHistoryBtn = el('openHistoryBtn');
       const openLogWeightBtn = el('openLogWeightBtn');
@@ -1664,6 +2328,120 @@
       const calStatDeficit = el('calStatDeficit');
       const calEntryCount = el('calEntryCount');
       const calEntriesList = el('calEntriesList');
+
+      // Theme Engine
+      function getActiveTheme() {
+        return THEMES[state.settings.theme] || THEMES.obsidian;
+      }
+
+      function applyTheme(themeId, persist = false) {
+        const key = THEMES[themeId] ? themeId : 'obsidian';
+        const t = THEMES[key];
+        state.settings.theme = key;
+
+        const root = document.documentElement.style;
+        root.setProperty('--color-scheme', t.colorScheme);
+        root.setProperty('--bg', t.bg);
+        root.setProperty('--surface', t.surface);
+        root.setProperty('--surface-2', t.surface2);
+        root.setProperty('--surface-3', t.surface3);
+        root.setProperty('--border', t.border);
+        root.setProperty('--border-strong', t.borderStrong);
+        root.setProperty('--text', t.text);
+        root.setProperty('--text-muted', t.textMuted);
+        root.setProperty('--text-dim', t.textDim);
+        root.setProperty('--accent-1', t.accent1);
+        root.setProperty('--accent-1-end', t.accent1End);
+        root.setProperty('--accent-1-bright', t.accent1Bright);
+        root.setProperty('--accent-1-soft', t.accent1Soft);
+        root.setProperty('--accent-1-btn-text', t.accent1BtnText);
+        root.setProperty('--accent-2', t.accent2);
+        root.setProperty('--accent-2-end', t.accent2End);
+        root.setProperty('--accent-2-bright', t.accent2Bright);
+        root.setProperty('--accent-2-soft', t.accent2Soft);
+        root.setProperty('--accent-2-btn-text', t.accent2BtnText);
+        root.setProperty('--rose', t.rose);
+        root.setProperty('--rose-soft', t.roseSoft);
+        root.setProperty('--amber', t.amber);
+        root.setProperty('--bg-glow-1', t.bgGlow1);
+        root.setProperty('--bg-glow-2', t.bgGlow2);
+        root.setProperty('--header-bg', t.headerBg);
+        root.setProperty('--nav-bg', t.navBg);
+        root.setProperty('--tooltip-bg', t.tooltipBg);
+        root.setProperty('--row-bg', t.rowBg);
+        root.setProperty('--nav-active-bg', t.navActiveBg);
+        root.setProperty('--badge-bg', t.badgeBg);
+        root.setProperty('--backdrop-bg', t.backdropBg);
+        root.setProperty('--card-shadow', t.cardShadow);
+        root.setProperty('--icon-bg', t.iconBg);
+        root.setProperty('--icon-axis', t.iconAxis);
+
+        const metaTheme = el('metaThemeColor');
+        if (metaTheme) metaTheme.setAttribute('content', t.bg);
+        const metaScheme = el('metaColorScheme');
+        if (metaScheme) metaScheme.setAttribute('content', t.colorScheme);
+
+        // Update SVG favicon to match theme colors
+        const fav = el('siteFavicon');
+        if (fav) {
+          const enc = (c) => encodeURIComponent(c);
+          const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>`
+            + `<rect width='32' height='32' rx='8' fill='${t.surface}'/>`
+            + `<rect x='0.75' y='0.75' width='30.5' height='30.5' rx='7.25' fill='none' stroke='${t.iconAxis}' stroke-opacity='0.22' stroke-width='1.5'/>`
+            + `<g transform='translate(4 4)' fill='none' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'>`
+            + `<path d='M3 3v18h18' stroke='${t.iconAxis}'/>`
+            + `<path d='M7 14l4-4 4 3 5-6' stroke='${t.accent1Bright}'/>`
+            + `</g></svg>`;
+          fav.href = `data:image/svg+xml,${enc(svg)}`;
+        }
+
+        if (persist) saveState();
+        renderThemeGrid();
+        drawChart();
+      }
+
+      function renderThemeGrid() {
+        const grid = el('themeGrid');
+        if (!grid) return;
+        const current = state.settings.theme || 'obsidian';
+        grid.innerHTML = Object.entries(THEMES).map(([id, t]) => {
+          const isActive = id === current;
+          return `
+            <button type="button" class="theme-card ${isActive ? 'active' : ''}" data-theme-id="${id}">
+              <div class="theme-preview" style="background:${t.bg};">
+                <div class="theme-preview-bars">
+                  <span class="theme-preview-pill" style="background:${t.surface2};"></span>
+                  <span class="theme-preview-dots">
+                    <span class="theme-preview-dot" style="background:${t.accent1Bright};"></span>
+                    <span class="theme-preview-dot" style="background:${t.accent2Bright};"></span>
+                  </span>
+                </div>
+                <svg viewBox="0 0 100 22" style="width:100%;height:18px;display:block;overflow:visible;">
+                  <line x1="2" y1="4" x2="98" y2="18" stroke="${t.accent1Bright}" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round"/>
+                  <path d="M2 5 C26 7, 42 15, 62 12 C78 10, 86 17, 98 16" fill="none" stroke="${t.accent2Bright}" stroke-width="2.4" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="theme-meta">
+                <div>
+                  <div class="theme-name">${escapeHtml(t.name)}</div>
+                  <div class="theme-tag">${escapeHtml(t.tag)}</div>
+                </div>
+                <span class="theme-check" aria-hidden="true">
+                  <svg class="icon" style="width:12px;height:12px;stroke-width:3;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+              </div>
+            </button>
+          `;
+        }).join('');
+
+        grid.querySelectorAll('[data-theme-id]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const id = btn.dataset.themeId;
+            applyTheme(id, true);
+            showToast(`Theme: ${THEMES[id].name}`);
+          });
+        });
+      }
 
       // Utilities
       function uid() {
@@ -1865,8 +2643,11 @@
         });
       });
 
-      // Tab Switching
+      // Main Tab Switching (preserves per-tab scroll position inside .app-scroll)
       function switchTab(tab) {
+        if (activeTab !== tab) {
+          tabScrollPos[activeTab] = appScroll.scrollTop;
+        }
         activeTab = tab;
         document.querySelectorAll('.nav-btn').forEach((b) => {
           b.classList.toggle('active', b.dataset.tab === tab);
@@ -1880,6 +2661,7 @@
           openLogWeightBtn.style.display = 'inline-flex';
           addCalorieFab.classList.remove('visible');
           renderWeightTab();
+          appScroll.scrollTop = tabScrollPos.weight || 0;
           requestAnimationFrame(() => drawChart());
         } else {
           headerTitle.innerHTML = `<span class="title-short">Calories</span><span class="title-full">Calorie Tracker</span>`;
@@ -1887,11 +2669,36 @@
           openLogWeightBtn.style.display = 'none';
           addCalorieFab.classList.add('visible');
           renderCaloriesTab();
+          appScroll.scrollTop = tabScrollPos.calories || 0;
         }
       }
 
       document.querySelectorAll('.nav-btn').forEach((btn) => {
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Settings Tab Switching
+      function switchSettingsTab(stab) {
+        activeSettingsTab = stab;
+        document.querySelectorAll('.settings-tab-btn').forEach((b) => {
+          const on = b.dataset.stab === stab;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        el('settingsPaneGoal').classList.toggle('active', stab === 'goal');
+        el('settingsPaneThemes').classList.toggle('active', stab === 'themes');
+        el('settingsPaneData').classList.toggle('active', stab === 'data');
+
+        if (stab === 'themes') {
+          renderThemeGrid();
+        } else if (stab === 'data') {
+          el('dataStatWeights').textContent = state.weights.length.toLocaleString();
+          el('dataStatCalDays').textContent = Object.keys(state.calories).length.toLocaleString();
+        }
+      }
+
+      document.querySelectorAll('.settings-tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => switchSettingsTab(btn.dataset.stab));
       });
 
       // Weight Tab Rendering
@@ -2108,7 +2915,6 @@
         }
       });
 
-      // Weight History Menu Openers
       function openHistoryMenu() {
         renderFullHistoryModal();
         openModal('historyModal');
@@ -2117,7 +2923,7 @@
       el('viewAllLogsInlineBtn').addEventListener('click', openHistoryMenu);
 
       // ============================================================
-      // CUSTOM HIGH-DPI INTERACTIVE CANVAS GRAPH
+      // CUSTOM HIGH-DPI INTERACTIVE CANVAS GRAPH (THEME-AWARE)
       // ============================================================
       document.querySelectorAll('.segmented button').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -2219,6 +3025,7 @@
         const rect = chartWrap.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) return;
 
+        const t = getActiveTheme();
         const dpr = Math.min(window.devicePixelRatio || 1, 3);
         const w = rect.width;
         const h = rect.height;
@@ -2300,14 +3107,14 @@
         for (let i = 0; i <= ySteps; i++) {
           const val = yMin + ((yMax - yMin) * i) / ySteps;
           const y = yToPx(val);
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+          ctx.strokeStyle = t.chartGrid;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(pad.left, y);
           ctx.lineTo(w - pad.right, y);
           ctx.stroke();
 
-          ctx.fillStyle = '#6f809c';
+          ctx.fillStyle = t.chartAxis;
           ctx.fillText(val.toFixed(1), pad.left - 8, y);
         }
 
@@ -2315,7 +3122,7 @@
         const spanDays = (xMax - xMin) / MS_PER_DAY;
         const xTicks = 4;
         ctx.textBaseline = 'top';
-        ctx.fillStyle = '#6f809c';
+        ctx.fillStyle = t.chartAxis;
 
         for (let i = 0; i <= xTicks; i++) {
           const ts = xMin + ((xMax - xMin) * i) / xTicks;
@@ -2326,11 +3133,11 @@
           ctx.fillText(formatAxisDate(ts, spanDays), x, h - pad.bottom + 10);
         }
 
-        // Subtle Goal Weight Horizontal Reference
+        // Subtle Goal Weight Reference Line
         if (state.settings.goalWeight >= yMin && state.settings.goalWeight <= yMax) {
           const gy = yToPx(state.settings.goalWeight);
           ctx.save();
-          ctx.strokeStyle = 'rgba(52, 211, 153, 0.22)';
+          ctx.strokeStyle = t.chartGoalLine;
           ctx.setLineDash([3, 5]);
           ctx.lineWidth = 1;
           ctx.beginPath();
@@ -2340,7 +3147,7 @@
           ctx.restore();
         }
 
-        // Projected Diagonal Trajectory Line + Soft Gradient Fill
+        // Projected Diagonal Line + Soft Fill
         if (m.valid && projEndTs > projStartTs) {
           const px1 = xToPx(projStartTs);
           const py1 = yToPx(projectedWeightAt(projStartTs));
@@ -2348,8 +3155,8 @@
           const py2 = yToPx(projectedWeightAt(projEndTs));
 
           const projGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + plotH);
-          projGrad.addColorStop(0, 'rgba(16, 185, 129, 0.14)');
-          projGrad.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+          projGrad.addColorStop(0, t.chartProjFill);
+          projGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
           ctx.fillStyle = projGrad;
           ctx.beginPath();
           ctx.moveTo(px1, py1);
@@ -2360,7 +3167,7 @@
           ctx.fill();
 
           ctx.save();
-          ctx.strokeStyle = '#34d399';
+          ctx.strokeStyle = t.accent1Bright;
           ctx.lineWidth = 2.2;
           ctx.setLineDash([6, 5]);
           ctx.beginPath();
@@ -2375,10 +3182,10 @@
             const ny = yToPx(projectedWeightAt(now));
             ctx.beginPath();
             ctx.arc(nx, ny, 4, 0, Math.PI * 2);
-            ctx.fillStyle = '#090c12';
+            ctx.fillStyle = t.surface;
             ctx.fill();
             ctx.lineWidth = 2;
-            ctx.strokeStyle = '#34d399';
+            ctx.strokeStyle = t.accent1Bright;
             ctx.stroke();
           }
         }
@@ -2394,8 +3201,8 @@
 
         if (screenActualPts.length >= 2) {
           const actGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + plotH);
-          actGrad.addColorStop(0, 'rgba(129, 140, 248, 0.24)');
-          actGrad.addColorStop(1, 'rgba(129, 140, 248, 0.0)');
+          actGrad.addColorStop(0, t.chartActFill);
+          actGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
           traceMonotonePath(ctx, screenActualPts, actualSegments);
           ctx.lineTo(screenActualPts[screenActualPts.length - 1].x, pad.top + plotH);
           ctx.lineTo(screenActualPts[0].x, pad.top + plotH);
@@ -2404,7 +3211,7 @@
           ctx.fill();
 
           traceMonotonePath(ctx, screenActualPts, actualSegments);
-          ctx.strokeStyle = '#818cf8';
+          ctx.strokeStyle = t.accent2Bright;
           ctx.lineWidth = 2.6;
           ctx.lineJoin = 'round';
           ctx.lineCap = 'round';
@@ -2415,10 +3222,10 @@
         screenActualPts.forEach((pt) => {
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, dotRadius, 0, Math.PI * 2);
-          ctx.fillStyle = '#121722';
+          ctx.fillStyle = t.surface;
           ctx.fill();
           ctx.lineWidth = 2.2;
-          ctx.strokeStyle = '#a5b4fc';
+          ctx.strokeStyle = t.chartDotStroke;
           ctx.stroke();
         });
 
@@ -2436,7 +3243,7 @@
           const ix = inspectedState.x;
 
           ctx.save();
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+          ctx.strokeStyle = t.chartCrosshair;
           ctx.lineWidth = 1;
           ctx.setLineDash([3, 3]);
           ctx.beginPath();
@@ -2449,14 +3256,14 @@
             const py = inspectedState.projected.y;
             ctx.beginPath();
             ctx.arc(ix, py, 8.5, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(52, 211, 153, 0.25)';
+            ctx.fillStyle = t.chartProjGlow;
             ctx.fill();
             ctx.beginPath();
             ctx.arc(ix, py, 4.4, 0, Math.PI * 2);
-            ctx.fillStyle = '#34d399';
+            ctx.fillStyle = t.accent1Bright;
             ctx.fill();
             ctx.lineWidth = 1.8;
-            ctx.strokeStyle = '#ffffff';
+            ctx.strokeStyle = t.chartHighlightBorder;
             ctx.stroke();
           }
 
@@ -2464,14 +3271,14 @@
             const ay = inspectedState.actual.y;
             ctx.beginPath();
             ctx.arc(ix, ay, 8.5, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(129, 140, 248, 0.28)';
+            ctx.fillStyle = t.chartActGlow;
             ctx.fill();
             ctx.beginPath();
             ctx.arc(ix, ay, 4.6, 0, Math.PI * 2);
-            ctx.fillStyle = '#818cf8';
+            ctx.fillStyle = t.accent2Bright;
             ctx.fill();
             ctx.lineWidth = 1.8;
-            ctx.strokeStyle = '#ffffff';
+            ctx.strokeStyle = t.chartHighlightBorder;
             ctx.stroke();
           }
         }
@@ -2481,7 +3288,6 @@
         chartTooltip.classList.remove('visible');
       }
 
-      // Smooth scrub without aggressive snapping — shows BOTH Actual & Projected
       function inspectChartAt(clientX) {
         if (!chartLayout) return;
         const rect = weightChart.getBoundingClientRect();
@@ -2492,7 +3298,6 @@
         let x = Math.max(L.pad.left, Math.min(L.w - L.pad.right, rawX));
         let ts = L.pxToTs(x);
 
-        // Very gentle micro-snap (<= 5px) only when directly on top of a logged dot
         let exactPt = null;
         let minDx = Infinity;
         for (const pt of L.screenActualPts) {
@@ -2508,7 +3313,6 @@
           ts = exactPt.timestamp;
         }
 
-        // Compute Projected at this exact x / timestamp
         let projected = null;
         if (L.validProjection && ts >= L.projStartTs - 1000 && ts <= L.projEndTs + 1000) {
           const clampedTs = Math.max(L.projStartTs, Math.min(L.projEndTs, ts));
@@ -2516,7 +3320,6 @@
           projected = { y: L.yToPx(wt), weight: wt };
         }
 
-        // Compute Actual at this exact x (exact logged dot OR smooth interpolated curve)
         let actual = null;
         if (exactPt) {
           actual = {
@@ -2587,7 +3390,7 @@
         let deltaHtml = '';
         if (st.actual && st.projected) {
           const diff = st.actual.weight - st.projected.weight;
-          const color = diff <= 0 ? 'var(--emerald-bright)' : 'var(--rose)';
+          const color = diff <= 0 ? 'var(--accent-1-bright)' : 'var(--rose)';
           const sign = diff > 0 ? '+' : '';
           const note = diff <= 0 ? 'ahead of plan' : 'above plan';
           deltaHtml = `<div class="tt-delta" style="color:${color};">${sign}${diff.toFixed(1)} lbs ${note}</div>`;
@@ -2726,7 +3529,7 @@
 
         const dayDeficit = Math.round(maint - eaten);
         calStatDeficit.textContent = `${dayDeficit >= 0 ? '' : '+'}${Math.abs(dayDeficit).toLocaleString()}`;
-        calStatDeficit.style.color = dayDeficit >= 0 ? 'var(--emerald-bright)' : 'var(--rose)';
+        calStatDeficit.style.color = dayDeficit >= 0 ? 'var(--accent-1-bright)' : 'var(--rose)';
 
         calEntryCount.textContent = `${entries.length} ${entries.length === 1 ? 'item' : 'items'}`;
 
@@ -2860,6 +3663,7 @@
         }
 
         state.settings = {
+          ...state.settings,
           configured: true,
           startWeight: Math.round(startWeight * 10) / 10,
           goalWeight: Math.round(goalWeight * 10) / 10,
@@ -2905,6 +3709,9 @@
         el('setDailyTarget').value = state.settings.dailyTarget;
         el('setStartDate').value = toDateTimeLocalString(new Date(state.settings.startTimestamp));
         refreshSettingsPreview();
+        el('dataStatWeights').textContent = state.weights.length.toLocaleString();
+        el('dataStatCalDays').textContent = Object.keys(state.calories).length.toLocaleString();
+        switchSettingsTab('goal');
         openModal('settingsModal');
       });
 
@@ -2922,6 +3729,7 @@
         }
 
         state.settings = {
+          ...state.settings,
           configured: true,
           startWeight: Math.round(startWeight * 10) / 10,
           goalWeight: Math.round(goalWeight * 10) / 10,
@@ -2972,6 +3780,7 @@
               calories: imported.calories && typeof imported.calories === 'object' ? imported.calories : {}
             };
             saveState();
+            applyTheme(state.settings.theme || 'obsidian', false);
             closeModal('settingsModal');
             onboardingView.classList.remove('open');
             renderWeightTab();
@@ -2994,6 +3803,7 @@
       // INITIALIZE APP
       // ============================================================
       loadState();
+      applyTheme(state.settings.theme || 'obsidian', false);
 
       if (!state.settings.configured) {
         el('obStartDate').value = toDateTimeLocalString(new Date());
